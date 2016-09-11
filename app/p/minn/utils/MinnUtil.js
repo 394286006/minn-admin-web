@@ -104,5 +104,6 @@ static getInstance(doc){
       if(selected!=null)
         el.val(selected);
     }
+
 }
 export default MainUtil;

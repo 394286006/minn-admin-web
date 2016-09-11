@@ -4,8 +4,10 @@ import HomeStore from '../stores/HomeStore'
 import HomeActions from '../actions/HomeActions';
 import {first, without, findWhere} from 'underscore';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'; 
-import { Panel,ButtonToolbar,Button,Modal } from 'react-bootstrap';
+import { Panel,ButtonToolbar,Button,Modal,Grid,Row,Col } from 'react-bootstrap';
+import MainConstant from '../utils/MainConstant'; 
 import MinnUtil from '../utils/MinnUtil';
+import Cube from '../4d/cube/Cube';
 
 class Home extends React.Component {
   constructor(props) {
@@ -13,11 +15,13 @@ class Home extends React.Component {
     this.state = HomeStore.getState();
     this.onChange = this.onChange.bind(this);
     this.minnUtil=MinnUtil.getInstance(document);
+    this.cube=Cube.getInstance(document);
   }
- 
+         
   componentDidMount() {
     HomeStore.listen(this.onChange);
-    HomeActions.getTwoCharacters();
+    this.cube.start();
+
   }
 
   componentWillUnmount() {
@@ -26,18 +30,21 @@ class Home extends React.Component {
 
   onChange(state) {
     this.setState(state);
-
   }
+  
+   
 
  
-
-
-
   render() {
+     
 
     return (
+       
       
-       <div/>
+      <Panel id='panel_id' header={this.minnUtil.get('main_home')} bsStyle="primary" className="modal-container flipInX animated" >
+       <canvas id="glcanvas" width="100%" height="100%"></canvas>
+     
+    </Panel>
   
 
     );

@@ -139,7 +139,7 @@ class Menubar extends React.Component {
 
          <Navbar.Collapse >
           <Nav id='privateMenu_id' ref='privateMenu_id_ref'>
-          <li><Link to={MainConstant.app} >{this.minnUtil.get('main_home')}</Link></li>
+          <li><Link to={MainConstant.app+'/'} >{this.minnUtil.get('main_home')}</Link></li>
           <li className='dropdown' style={{display:'none'}}>
               <a href='#' className='dropdown-toggle' data-toggle='dropdown'><span id='systemmng_id'></span> <span className='caret'></span></a>
               <ul className='dropdown-menu'>

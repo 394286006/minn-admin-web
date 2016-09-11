@@ -39,7 +39,8 @@ class TemplateComponent extends React.Component {
   
    paginationShowsTotal(start, to, total){
       let minnUtil=MinnUtil.getInstance(document);
-      return (start+1)+'-'+(to+1)+','+minnUtil.get('pagebar_total')+total+minnUtil.get('pagebar_row');
+
+      return (total==0? 0:(start+1))+'-'+to+','+minnUtil.get('pagebar_total')+total+minnUtil.get('pagebar_row');
    }
 
    modifyHandler(event){

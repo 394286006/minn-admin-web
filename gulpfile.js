@@ -16,6 +16,7 @@ var sourcemaps = require('gulp-sourcemaps');
 
 var production = process.env.NODE_ENV === 'minn-production';
 
+
 var dependencies = [
   'alt',
   'react',
@@ -24,6 +25,7 @@ var dependencies = [
   'react-bootstrap',
   'react-bootstrap-table',
   'jstree',
+  'd3',
   'jquery-confirm',
   'underscore'
 ];
@@ -40,7 +42,10 @@ gulp.task('vendor', function() {
     'bower_components/jstree/dist/jstree.js',
     'bower_components/jquery-confirm2/dist/jquery-confirm.min.js',
     'bower_components/magnific-popup/dist/jquery.magnific-popup.js',
-    'bower_components/toastr/toastr.js'
+    'node_modules/d3/build/d3.js',
+    'bower_components/toastr/toastr.js',
+    'app/p/minn/utils/sylvester.js',
+    'app/p/minn/utils/glUtils.js'
   ]).pipe(concat('vendor.js'))
     .pipe(gulpif(production, uglify({ mangle: false })))
     .pipe(gulp.dest('public/js'));
@@ -127,9 +132,24 @@ gulp.task('styles', function() {
     .pipe(gulp.dest('public/css'));
 });
 
+/*
+ |--------------------------------------------------------------------------
+ | Compile viwe html.
+ |--------------------------------------------------------------------------
+ */
+gulp.task('copy-third-part-html', function() {
+  return gulp.src('./views/third-part/*.{html,js}')
+    .pipe(gulp.dest('public/third-part'));
+});
+
 gulp.task('watch', function() {
   gulp.watch('app/stylesheets/**/*.less', ['styles']);
 });
 
-gulp.task('default', ['styles', 'vendor', 'browserify-watch', 'watch']);
-gulp.task('build', ['styles', 'vendor', 'browserify']);
+gulp.task('watch-html', function() {
+  gulp.watch('./views/third-part/*.{html,js}', ['copy-third-part-html']);
+});
+
+
+gulp.task('default', ['copy-third-part-html','styles', 'vendor', 'browserify-watch', 'watch','watch-html']);
+gulp.task('build', ['copy-third-part-html','styles', 'vendor', 'browserify']);
