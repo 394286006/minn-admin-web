@@ -11,20 +11,20 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import { Panel,ButtonToolbar,Button,Modal ,Grid,Row,Col,Table,Well,FormControl,DropdownButton,MenuItem,Form,FormGroup,ControlLabel,Alert} from 'react-bootstrap';
 import MinnUtil from '../../utils/MinnUtil';
 import MainConstant from '../../utils/MainConstant'; 
-import MenuMngStore from '../../stores/privilege/MenuMngStore'
-import MenuMngAction from '../../actions/privilege/MenuMngAction';
+import DepartmentMngStore from '../../stores/privilege/DepartmentMngStore'
+import DepartmentMngAction from '../../actions/privilege/DepartmentMngAction';
 import GlobalizationPanel from './GlobalizationPanel';
-class MenuMngPanel extends TemplateComponent {
+class DepartmentMngPanel extends TemplateComponent {
   constructor(props) {
-    super(props,MenuMngStore);
+    super(props,DepartmentMngStore);
   }
  
   componentDidMount() {
-    MenuMngStore.listen(this.onChange);
+    DepartmentMngStore.listen(this.onChange);
     this.refreshTreeMenu(null);
-    MenuMngAction.getDic(); 
+    DepartmentMngAction.getDic(); 
     
-    $('#menu_sub_sys_div').on("click.jstree", function (e, data) {
+    $('#menu_sub_div').on("click.jstree", function (e, data) {
 
        let messageBody={}; 
        
@@ -37,10 +37,10 @@ class MenuMngPanel extends TemplateComponent {
         messageBody.rp=MainConstant.sizePerPage;
         let query='-1';
 
-        var nodes= $('#menu_sub_sys_div').jstree(true).get_selected ();
+        var nodes= $('#menu_sub_div').jstree(true).get_selected (true);
          if(nodes.length>0){
-           query=nodes[0];
-         }
+           query=nodes[0].id;
+         } 
         
         query+=","
         if($('#name_id').val()==''){
@@ -48,19 +48,15 @@ class MenuMngPanel extends TemplateComponent {
         }else{
           query+=$('#name_id').val();
         }
-        query+=",";
-        query+=$('#resource_id').val();
-        query+=",";
-        query+=$('#resourceurltype_id').val();
 
-        messageBody.qtype="nodeid,name,resource,resourceurltype";
+        messageBody.qtype="nodeid,name";
         messageBody.query=query;
-        MenuMngAction.query(messageBody);
+        DepartmentMngAction.query(messageBody,nodes[0]);
     });       
   }
 
   componentWillUnmount() {
-    MenuMngStore.unlisten(this.onChange);
+    DepartmentMngStore.unlisten(this.onChange);
   }
 
   onChange(state) {
@@ -99,20 +95,20 @@ class MenuMngPanel extends TemplateComponent {
   }
 
   refreshTreeMenu(event){
-     MenuMngAction.getResource(this.state.selectedRow); 
+     DepartmentMngAction.getResource(this.state.selectedRow); 
   }
 
   invokeTreeMenu(treeData){
-     $('#menu_sub_sys_div').empty();
-     $('#menu_sub_sys_div').removeAttr('class');
-     $('#menu_sub_sys_div').removeAttr('role');
-     $('#menu_sub_sys_div').jstree({ 'core' : {'data' :treeData} ,data:true});
+     $('#menu_sub_div').empty();
+     $('#menu_sub_div').removeAttr('class');
+     $('#menu_sub_div').removeAttr('role');
+     $('#menu_sub_div').jstree({ 'core' : {'data' :treeData} ,data:true});
 
 
   }
 
   saveResource(event){
-     let  nodes=$('#menu_sub_sys_div').jstree(true).get_checked(true);
+     let  nodes=$('#menu_sub_div').jstree(true).get_checked(true);
      if(nodes.length==0){
     $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.minnUtil.get('role_resource_selected'),confirmButton: this.minnUtil.get('main_alert_oklabel')});
       return;
@@ -120,7 +116,7 @@ class MenuMngPanel extends TemplateComponent {
      let role_ids='';
      let key=new Object();
      for(let i=0;i<nodes.length;i++){
-        let pathstr= $('#menu_sub_sys_div').jstree(true).get_path(nodes[i],',',true);
+        let pathstr= $('#menu_sub_div').jstree(true).get_path(nodes[i],',',true);
         let ids=pathstr.split(",");
         for(let j=0;j<ids.length;j++){
           key['p_'+ids[j]]=ids[j];
@@ -134,7 +130,7 @@ class MenuMngPanel extends TemplateComponent {
        role_ids+=key[k];
      }
 
-    MenuMngAction.saveResource(this.state.selectedRow,role_ids);
+    DepartmentMngAction.saveResource(this.state.selectedRow,role_ids);
 
   }
 
@@ -143,7 +139,7 @@ class MenuMngPanel extends TemplateComponent {
     this.invokeDelHandler(function(){  
       let messageBody={}; 
        messageBody.id=$('#del_id').val();
-       MenuMngAction.del(messageBody);
+       DepartmentMngAction.del(messageBody);
 
     });   
   }
@@ -163,9 +159,9 @@ class MenuMngPanel extends TemplateComponent {
    
     let query='-1';
 
-    var nodes= $('#menu_sub_sys_div').jstree(true).get_selected ();
+    var nodes= $('#menu_sub_div').jstree(true).get_selected (true);
      if(nodes.length>0){
-       query=nodes[0];
+       query=nodes[0].id;
      }
     
     query+=","
@@ -181,7 +177,7 @@ class MenuMngPanel extends TemplateComponent {
 
     messageBody.qtype="nodeid,name,resource,resourceurltype";
     messageBody.query=query;
-    MenuMngAction.query(messageBody);
+    DepartmentMngAction.query(messageBody,nodes[0]);
 
   }
 
@@ -195,7 +191,7 @@ class MenuMngPanel extends TemplateComponent {
    
     let query='-1';
 
-     var nodes= $('#menu_sub_sys_div').jstree(true).get_selected ();
+     var nodes= $('#menu_sub_div').jstree(true).get_selected ();
      if(nodes.length>0){
        query=nodes[0];
      }
@@ -206,33 +202,30 @@ class MenuMngPanel extends TemplateComponent {
     }else{
       query+=$('#name_id').val();
     }
-    query+=",";
-    query+=$('#resource_id').val();
-    query+=",";
-    query+=$('#resourceurltype_id').val();
 
-    messageBody.qtype="nodeid,name,resource,resourceurltype";
+    messageBody.qtype="nodeid,name";
     messageBody.query=query;
    
-    MenuMngAction.query(messageBody);
+    DepartmentMngAction.query(messageBody);
   }
 
  
   onRowSelect(row, isSelected , event){
      $('#del_id').val(row.id);  
-       MenuMngAction.getSelected(row); 
+       DepartmentMngAction.getSelected(row); 
     }
 
     showWinHandler(event){
-      let nodes= $('#menu_sub_sys_div').jstree(true).get_selected (true);
+      let nodes= $('#menu_sub_div').jstree(true).get_selected (true);
 
        if(nodes.length==0){
-         $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.minnUtil.get('menu_resource_selected'),confirmButton: this.minnUtil.get('main_alert_oklabel')});
+          this.alertShowMsg(this.minnUtil.get('department_resource_selected')); 
+        
          return;
        }
      
-
-      this.setState({ show: true,myMethod:'add',pNode:nodes[0].text});
+     
+      this.setState({ show: true,myMethod:'add'});
     }
 
   saveHandler(event){
@@ -243,36 +236,31 @@ class MenuMngPanel extends TemplateComponent {
       }
 
       let messageBody={};
-       var nodes= $('#menu_sub_sys_div').jstree(true).get_selected ();
-        messageBody.pId=nodes[0];
-        messageBody.name=this.state.name;
-        messageBody.language=$('#language_id').val();
-        messageBody.url=this.state.url;
-        messageBody.type=$('#menu_type_id').val();
-        messageBody.urlType=$('#menu_urltype_id').val();
-        messageBody.code=this.state.code;
-        messageBody.sort=this.state.sort;
-        messageBody.active=$('#common_active_id').val();
+      var nodes= $('#menu_sub_div').jstree(true).get_selected ();
+      messageBody.pId=nodes[0];
+      messageBody.name=this.state.name;
+      messageBody.language=$('#language_id').val();
+      messageBody.code=this.state.code;
+      messageBody.active=$('#common_active_id').val();
 
 
-      MenuMngAction.saveOrUpdate(this.state.myMethod,this.state.selectedRow,messageBody);
+      DepartmentMngAction.saveOrUpdate(this.state.myMethod,this.state.selectedRow,messageBody);
   
     }
 
      
     initData(event){
       if(this.state.myMethod=='add'){
-        $( '#'+event.id ).find( "input[type='input']" ).val( '' );
+        //$( '#'+event.id ).find( "input[type='input']" ).val( '' );
       }
        MinnUtil.genSelectOptions($('#common_active_id'),this.state.dicData.ACTIVETYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.active_v));
        MinnUtil.genSelectOptions($('#language_id'),this.state.dicData.LANGUAGE,this.minnUtil.getCurrentLocale().split('_')[0]);
-       MinnUtil.genSelectOptions($('#menu_urltype_id'),this.state.dicData.RESOURCEURLTYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.urltype_v));
-       MinnUtil.genSelectOptions($('#menu_type_id'),this.state.dicData.RESOURCETYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.type_v));
+
     }
 
     initGData(event){
 
-      MenuMngAction.getDicLang(this.state.selectedRow);
+      DepartmentMngAction.getDicLang(this.state.selectedRow);
     }
 
     showGHandler(event){
@@ -281,14 +269,13 @@ class MenuMngPanel extends TemplateComponent {
           return;
         }
       this.setState({ gshow: true}); 
-    }
-   
+    }     
 
-  render() {
+  render() {  
 
     return (
       <div >
-      <Panel header={this.minnUtil.get('menu_title')} bsStyle="primary" className="modal-container flipInX animated" >
+      <Panel header={this.minnUtil.get('department_title')} bsStyle="primary" className="modal-container flipInX animated" >
       <Grid fluid={true}>
       <Row className="show-grid">
       <Col sm={12} md={2}>
@@ -297,20 +284,20 @@ class MenuMngPanel extends TemplateComponent {
             <tr>
             <th>
               <form className='navbar-form navbar-form-label'>
-               <span className='spanlabel'>{this.minnUtil.get('menu_tree')}:</span>
+               <span className='spanlabel'>{this.minnUtil.get('department_tree')}:</span>
                 <div className='input-group '>
                 <ButtonToolbar>               
                 <Button bsStyle="primary" onClick={this.refreshTreeMenu.bind(this)}>{this.minnUtil.get('common_refresh')} </Button>
                  </ButtonToolbar>
                </div>
-               </form>
+               </form> 
              </th>
           </tr>
         </thead>
         <tbody>
         <tr>
           <td>
-           <Well id="menu_sub_sys_div" className="welllabel">
+           <Well id="menu_sub_div" className="welllabel">
             </Well>
           </td>
           </tr>     
@@ -321,21 +308,12 @@ class MenuMngPanel extends TemplateComponent {
           <form className='navbar-form '  onSubmit={this.refresh.bind(this)}>
                <input type='hidden' id="del_id" />
                <input type='hidden' id="curpage_id" />
-            <span className='spanlabel'>{this.minnUtil.get('menu_name')} :</span>
+            <span className='spanlabel'>{this.minnUtil.get('common_name')} :</span>
             <div className='input-group ' >
               <input type='text' className='form-control' id="name_id" placeholder={this.minnUtil.get('common_search_name')} />
             </div>
-            <span className='spanlabel'>{this.minnUtil.get('menu_type')} :</span> 
-            <div className='input-group selectlabel' >
-                 <FormControl componentClass="select" id="resource_id" >
-                 </FormControl>
-            </div>
-            <span className='spanlabel'>{this.minnUtil.get('menu_search_sys')} :</span> 
-            <div className='input-group selectlabel' >
-                 <FormControl componentClass="select" id="resourceurltype_id" >
-                 </FormControl>
-            </div>
-           
+            
+            
             <div className='input-group '>
   
                 <ButtonToolbar> 
@@ -352,13 +330,9 @@ class MenuMngPanel extends TemplateComponent {
       <BootstrapTable data={this.state.data}  options={this.tableProp(this)} ref='datagrid_id' remote={true} fetchInfo={{dataTotalSize:this.state.total}}
        pagination={true} striped={true} hover={true} condensed={true} selectRow={this.rowProp(this)}>
        <TableHeaderColumn isKey={true} dataField="id" hidden={true}></TableHeaderColumn>
-        <TableHeaderColumn  dataField="name">{this.minnUtil.get('menu_name')}</TableHeaderColumn>
-        <TableHeaderColumn  dataField="url">{this.minnUtil.get('menu_url')}</TableHeaderColumn>
-        <TableHeaderColumn  dataField="pNode">{this.minnUtil.get('menu_pId')}</TableHeaderColumn>
-        <TableHeaderColumn  dataField="type">{this.minnUtil.get('menu_type')}</TableHeaderColumn>
-         <TableHeaderColumn  dataField="urltype">{this.minnUtil.get('menu_urltype')}</TableHeaderColumn>
-        <TableHeaderColumn  dataField="code">{this.minnUtil.get('menu_code')}</TableHeaderColumn>
-        <TableHeaderColumn  dataField="sort">{this.minnUtil.get('menu_sort')}</TableHeaderColumn>
+        <TableHeaderColumn  dataField="name">{this.minnUtil.get('common_name')}</TableHeaderColumn>
+        <TableHeaderColumn  dataField="pNode">{this.minnUtil.get('department_pId')}</TableHeaderColumn>
+        <TableHeaderColumn  dataField="code">{this.minnUtil.get('department_code')}</TableHeaderColumn>
         <TableHeaderColumn  dataField="active">{this.minnUtil.get('common_active')}</TableHeaderColumn>
         </BootstrapTable>
         </Col>
@@ -372,7 +346,7 @@ class MenuMngPanel extends TemplateComponent {
           container={this}  id='mngmodal_id' ref='mngmodal_id'
           aria-labelledby="contained-modal-title">
           <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title">{this.minnUtil.get('menu_maintain')}</Modal.Title>
+            <Modal.Title id="contained-modal-title">{this.minnUtil.get('department_maintain')}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
              <Alert bsStyle='warning' style={{display:this.state.validationState['alertVisible']}} >
@@ -384,7 +358,7 @@ class MenuMngPanel extends TemplateComponent {
                     {this.minnUtil.get('common_name')}
                   </Col>
                   <Col sm={4} >
-                    <FormControl type="input" id="name" ref="common_name_id"  placeholder={this.minnUtil.get('common_name')} value={this.state.name}  onChange={MenuMngAction.updateValue}/>
+                    <FormControl type="input" id="name" ref="common_name_id"  placeholder={this.minnUtil.get('common_name')} value={this.state.name}  onChange={DepartmentMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.name)}</span>
                   </Col>
                   <Col componentClass={ControlLabel} sm={2} >
@@ -395,44 +369,12 @@ class MenuMngPanel extends TemplateComponent {
                   </Col>
                 </FormGroup>
 
-                <FormGroup validationState={this.state.validationState.url} inline>
+                <FormGroup >
                   <Col componentClass={ControlLabel} sm={2} >
-                    {this.minnUtil.get('menu_url')}
+                    {this.minnUtil.get('department_pId')}
                   </Col>
                   <Col sm={4} >
-                    <FormControl type="input" id="url" ref="menu_url"  placeholder={this.minnUtil.get('menu_url')} value={this.state.url}  onChange={MenuMngAction.updateValue}/>
-                    <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.url)}</span>
-                  </Col>
-                  <Col componentClass={ControlLabel} sm={2} >
-                    {this.minnUtil.get('menu_type')}
-                  </Col>
-                  <Col sm={4} >
-                    <FormControl componentClass="select" id="menu_type_id"  />
-                  </Col>
-                </FormGroup>
-
-                <FormGroup validationState={this.state.validationState.pnodeId} inline>
-                  <Col componentClass={ControlLabel} sm={2} >
-                    {this.minnUtil.get('menu_pId')}
-                  </Col>
-                  <Col sm={4} >
-                    <FormControl type="input" id="pnodeId" ref="menu_pId"   placeholder={this.minnUtil.get('menu_pId')}  value={this.state.pNode}/>
-                  </Col>
-                  <Col componentClass={ControlLabel} sm={2} >
-                    {this.minnUtil.get('menu_urltype')}
-                  </Col>
-                  <Col sm={4} >
-                    <FormControl componentClass="select" id="menu_urltype_id"  />
-                  </Col>
-                </FormGroup>
-
-                <FormGroup validationState={this.state.validationState.code} inline>
-                  <Col componentClass={ControlLabel} sm={2} >
-                    {this.minnUtil.get('menu_code')}
-                  </Col>
-                  <Col sm={4} >
-                    <FormControl type="input" id="code" ref="menu_code_id"  placeholder={this.minnUtil.get('menu_code')} value={this.state.code}  onChange={MenuMngAction.updateValue}/>
-                    <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.code)}</span>
+                    <FormControl type="input" id="pnodeId" ref="department_pId"   placeholder={this.minnUtil.get('department_pId')}  value={this.state.pNode} />
                   </Col>
                   <Col componentClass={ControlLabel} sm={2} >
                     {this.minnUtil.get('common_active')}
@@ -442,14 +384,15 @@ class MenuMngPanel extends TemplateComponent {
                   </Col>
                 </FormGroup>
 
-                <FormGroup validationState={this.state.validationState.sort} inline>
+                <FormGroup validationState={this.state.validationState.code} inline>
                   <Col componentClass={ControlLabel} sm={2} >
-                    {this.minnUtil.get('menu_sort')}
+                    {this.minnUtil.get('department_code')}
                   </Col>
                   <Col sm={4} >
-                    <FormControl type="input" id="sort" ref="menu_sort_id"  placeholder={this.minnUtil.get('menu_sort')} value={this.state.sort}  onChange={MenuMngAction.updateValue}/>
-                    <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.sort)}</span>
+                    <FormControl type="input" id="code" ref="department_code_id"  placeholder={this.minnUtil.get('department_code')} value={this.state.code}  onChange={DepartmentMngAction.updateValue}/>
+                    <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.code)}</span>
                   </Col>
+
                 </FormGroup>
                
                 <FormGroup>
@@ -479,4 +422,4 @@ class MenuMngPanel extends TemplateComponent {
   }
 }
 
-export default MenuMngPanel;
+export default DepartmentMngPanel;

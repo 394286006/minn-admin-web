@@ -45,10 +45,10 @@ class AccountMngPanel extends TemplateComponent {
        this.setState({ show: false});
         this.refresh(null);
     }
-    if(state.actionType=='delSuccess'){
+    if(state.actionType=='delSuccess'){ 
       $('#del_id').val('');
        this.refresh(null);
-    }
+    } 
     if(this.state.result){
       if(this.state.result.sucess==false){
           $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.state.result.messageBody,confirmButton: this.minnUtil.get('main_alert_oklabel')});
@@ -182,24 +182,29 @@ class AccountMngPanel extends TemplateComponent {
 
       let messageBody={};
       messageBody.name=this.state.name;
-      messageBody.pwd=$('#account_pwd_id').val();
+      messageBody.pwd=this.state.pwd;
       messageBody.type=$('#type_id').val();
       messageBody.loginType=$('#logintype_id').val();
       messageBody.active=$('#common_active_id').val();
+      messageBody.departmentId=$('#dep_id').val();
      
       AccountMngAction.saveOrUpdate(this.state.myMethod,this.state.selectedRow,messageBody);
   
-    }
+    } 
  
     initData(event){
       if(this.state.myMethod=='add'){
-        $( '#'+event.id ).find( "input[type='input']" ).val( '' );
+        //$( '#'+event.id ).find( "input[type='input']" ).val( '' );
       }
       this.setState({ validationState:{alertVisible:'none',pwd:'',name:'',input:false},helpBlock:{pwd:'',name:''}});
-         
+
+       MinnUtil.genSelectOptions($('#dep_id'),this.state.dicData.DEPARTMENTCODE,(this.state.myMethod=='add'? null:this.state.selectedRow.departmentId));
        MinnUtil.genSelectOptions($('#common_active_id'),this.state.dicData.ACTIVETYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.active));
        MinnUtil.genSelectOptions($('#logintype_id'),this.state.dicData.LOGINTYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.logintype));
        MinnUtil.genSelectOptions($('#type_id'),this.state.dicData.ACCOUNTTYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.type));
+      
+
+       
     }
    
 
@@ -243,6 +248,7 @@ class AccountMngPanel extends TemplateComponent {
         <TableHeaderColumn  dataField="type_name">{this.minnUtil.get('account_type')}</TableHeaderColumn>
         <TableHeaderColumn  dataField="logintype_name">{this.minnUtil.get('account_logintype')}</TableHeaderColumn>
         <TableHeaderColumn  dataField="active_name">{this.minnUtil.get('common_active')}</TableHeaderColumn>
+        <TableHeaderColumn  dataField="department_name">{this.minnUtil.get('common_active')}</TableHeaderColumn>
         </BootstrapTable>
       </Col>
       <Col  md={3}>
@@ -317,6 +323,17 @@ class AccountMngPanel extends TemplateComponent {
                   </FormControl>
                   </Col>
                 </FormGroup>
+                 <FormGroup >
+                  <Col componentClass={ControlLabel} sm={2}>
+                        {'部门'}
+                  </Col>
+                  <Col sm={10}>
+                    <FormControl componentClass="select" id="dep_id"  >
+
+                  </FormControl>
+                  </Col>
+                </FormGroup>
+
                  <FormGroup >
                   <Col componentClass={ControlLabel} sm={2}>
                         {this.minnUtil.get('account_logintype')}

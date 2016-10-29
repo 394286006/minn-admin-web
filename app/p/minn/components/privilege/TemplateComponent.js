@@ -74,6 +74,14 @@ class TemplateComponent extends React.Component {
       return false;
   
     }
+
+    alertShowMsg(msg){
+       $.alert({title: this.minnUtil.get('alert_title_msg'),content: msg,confirmButton: this.minnUtil.get('main_alert_oklabel')});
+    }
+    
+   checkBlank(str){
+    return (typeof(str)=='undefined'||str==null||str==''||str=='null');
+   }
  
 }
 

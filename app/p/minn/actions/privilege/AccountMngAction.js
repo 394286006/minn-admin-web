@@ -63,7 +63,7 @@ query(messageBody) {
 
 getDic() {
 
-    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'ACCOUNTTYPE\',\'ACTIVETYPE\',\'LOGINTYPE\''}})
+    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'ACCOUNTTYPE\',\'ACTIVETYPE\',\'LOGINTYPE\',\'DEPARTMENTCODE\''}})
       .done(data => {
         this.actions.getDicSuccess(data);
       })

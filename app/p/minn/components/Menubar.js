@@ -145,6 +145,7 @@ class Menubar extends React.Component {
               <ul className='dropdown-menu'>
                 <li><Link id='account_id' style={{display:'none'}} to={MainConstant.app+'/account'}></Link></li>
                 <li><Link id='menu_id' style={{display:'none'}} to={MainConstant.app+'/menu'}></Link></li>
+                <li><Link id='department_id' style={{display:'none'}} to={MainConstant.app+'/department'}></Link></li>
                 <li><Link id='role_id' style={{display:'none'}} to={MainConstant.app+'/role'}></Link></li>
                 <li><Link id='dictionary_id' style={{display:'none'}} to={MainConstant.app+'/dic'}></Link></li>
               </ul>
@@ -168,6 +169,8 @@ class Menubar extends React.Component {
               <ul className='dropdown-menu'>
                 <li><Link id='picture_id' style={{display:'none'}} to={MainConstant.app+'/picture'}></Link></li>
                 <li><Link id='hadoopspark_id' style={{display:'none'}} to={MainConstant.app+'/hadoopspark'}></Link></li>
+                <li><Link id='workflowconfig_id' style={{display:'none'}} to={MainConstant.app+'/workflowconfig'}></Link></li>
+                <li><Link id='leaveprocess_id' style={{display:'none'}} to={MainConstant.app+'/leaveprocess'}></Link></li>
               </ul>
           </li>
           </Nav>

@@ -4,7 +4,7 @@
 */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TemplateComponent from './TemplateComponent';
+import templateComponent from './templateComponent';
 import {Link} from 'react-router';
 import {first, without, findWhere} from 'underscore';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'; 
@@ -14,7 +14,7 @@ import MainConstant from '../../utils/MainConstant';
 import MenuMngStore from '../../stores/privilege/MenuMngStore'
 import MenuMngAction from '../../actions/privilege/MenuMngAction';
 import GlobalizationPanel from './GlobalizationPanel';
-class MenuMngPanel extends TemplateComponent {
+class MenuMngPanel extends templateComponent {
   constructor(props) {
     super(props,MenuMngStore);
   }
