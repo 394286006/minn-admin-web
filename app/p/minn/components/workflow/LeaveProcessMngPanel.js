@@ -316,7 +316,7 @@ class LeaveProcessMngPanel extends TemplateComponent {
                  <Button bsStyle="primary" onClick={this.delHandler.bind(this)}>{this.minnUtil.get('common_delete')}</Button>
                  <Button bsStyle="primary" onClick={this.showGHandler.bind(this)}>{this.minnUtil.get('globalization_field_language_setting')}</Button>
                   <Button bsStyle="primary" onClick={this.reLaunch.bind(this)}>{this.minnUtil.get('workflow_config_rerequest')}</Button>
-                  <Button bsStyle="primary" onClick={this.launch.bind(this)}>{'发起'}</Button>
+                  <Button bsStyle="primary" onClick={this.launch.bind(this)}>{this.minnUtil.get('leaveprocess_launch')}</Button>
                  </ButtonToolbar>
               
             </div>  
