@@ -229,13 +229,14 @@ class LeaveProcessMngPanel extends TemplateComponent {
 
    saveAuditHandler(event){
      event.preventDefault();
-    
+         
       let messageBody={};
       var nodes= $('#process_model_div').jstree(true).get_selected (true);
       console.log('node:'+nodes[0]['original']);
       messageBody.lpId=$('#del_id').val()+'';
       messageBody.language=$('#shlanguage_id').val();
       messageBody.pdId=nodes[0].id;
+      messageBody.pId=this.state.pdId;  
       messageBody.comment=this.state.shDesc;
       messageBody.status=$('#shstatus_id').val();
 
