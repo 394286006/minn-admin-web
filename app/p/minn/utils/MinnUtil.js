@@ -2,20 +2,20 @@
 * @auth:minn
 * @qq:394286006
 */
-class MainUtil {
+class MinnUtil {
   constructor(doc) {
     this.global=doc.global;
     this.locale=this.global.currentLocale;
     this.properties=this.global.messageResource.properties;
-    this.mainUtil=null;
+    this.MinnUtil=null;
   }
 
 static getInstance(doc){
  
-    if(this.mainUtil==null){
-        this.mainUtil=new MainUtil(doc);
+    if(this.MinnUtil==null){
+        this.MinnUtil=new MinnUtil(doc);
     }
-    return this.mainUtil;
+    return this.MinnUtil;
   }
 
   
@@ -64,6 +64,8 @@ static getInstance(doc){
             }
             if((typeof obj[k])=='number'){
               str+=k+':'+obj[k];
+            }else if((typeof obj[k])=='object'){
+              str+=k+':'+convert2JsonStr(obj[k]);
             }else{
               str+=k+':\''+obj[k]+'\'';
             }
@@ -82,6 +84,8 @@ static getInstance(doc){
             }
             if((typeof obj[k])=='number'){
               str+=k+':'+obj[k];
+            }else if((typeof obj[k])=='object'){
+              str+=k+':'+MinnUtil.convert2Json(obj[k]);
             }else{
               str+=k+':\''+obj[k]+'\'';
             }
@@ -106,4 +110,4 @@ static getInstance(doc){
     }
 
 }
-export default MainUtil;
+export default MinnUtil;

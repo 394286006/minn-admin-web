@@ -11,6 +11,7 @@ import RoleMngPanel from './p/minn/components/privilege/RoleMngPanel';
 import DicMngPanel from './p/minn/components/privilege/DicMngPanel';
 import WorkFlowConfigMngPanel from './p/minn/components/workflow/WorkFlowConfigMngPanel';
 import LeaveProcessMngPanel from './p/minn/components/workflow/LeaveProcessMngPanel';
+import SocketMngPanel from './p/minn/components/socket/SocketMngPanel';
 
  
 export default (
@@ -23,5 +24,6 @@ export default (
     <Route path={MainConstant.app+'/dic'} component={DicMngPanel} />
     <Route path={MainConstant.app+'/workflowconfig'} component={WorkFlowConfigMngPanel} />
     <Route path={MainConstant.app+'/leaveprocess'} component={LeaveProcessMngPanel} />
+    <Route path={MainConstant.app+'/socket'} component={SocketMngPanel} />
   </Route>
 );

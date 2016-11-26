@@ -171,6 +171,7 @@ class Menubar extends React.Component {
                 <li><Link id='hadoopspark_id' style={{display:'none'}} to={MainConstant.app+'/hadoopspark'}></Link></li>
                 <li><Link id='workflowconfig_id' style={{display:'none'}} to={MainConstant.app+'/workflowconfig'}></Link></li>
                 <li><Link id='leaveprocess_id' style={{display:'none'}} to={MainConstant.app+'/leaveprocess'}></Link></li>
+                <li><Link id='socket_id' style={{display:'none'}} to={MainConstant.app+'/socket'}></Link></li>
               </ul>
           </li>
           </Nav>
