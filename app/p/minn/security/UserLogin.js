@@ -67,10 +67,12 @@ class UserLogin extends React.Component {
     $("#main_language_flagImg_id").attr('src',this.minnUtil.get('main_language_flagImg'));
     $("#main_language_id").val(this.minnUtil.getCurrentLocale());
     $("#login_action_id").text(this.minnUtil.get('login_action'));
+    
   }
 
   checkLogin(){
-    UserAction.checkLogin();
+console.log('checkLogin:'+$("#main_language_id").val());
+    UserAction.checkLogin(this.minnUtil.getCurrentLocale());
   }
 
   handleSubmit(event) {
@@ -84,7 +86,7 @@ class UserLogin extends React.Component {
 
       UserAction.login(name, pwd);
     
-    }
+    }  
    render() {
     return (
       

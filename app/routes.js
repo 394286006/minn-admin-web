@@ -12,8 +12,10 @@ import DicMngPanel from './p/minn/components/privilege/DicMngPanel';
 import WorkFlowConfigMngPanel from './p/minn/components/workflow/WorkFlowConfigMngPanel';
 import LeaveProcessMngPanel from './p/minn/components/workflow/LeaveProcessMngPanel';
 import SocketMngPanel from './p/minn/components/socket/SocketMngPanel';
+import ChartMngPanel from './p/minn/components/chart/ChartMngPanel';
+import OrgChartMngPanel from './p/minn/components/chart/OrgChartMngPanel';
 
- 
+   
 export default (
   <Route component={App} >
     <Route path={MainConstant.app} component={Home} />
@@ -25,5 +27,7 @@ export default (
     <Route path={MainConstant.app+'/workflowconfig'} component={WorkFlowConfigMngPanel} />
     <Route path={MainConstant.app+'/leaveprocess'} component={LeaveProcessMngPanel} />
     <Route path={MainConstant.app+'/socket'} component={SocketMngPanel} />
+    <Route path={MainConstant.app+'/chart'} component={ChartMngPanel} />
+    <Route path={MainConstant.app+'/orgChart'} component={OrgChartMngPanel} />
   </Route>
 );

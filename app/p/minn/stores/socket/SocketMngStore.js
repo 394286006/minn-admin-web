@@ -34,7 +34,8 @@ class SocketMngStore {
   }
 
   onDisconnectSuccess(data) { 
-    this.data = data.data;
+    this.data = null;
+    this.ws=null;
     this.actionType='disconnectSuccess';
   }
   

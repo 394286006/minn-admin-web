@@ -16,6 +16,7 @@ class UserStore {
     this.result=null;
     this.name = '';
     this.pwd = '';
+    this.lang='';
     this.actionType='';
     this.userInfo=null;
 

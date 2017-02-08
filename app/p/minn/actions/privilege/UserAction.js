@@ -3,6 +3,7 @@
 * @qq:394286006
 */
 import alt from '../../../../alt';
+import MainConstant from '../../utils/MainConstant';
 
 class UserAction {
   constructor() {
@@ -12,7 +13,7 @@ class UserAction {
       'checkLoginSuccess',
       'fail',
       'updateValue'
-    );
+    );  
   }
 
   login(name, pwd) {
@@ -25,16 +26,16 @@ class UserAction {
         data.actionType='jsloginSuccess';
         this.actions.loginSuccess(data);
 
-      })
+      })  
       .fail((jqXhr) => {
         this.actions.loginFail(jqXhr);
       });
   }
 
-  checkLogin() {
+  checkLogin(lang) {
     $.ajax({
       type: 'POST',
-      url: 'login',
+      url: 'login?lang='+MainConstant.currentLocale,
       data: {}
     })
       .done((data) => {

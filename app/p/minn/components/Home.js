@@ -16,12 +16,12 @@ class Home extends React.Component {
     this.state = HomeStore.getState();
     this.onChange = this.onChange.bind(this);
     this.minnUtil=MinnUtil.getInstance(document);
-   // this.cube=Cube.getInstance(document);
+    this.cube=Cube.getInstance(document);
   }
          
   componentDidMount() {
-    HomeStore.listen(this.onChange);
-   // this.cube.start();
+    HomeStore.listen(this.onChange);  
+    this.cube.start();
 
   }
 

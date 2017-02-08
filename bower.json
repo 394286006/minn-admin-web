@@ -6,6 +6,7 @@
     "react-bootstrap": "^0.30.2",
     "magnific-popup": "^1.0.0",
     "toastr": "^2.1.1",
-    "jstree": "^3.3.1"
+    "jstree": "^3.3.1",
+    "chartist": "^0.10.1"
   }
 }

@@ -172,6 +172,8 @@ class Menubar extends React.Component {
                 <li><Link id='workflowconfig_id' style={{display:'none'}} to={MainConstant.app+'/workflowconfig'}></Link></li>
                 <li><Link id='leaveprocess_id' style={{display:'none'}} to={MainConstant.app+'/leaveprocess'}></Link></li>
                 <li><Link id='socket_id' style={{display:'none'}} to={MainConstant.app+'/socket'}></Link></li>
+                <li><Link id='chart_id' style={{display:'none'}} to={MainConstant.app+'/chart'}></Link></li>
+                <li><Link id='orgChart_id' style={{display:'none'}} to={MainConstant.app+'/orgChart'}></Link></li>
               </ul>
           </li>
           </Nav>

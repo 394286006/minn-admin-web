@@ -73,13 +73,9 @@ class SocketMngAction {
   }
  
 
-  disconnect(uuid){
-    let messageBody={};
-    messageBody.uuid=uuid;
-    let param={};
-     param.messageBody=MinnUtil.convert2Json(messageBody);
-
-  
+  disconnect(ws){
+    ws.close();
+  MessageUtil.getInstance(document).showMessage('用户退出');
   
   }
 

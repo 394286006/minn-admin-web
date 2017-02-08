@@ -66,7 +66,7 @@ class SocketMngPanel extends React.Component{
     //this.sc.send(param);
   }
   disconnect(event){      
-     SocketMngAction.disconnect(); 
+     SocketMngAction.disconnect(this.state.ws); 
   }
     
   eventSwitch(evt){
@@ -97,13 +97,13 @@ class SocketMngPanel extends React.Component{
 
     return (
       <div >
-      <Panel header={this.minnUtil.get('account_title')} bsStyle="primary" className="modal-container bounceIn animated" >
+      <Panel header={'webSocket测试'} bsStyle="primary" className="modal-container bounceIn animated" >
       <Grid fluid={true}>
       <Row className="show-grid">
       <Col sm={12} md={9}>
-       <form className='navbar-form '>      
+       <form className='navbar-form '>       
              
-            <span className='spanlabel'>{this.minnUtil.get('common_search_name')} :</span>
+            <span className='spanlabel'>{'地址'} :</span>
             <div className='input-group ' >
               <input type='text' className='form-control' id='url' value={'ws://192.168.1.2:8990'}  />
             </div>
@@ -112,14 +112,14 @@ class SocketMngPanel extends React.Component{
   
                 <ButtonToolbar> 
 
-                <Button bsStyle="primary"  onClick={this.connect.bind(this)}>{this.minnUtil.get('common_add')} </Button>
-                <Button bsStyle="primary" onClick={this.getMsg.bind(this)}>{this.minnUtil.get('common_modify')}</Button>
-                 <Button bsStyle="primary" onClick={this.disconnect.bind(this)}>{this.minnUtil.get('common_modify')}</Button>
+                <Button bsStyle="primary"  onClick={this.connect.bind(this)}>{'连接'} </Button>
+                <Button bsStyle="primary" onClick={this.getMsg.bind(this)}>{'获取信息'}</Button>
+                 <Button bsStyle="primary" onClick={this.disconnect.bind(this)}>{'退出'}</Button>
                  </ButtonToolbar>
               
             </div> 
           </form>
-          <span className='spanlabel'>{this.minnUtil.get('common_search_name')} :</span><Well id='msg_id'></Well>
+          <span className='spanlabel'>{'时间'} :</span><Well id='msg_id'></Well>
      
       </Col>
      
