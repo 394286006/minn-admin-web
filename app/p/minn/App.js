@@ -5,16 +5,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 import UserLogin from './security/UserLogin';
-import Menubar from './components/Menubar'; 
+import Menubar from './components/Menubar';
+import { Panel,ButtonToolbar,Button,Modal,Grid,Row,Col } from 'react-bootstrap';
 class App extends React.Component {
  constructor(props) {
     super(props);
     $( document ).on( 'loginCompleteEvent', this.loginCompleteEventHandler);
     $( document ).on( 'logoutCompleteEvent', this.logoutCompleteEventHandler);
+
   }
   loginCompleteEventHandler(event,param){
     if(param!=null){
        $( '#context' ).show();
+
        $( '#userlogin' ).hide();
     }else{
        $( '#context' ).hide();
@@ -24,7 +27,9 @@ class App extends React.Component {
   logoutCompleteEventHandler(event,param){
        $( '#context' ).hide();
        $( '#userlogin' ).show();
+
   }
+
   render() {
     return (
       <div>

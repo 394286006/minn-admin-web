@@ -3,27 +3,27 @@
 * @qq:394286006
 */
 import React from 'react';
-import ReactDOM from 'react-dom';    
+import ReactDOM from 'react-dom';
 import TemplateComponent from './TemplateComponent';
-import {Link} from 'react-router'; 
+import {Link} from 'react-router';
 import {first, without, findWhere} from 'underscore';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'; 
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import { Panel,ButtonToolbar,Button,Modal ,Grid,Row,Col,Table,Well,FormControl,DropdownButton,MenuItem,Form,FormGroup,ControlLabel,Alert} from 'react-bootstrap';
 import MinnUtil from '../../utils/MinnUtil';
-import MainConstant from '../../utils/MainConstant'; 
+import MainConstant from '../../utils/MainConstant';
 import AccountMngStore from '../../stores/privilege/AccountMngStore'
 import AccountMngAction from '../../actions/privilege/AccountMngAction';
 
 class AccountMngPanel extends TemplateComponent {
   constructor(props) {
-    super(props,AccountMngStore);  
+    super(props,AccountMngStore);
   }
- 
+
   componentDidMount() {
     AccountMngStore.listen(this.onChange);
     this.refreshTreeMenu(null);
-    AccountMngAction.getDic(); 
-           
+    AccountMngAction.getDic();
+
   }
 
   componentWillUnmount() {
@@ -34,9 +34,9 @@ class AccountMngPanel extends TemplateComponent {
 
     if(state.actionType=='getAccountRoleSuccess'){
        this.invokeTreeMenu(state.treeMenuData);
-    }
+    }  
     if(state.actionType=='getDicSuccess'){
-     
+
       let actives=state.dicData.ACTIVETYPE;
       $("#active_id").append("<option value='"+MainConstant.UNKNOWN+"'></option>");
       MinnUtil.genSelectOptions($("#active_id"),state.dicData.ACTIVETYPE,MainConstant.UNKNOWN,1);
@@ -45,10 +45,10 @@ class AccountMngPanel extends TemplateComponent {
        this.setState({ show: false});
         this.refresh(null);
     }
-    if(state.actionType=='delSuccess'){ 
+    if(state.actionType=='delSuccess'){
       $('#del_id').val('');
        this.refresh(null);
-    } 
+    }
     if(this.state.result){
       if(this.state.result.sucess==false){
           $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.state.result.messageBody,confirmButton: this.minnUtil.get('main_alert_oklabel')});
@@ -57,11 +57,11 @@ class AccountMngPanel extends TemplateComponent {
     }
 
     state.actionType='';
-    this.setState(state); 
+    this.setState(state);
   }
 
   refreshTreeMenu(event){
-     AccountMngAction.getAccountRole(this.state.selectedRow); 
+     AccountMngAction.getAccountRole(this.state.selectedRow);
   }
 
   invokeTreeMenu(treeData){
@@ -85,7 +85,7 @@ class AccountMngPanel extends TemplateComponent {
         for(let j=0;j<ids.length;j++){
           key['p_'+ids[j]]=ids[j];
         }
-        
+
        }
      for(let k in key){
        if(role_ids!=""){
@@ -99,8 +99,8 @@ class AccountMngPanel extends TemplateComponent {
   }
 
   delHandler(event){
-    this.invokeDelHandler(function(){  
-      let messageBody={}; 
+    this.invokeDelHandler(function(){
+      let messageBody={};
        messageBody.id=$('#del_id').val();
        AccountMngAction.del(messageBody);
 
@@ -108,18 +108,18 @@ class AccountMngPanel extends TemplateComponent {
   }
 
   refresh(event) {
-    if (event!=null) 
+    if (event!=null)
        event.preventDefault();
     let messageBody={};
-   
+
     if($('#curpage_id').val()==''){
         messageBody.page=0;
     }else{
        messageBody.page=$('#curpage_id').val();
     }
-   
+
     messageBody.rp=this.refs.datagrid_id.props.options.sizePerPage;
-   
+
     let query=MainConstant.UNKNOWN;
 
     if($('#name_id').val()==''){
@@ -130,23 +130,23 @@ class AccountMngPanel extends TemplateComponent {
     query+=","
 
     query+=$('#active_id').val();
-    
-    
+
+
     messageBody.qtype="name,active";
     messageBody.query=query;
-   
+
     AccountMngAction.query(messageBody);
 
   }
 
- 
+
   onPageChange(page,sizePerPage){
 
     $('#curpage_id').val(page-1);
     let messageBody={};
     messageBody.page=page-1;
     messageBody.rp=sizePerPage;
-   
+
     let query=MainConstant.UNKNOWN;
 
     if($('#name_id').val()==''){
@@ -160,18 +160,18 @@ class AccountMngPanel extends TemplateComponent {
     }else{
       query+=MainConstant.UNKNOWN;
     }
-    
+
     messageBody.qtype="name,active";
     messageBody.query=query;
-   
+
     AccountMngAction.query(messageBody);
   }
 
- 
+
   onRowSelect(row, isSelected , event){
      $('#del_id').val(row.id);
     if(isSelected)
-     AccountMngAction.getAccountRole(row); 
+     AccountMngAction.getAccountRole(row);
     }
 
   saveHandler(event){
@@ -187,11 +187,11 @@ class AccountMngPanel extends TemplateComponent {
       messageBody.loginType=$('#logintype_id').val();
       messageBody.active=$('#common_active_id').val();
       messageBody.departmentId=$('#dep_id').val();
-     
+
       AccountMngAction.saveOrUpdate(this.state.myMethod,this.state.selectedRow,messageBody);
-  
-    } 
- 
+
+    }
+
     initData(event){
       if(this.state.myMethod=='add'){
         //$( '#'+event.id ).find( "input[type='input']" ).val( '' );
@@ -202,11 +202,11 @@ class AccountMngPanel extends TemplateComponent {
        MinnUtil.genSelectOptions($('#common_active_id'),this.state.dicData.ACTIVETYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.active));
        MinnUtil.genSelectOptions($('#logintype_id'),this.state.dicData.LOGINTYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.logintype));
        MinnUtil.genSelectOptions($('#type_id'),this.state.dicData.ACCOUNTTYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.type));
-      
 
-       
+
+
     }
-   
+
 
   render() {
 
@@ -223,24 +223,24 @@ class AccountMngPanel extends TemplateComponent {
             <div className='input-group ' >
               <input type='text' className='form-control' id="name_id" placeholder={this.minnUtil.get('common_search_name')} />
             </div>
-            <span className='spanlabel'>{this.minnUtil.get('common_active')} :</span> 
+            <span className='spanlabel'>{this.minnUtil.get('common_active')} :</span>
             <div className='input-group selectlabel' >
                  <FormControl componentClass="select" id="active_id" placeholder={this.minnUtil.get('common_active')} >
                  </FormControl>
             </div>
-           
+
             <div className='input-group '>
-  
-                <ButtonToolbar> 
-                 <button className='btn btn-default'><span className='glyphicon glyphicon-search'></span></button> 
+
+                <ButtonToolbar>
+                 <button className='btn btn-default'><span className='glyphicon glyphicon-search'></span></button>
                 <Button bsStyle="primary"  onClick={()=>this.setState({ show: true,myMethod:'add'})}>{this.minnUtil.get('common_add')} </Button>
                  <Button bsStyle="primary" onClick={this.modifyHandler.bind(this)}>{this.minnUtil.get('common_modify')}</Button>
                  <Button bsStyle="primary" onClick={this.delHandler.bind(this)}>{this.minnUtil.get('common_delete')}</Button>
                  </ButtonToolbar>
-              
-            </div> 
+
+            </div>
           </form>
-          
+
       <BootstrapTable data={this.state.data}  options={this.tableProp(this)} ref='datagrid_id' remote={true} fetchInfo={{dataTotalSize:this.state.total}}
        pagination={true} striped={true} hover={true} condensed={true} selectRow={this.rowProp(this)}>
        <TableHeaderColumn isKey={true} dataField="id" hidden={true}></TableHeaderColumn>
@@ -259,7 +259,7 @@ class AccountMngPanel extends TemplateComponent {
               <form className='navbar-form navbar-form-label'>
                <span className='spanlabel'>{this.minnUtil.get('account_resource_tree')}:</span>
                 <div className='input-group '>
-                <ButtonToolbar>               
+                <ButtonToolbar>
                 <Button bsStyle="primary" onClick={this.saveResource.bind(this)}>{this.minnUtil.get('account_save_account_resource')} </Button>
                  </ButtonToolbar>
                </div>
@@ -273,14 +273,14 @@ class AccountMngPanel extends TemplateComponent {
            <Well id="menu_sub_sys_div" className="welllabel">
             </Well>
           </td>
-          </tr>     
+          </tr>
         </tbody>
         </Table>
         </Col>
      </Row>
     </Grid>
     </Panel>
-  
+
       <Modal
           show={this.state.show}  onEntered={this.initData.bind(this)}
           onHide={() => this.setState({ show: false})}
@@ -291,7 +291,7 @@ class AccountMngPanel extends TemplateComponent {
           </Modal.Header>
           <Modal.Body>
              <Alert bsStyle='warning' style={{display:this.state.validationState['alertVisible']}} >
-                {this.minnUtil.get('validate_check_msg')} 
+                {this.minnUtil.get('validate_check_msg')}
              </Alert>
               <Form horizontal onSubmit={this.saveHandler.bind(this)} id='submitform_id'>
                 <FormGroup validationState={this.state.validationState.name} >
@@ -311,7 +311,7 @@ class AccountMngPanel extends TemplateComponent {
                   <Col sm={10} >
                     <FormControl type="password" id="pwd"  placeholder={this.minnUtil.get('account_pwd')} value={this.state.pwd} onChange={AccountMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.pwd)}</span>
-                  </Col>  
+                  </Col>
                 </FormGroup>
                 <FormGroup >
                   <Col componentClass={ControlLabel} sm={2}>
@@ -353,7 +353,7 @@ class AccountMngPanel extends TemplateComponent {
                   </FormControl>
                   </Col>
                 </FormGroup>
-               
+
                 <FormGroup>
                   <Col smOffset={5} sm={10}>
                     <Button bsStyle="primary"  type="submit"  id="common_ok_id">

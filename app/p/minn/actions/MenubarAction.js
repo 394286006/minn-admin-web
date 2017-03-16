@@ -5,18 +5,19 @@
 import alt from '../../../alt';
 import {assign} from 'underscore';
 
-class MenubarAction {
+class MenubarAction { 
   constructor() {
     this.generateActions(
       'updateOnlineUsers',
       'updateAjaxAnimation',
       'updateSearchQuery',
       'getPrivateMenuSuccess',
+      'qrCodeLoginSuccess',
       'logoutSuccess',
       'fail'
     );
   }
-  
+
 
   logout() {
     $.ajax({
@@ -40,6 +41,24 @@ class MenubarAction {
         this.actions.fail(jqXhr)
       });
   }
+
+  qrcodeLogin(lang){
+    let data={};
+      $.ajax({
+        type: 'POST',
+        url: 'swfqrcodekey',
+        data: {lang:lang}
+      })
+        .done((d) => {
+          data.randomKey=d.data.key;
+          this.actions.qrCodeLoginSuccess(data);
+
+        })
+        .fail((jqXhr) => {
+          this.actions.fail(jqXhr.responseJSON.message);
+        });
+    }
+
 }
 
 export default alt.createActions(MenubarAction);

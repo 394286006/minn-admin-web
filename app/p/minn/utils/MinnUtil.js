@@ -11,14 +11,14 @@ class MinnUtil {
   }
 
 static getInstance(doc){
- 
+
     if(this.MinnUtil==null){
         this.MinnUtil=new MinnUtil(doc);
     }
     return this.MinnUtil;
   }
 
-  
+
  convertUnicodeString(str) {
       let convertedText = str.replace(/\\u[\dA-Fa-f]{4}/g, function (unicodeChar) {
         return String.fromCharCode(parseInt(unicodeChar.replace(/\\u/g, ''), 16));
@@ -41,12 +41,15 @@ static getInstance(doc){
       var value='';
       if (typeof this.properties[this.locale][key] !== 'undefined'){
             value = this.properties[this.locale][key];
-        }       
+        }
       return this.convertUnicodeString(value);
      }
-    
+
     setLogin(b){
       this.global.isLogin=b;
+    }
+    isLogin(){
+      return this.global.isLogin;
     }
     setUserInfo(value){
       this.global.userInfo=value;

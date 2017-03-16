@@ -9,7 +9,7 @@ import MenubarStore from '../stores/MenubarStore';
 import MenubarAction from '../actions/MenubarAction';
 import MainConstant from '../utils/MainConstant';
 import MinnUtil from '../utils/MinnUtil';
-import {Navbar,Nav,NavItem,NavDropdown,MenuItem} from 'react-bootstrap';
+import {Navbar,Nav,NavItem,NavDropdown,MenuItem,Button,Modal} from 'react-bootstrap';
 class Menubar extends React.Component {
   constructor(props) {
     super(props);
@@ -18,7 +18,7 @@ class Menubar extends React.Component {
     this.minnUtil=MinnUtil.getInstance(document);
     this.userInfo=null;
     $( document ).on( 'loginCompleteEvent', this.loginCompleteEventHandler);
-   
+
   }
  loginCompleteEventHandler(event,param){
     if(param!=null){
@@ -26,11 +26,10 @@ class Menubar extends React.Component {
        $('#loginName_id').text(this.userInfo.loginName);
         MenubarAction.getPrivateMenu(param.locale.split('_')[0]);
     }
-     
+
   }
   componentDidMount() {
     MenubarStore.listen(this.onChange);
-   
     $(document).ajaxStart(() => {
       MenubarAction.updateAjaxAnimation('fadeIn');
     });
@@ -58,9 +57,25 @@ class Menubar extends React.Component {
         this.invokeGetPrivateMenu(state.privateMenu);
         this.removeMenu();
      }
+     if(state.actionType=='qrCodeLoginSuccess'){
+       state.qrcodeShow=true;  
+       let param={};
+       param.key=state.randomKey;
+       param.type='mobile';
+       param.title=this.minnUtil.get('main_title');
+       param.info=this.minnUtil.get('login_qrcode_info');
+       param.config=this.minnUtil.get('login_certain');
+       param.scan=this.minnUtil.get('login_scan');
+       param.lang='';
+       if(this.minnUtil.isLogin()){
+         param.lang=this.minnUtil.getCurrentLocale();
+       }
+       $(document).trigger( "randomkeyCompleteEvent",param);
+
+     }
     state.actionType='';
     this.setState(state);
-    
+
   }
 
   invokeGetPrivateMenu(menus){
@@ -85,11 +100,11 @@ class Menubar extends React.Component {
           this.invokeGetPrivateMenu(menus[i].children);
           $('#'+menus[i].url.trim()+'_id').parent().parent().show();
         }
-       
+
     }
-   
+
   }
-    
+
   removeMenu(){
     //$('a[style="display:none;"]' ).remove();
   }
@@ -113,10 +128,15 @@ class Menubar extends React.Component {
        MenubarAction.logout();
   }
 
+  handleQrCodeLogin(event){
+    event.preventDefault();
+    MenubarAction.qrcodeLogin(this.minnUtil.getCurrentLocale());
+  }
+
   render() {
-               
+
     return (
-      
+      <div>
         <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
@@ -139,6 +159,7 @@ class Menubar extends React.Component {
 
          <Navbar.Collapse >
           <Nav id='privateMenu_id' ref='privateMenu_id_ref'>
+          <li><Link to={MainConstant.app+'/'} onClick={this.handleQrCodeLogin.bind(this)}>{this.minnUtil.get('login_scanlogin')}</Link></li>
           <li><Link to={MainConstant.app+'/'} >{this.minnUtil.get('main_home')}</Link></li>
           <li className='dropdown' style={{display:'none'}}>
               <a href='#' className='dropdown-toggle' data-toggle='dropdown'><span id='systemmng_id'></span> <span className='caret'></span></a>
@@ -163,7 +184,7 @@ class Menubar extends React.Component {
                 <li><Link id='query_privilege_getConfigRole_id' style={{display:'none'}} to={MainConstant.app+'/hadoopspark'}></Link></li>
               </ul>
           </li>
-         
+
           <li className='dropdown' style={{display:'none'}}>
               <a href='#' className='dropdown-toggle' data-toggle='dropdown'><span id='devmng_id'></span> <span className='caret'></span></a>
               <ul className='dropdown-menu'>
@@ -184,7 +205,19 @@ class Menubar extends React.Component {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-     
+      <Modal
+          show={this.state.qrcodeShow}
+          onHide={() => this.setState({ qrcodeShow: false})}
+          container={this}  id='qrcode_id' ref='qrcode_id'
+          aria-labelledby="contained-modal-title">
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title">{this.minnUtil.get('login_mobiledevice')}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{height:'230px',width:'300px'}}>
+          <iframe id="qrcode" name="qrcode" src="third-part/qrcode.html" frameBorder="0"   style={{position: 'fixed', height: '200px', width: '570px',frameBorder:0,scrolling:'no',overFlow:'hidden'}}/>
+          </Modal.Body>
+        </Modal>
+        </div>
     );
   }
 }

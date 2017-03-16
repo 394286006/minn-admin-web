@@ -15,9 +15,7 @@ function localCallback(messageResource){
           document.global=AppStore.getInstance().getGlobal(messageResource);
           ReactDOM.render(<Router history={history}>{routes}</Router>, document.getElementById('app'));
       }else{
-           console.log('local resource load error!'); 
+           console.log('local resource load error!');
       }
 }
 AppStore.getInstance().getResource(localCallback);
-
-

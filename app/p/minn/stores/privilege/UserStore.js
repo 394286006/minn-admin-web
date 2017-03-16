@@ -19,13 +19,14 @@ class UserStore {
     this.lang='';
     this.actionType='';
     this.userInfo=null;
-
+    this.tabIndex=0;
+    this.randomKey='';
   }
 
   onLoginSuccess(successMessage) {
     this.result=successMessage;
     this.userInfo=successMessage.data;
-    
+
     this.actionType=successMessage.actionType;
     this.name='';
     this.pwd='';
@@ -52,12 +53,18 @@ class UserStore {
     }
   }
 
+  onTabChangeSuccess(data){
+      this.actionType=data.actionType;
+      this.randomKey=data.randomKey;
+      this.tabIndex=data.index;
+  }
+
   onFail(errorMessage) {
     this.actionType=successMessage.actionType='fail';
   }
 
   onUpdateValue(event){
- 
+
     let id=event.target.id;
     this[id] = event.target.value;
     if(id=='name'){
@@ -71,7 +78,7 @@ class UserStore {
         this.validationState[event.target.id]='';
         this.helpBlock[event.target.id] ='';
         this.validationState['alertVisible']='none';
-      }    
+      }
     }
     if(id=='pwd'){
       if(this[id]==''){
@@ -83,14 +90,14 @@ class UserStore {
          this.validationState[event.target.id]='';
          this.helpBlock[event.target.id] ='';
          this.validationState['alertVisible']='none';
-      }    
+      }
     }
     if(this.name==''||this.pwd==''){
           this.validationState['input']=false;
     }
   }
 
-  
+
 }
 
 export default alt.createStore(UserStore);

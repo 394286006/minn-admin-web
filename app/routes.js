@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route} from 'react-router';
-import MainConstant from './p/minn/utils/MainConstant'; 
+import MainConstant from './p/minn/utils/MainConstant';
 import App from './p/minn/App';
 import Home from './p/minn/components/Home';
 import UserLogin from './p/minn/security/UserLogin';
@@ -15,7 +15,7 @@ import SocketMngPanel from './p/minn/components/socket/SocketMngPanel';
 import ChartMngPanel from './p/minn/components/chart/ChartMngPanel';
 import OrgChartMngPanel from './p/minn/components/chart/OrgChartMngPanel';
 
-   
+
 export default (
   <Route component={App} >
     <Route path={MainConstant.app} component={Home} />

@@ -5,9 +5,9 @@ class HomeStore {
   constructor() {
     this.bindActions(HomeActions);
     this.characters = [];
+    this.actionType='';
     this.messageResource={};
   }
-
 }
 
 export default alt.createStore(HomeStore);

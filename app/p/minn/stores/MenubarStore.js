@@ -5,7 +5,7 @@
 import alt from '../../../alt';
 import MenubarAction from '../actions/MenubarAction';
 
-class MenubarStore {
+class MenubarStore {    
   constructor() {
     this.bindActions(MenubarAction);
     this.privateMenu = new Object();
@@ -15,6 +15,8 @@ class MenubarStore {
     this.actionType='';
     this.userInfo=null;
     this.loginName='';
+    this.qrcodeShow=false;
+    this.randomKey='';
   }
 
   onLogoutSuccess(successMessage) {
@@ -39,6 +41,12 @@ class MenubarStore {
   onGetPrivateMenuSuccess(data) {
     this.actionType='getPrivateMenuSuccess';
     this.privateMenu = data.data;
+  }
+
+  onQrCodeLoginSuccess(data){
+    this.actionType='qrCodeLoginSuccess';
+    this.randomKey = data.randomKey;
+
   }
 
   onFail(jqXhr) {
