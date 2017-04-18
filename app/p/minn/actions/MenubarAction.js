@@ -3,9 +3,10 @@
 * @qq:394286006
 */
 import alt from '../../../alt';
+import MinnUtil from '../utils/MinnUtil';
 import {assign} from 'underscore';
 
-class MenubarAction { 
+class MenubarAction {
   constructor() {
     this.generateActions(
       'updateOnlineUsers',
@@ -14,6 +15,8 @@ class MenubarAction {
       'getPrivateMenuSuccess',
       'qrCodeLoginSuccess',
       'logoutSuccess',
+      'getThirdPartsSuccess',
+      'unBindThirdPardSuccess',
       'fail'
     );
   }
@@ -55,6 +58,29 @@ class MenubarAction {
 
         })
         .fail((jqXhr) => {
+          this.actions.fail(jqXhr.responseJSON.message);
+        });
+    }
+
+    getThirdParts(){
+      $.ajax({ url: 'acountTP?method=getThirdParts',type:'GET',data:{}})
+        .done(data => {
+          this.actions.getThirdPartsSuccess(data);
+        })
+        .fail(jqXhr => {
+          this.actions.fail(jqXhr.responseJSON.message);
+        });
+    }
+
+    unBindThirdPard(messageBody){
+      let param={};
+      console.log();
+      param.messageBody=MinnUtil.convert2Json(messageBody);
+      $.ajax({ url: 'acountTP?method=unbind',type:'POST',data:param})
+        .done(data => {
+          this.actions.unBindThirdPardSuccess(data);
+        })
+        .fail(jqXhr => {
           this.actions.fail(jqXhr.responseJSON.message);
         });
     }

@@ -13,6 +13,7 @@ import MinnUtil from '../../utils/MinnUtil';
 import MainConstant from '../../utils/MainConstant';
 import AccountMngStore from '../../stores/privilege/AccountMngStore'
 import AccountMngAction from '../../actions/privilege/AccountMngAction';
+import ThirdPartPanel from './ThirdPartPanel';
 
 class AccountMngPanel extends TemplateComponent {
   constructor(props) {
@@ -34,7 +35,7 @@ class AccountMngPanel extends TemplateComponent {
 
     if(state.actionType=='getAccountRoleSuccess'){
        this.invokeTreeMenu(state.treeMenuData);
-    }  
+    }
     if(state.actionType=='getDicSuccess'){
 
       let actives=state.dicData.ACTIVETYPE;
@@ -207,6 +208,18 @@ class AccountMngPanel extends TemplateComponent {
 
     }
 
+    thirdPartHandler(event){
+      if($('#del_id').val()==''){
+           $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.minnUtil.get('alert_select_del_msg'),confirmButton: this.minnUtil.get('main_alert_oklabel')});
+           return;
+         }
+        this.setState({ gshow: true});
+
+    }
+
+    initGData(event){
+      this.refs.thirdPart_id.init(this.state.selectedRow.id);
+    }
 
   render() {
 
@@ -233,9 +246,10 @@ class AccountMngPanel extends TemplateComponent {
 
                 <ButtonToolbar>
                  <button className='btn btn-default'><span className='glyphicon glyphicon-search'></span></button>
-                <Button bsStyle="primary"  onClick={()=>this.setState({ show: true,myMethod:'add'})}>{this.minnUtil.get('common_add')} </Button>
+                 <Button bsStyle="primary"  onClick={()=>this.setState({ show: true,myMethod:'add'})}>{this.minnUtil.get('common_add')} </Button>
                  <Button bsStyle="primary" onClick={this.modifyHandler.bind(this)}>{this.minnUtil.get('common_modify')}</Button>
                  <Button bsStyle="primary" onClick={this.delHandler.bind(this)}>{this.minnUtil.get('common_delete')}</Button>
+                 <Button bsStyle="primary" onClick={this.thirdPartHandler.bind(this)}>{this.minnUtil.get('account_thirdpart')}</Button>
                  </ButtonToolbar>
 
             </div>
@@ -363,6 +377,17 @@ class AccountMngPanel extends TemplateComponent {
                 </FormGroup>
               </Form>
           </Modal.Body>
+        </Modal>
+
+        <Modal onEntered={this.initGData.bind(this)}
+          show={this.state.gshow}
+          onHide={() => this.setState({ gshow: false})}
+          container={this}  id='gmngmodal_id' ref='gmngmodal_id'
+          aria-labelledby="contained-modal-title">
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title">
+             <ThirdPartPanel id='thirdPart_id' ref='thirdPart_id'/></Modal.Title>
+          </Modal.Header>
         </Modal>
   </div>
 

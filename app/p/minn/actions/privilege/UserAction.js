@@ -44,11 +44,11 @@ class UserAction {
         this.actions.checkLoginSuccess(data);
 
       })
-      .fail((jqXhr) => {  
+      .fail((jqXhr) => {
         this.actions.fail(jqXhr.responseJSON.message);
       });
   }
-  tabChange(index,last){
+  tabChange(index,last,lang){
     let data={};
     data.actionType='tabChangeSuccess';
     data.index=index;
@@ -56,23 +56,35 @@ class UserAction {
     data.randomKey='';
     if(index==0){
       this.actions.tabChangeSuccess(data);
-    }else{
+    }else if(index==1){
       $.ajax({
         type: 'POST',
         url: 'swfqrcodekey',
         data: {}
       })
         .done((d) => {
-          data.randomKey=d.data.key;
+          data.loginKeys=d.data.key;
           this.actions.tabChangeSuccess(data);
 
         })
         .fail((jqXhr) => {
           this.actions.fail(jqXhr.responseJSON.message);
         });
+    }else if(index==2){
+        $.ajax({ url: 'acountTP?method=getLoginThirdParts&lang='+lang.split('_')[0],type:'GET',data:{}})
+          .done(d => {
+            data.loginKeys=d.data;
+            this.actions.tabChangeSuccess(data);
+          })
+          .fail(jqXhr => {
+            this.actions.fail(jqXhr.responseJSON.message);
+          });
+
     }
 
   }
+
+
 
 
 }

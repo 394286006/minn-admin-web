@@ -99,17 +99,20 @@ static getInstance(doc){
     }
 
     static genSelectOptions(el,arr,selected,idx){
-      if(idx==undefined){
+      if(idx==undefined||selected==undefined){
         idx=0;
       }
       if(el.children().length>idx){
+         el.val(selected);
          return;
       }
       for(let i=0;i<arr.length;i++){
-         el.append("<option value='"+arr[i].id+"'>"+arr[i].text+"</option>");
+        if(arr[i].id==selected){
+           el.append("<option value='"+arr[i].id+"' selected='true'>"+arr[i].text+"</option>");
+        }else{
+           el.append("<option value='"+arr[i].id+"'>"+arr[i].text+"</option>");
+        }
       }
-      if(selected!=null)
-        el.val(selected);
     }
 
 }

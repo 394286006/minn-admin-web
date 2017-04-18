@@ -20,7 +20,8 @@ class UserStore {
     this.actionType='';
     this.userInfo=null;
     this.tabIndex=0;
-    this.randomKey='';
+    this.loginKeys;
+    this.fg;
   }
 
   onLoginSuccess(successMessage) {
@@ -55,7 +56,7 @@ class UserStore {
 
   onTabChangeSuccess(data){
       this.actionType=data.actionType;
-      this.randomKey=data.randomKey;
+      this.loginKeys=data.loginKeys;
       this.tabIndex=data.index;
   }
 

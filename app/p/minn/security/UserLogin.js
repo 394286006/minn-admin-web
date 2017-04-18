@@ -56,9 +56,9 @@ class UserLogin extends React.Component {
           $('#login_action_id').show();
           $('#main_language_id').show();
           $('#main_language_flagImg_id').show();
-       }else{
+       }else if(state.tabIndex==1){
            let param={};
-           param.key=state.randomKey;
+           param.key=state.loginKeys;
            param.type='pc';
            param.title=this.minnUtil.get('main_title');
            param.info=this.minnUtil.get('login_qrcode_info');
@@ -72,6 +72,25 @@ class UserLogin extends React.Component {
            $('#login_action_id').hide();
            $('#main_language_id').hide();
            $('#main_language_flagImg_id').hide();
+       }else if(state.tabIndex==2){
+         let fg=[];
+         console.log(state.loginKeys);
+         for(let i=0;i<state.loginKeys.length;i++){
+          let data=state.loginKeys[i];
+         fg.push(<FormGroup  inline>
+            <Col  sm={4} >
+            </Col>
+            <Col sm={5} >
+            <Button   onClick={this.handleThirdPartLoginBind.bind(this,data)}>{data.name}</Button>
+            </Col>
+          </FormGroup>);
+         }
+        state.fg=fg;
+
+
+         $('#login_action_id').hide();
+         $('#main_language_id').hide();
+         $('#main_language_flagImg_id').hide();
        }
          this.forceUpdate();
       }
@@ -105,6 +124,15 @@ class UserLogin extends React.Component {
 
     }
 
+    tabChange(index,last){
+      UserAction.tabChange(index,last,this.minnUtil.getCurrentLocale());
+    }
+
+    handleThirdPartLoginBind(data,event){
+        event.preventDefault();
+          window.open(data.var1);
+    }
+
    render() {
     return (
       <Modal.Dialog >
@@ -117,10 +145,11 @@ class UserLogin extends React.Component {
                   {this.minnUtil.get('validate_check_msg')}
           </Alert>
         <Form horizontal>
-        <Tabs onSelect={(index,last)=>UserAction.tabChange(index,last)}>
+        <Tabs onSelect={(index,last)=>this.tabChange(index,last)}>
           <TabList>
            <Tab>{this.minnUtil.get('login_pwd')}</Tab>
            <Tab>{this.minnUtil.get('login_qrcode')}</Tab>
+          <Tab>{this.minnUtil.get('login_thirdpart')}</Tab>
          </TabList>
         <TabPanel>
         <FormGroup validationState={this.state.validationState.name}>
@@ -149,11 +178,12 @@ class UserLogin extends React.Component {
         </Col>
         <Col sm={12}>
            <iframe id="qrcode" name="qrcode" src="third-part/qrcode.html" frameBorder="0"  height="140px" width="200px" style={{position: 'fixed', height: '200px', width: '570px',frameBorder:0,scrolling:'no',overFlow:'hidden'}}/>
-
         </Col>
       </FormGroup>
-
      </TabPanel>
+     <TabPanel style={{height:'150px'}}>
+       {this.state.fg}
+    </TabPanel>
      </Tabs>
       <FormGroup >
         <Col componentClass={ControlLabel} sm={2}>

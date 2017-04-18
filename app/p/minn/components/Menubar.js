@@ -9,7 +9,7 @@ import MenubarStore from '../stores/MenubarStore';
 import MenubarAction from '../actions/MenubarAction';
 import MainConstant from '../utils/MainConstant';
 import MinnUtil from '../utils/MinnUtil';
-import {Navbar,Nav,NavItem,NavDropdown,MenuItem,Button,Modal} from 'react-bootstrap';
+import {Navbar,Nav,NavItem,NavDropdown,Button,MenuItem,Modal,Form,FormGroup,Col} from 'react-bootstrap';
 class Menubar extends React.Component {
   constructor(props) {
     super(props);
@@ -58,7 +58,8 @@ class Menubar extends React.Component {
         this.removeMenu();
      }
      if(state.actionType=='qrCodeLoginSuccess'){
-       state.qrcodeShow=true;  
+       state.qrcodeShow=true;
+       state.thirdpartShow=false;
        let param={};
        param.key=state.randomKey;
        param.type='mobile';
@@ -72,6 +73,27 @@ class Menubar extends React.Component {
        }
        $(document).trigger( "randomkeyCompleteEvent",param);
 
+     }
+     if(state.actionType=='getThirdPartsSuccess'){
+       let fg=[];
+       for(let i=0;i<state.thirdParts.length;i++){
+        let data=state.thirdParts[i];
+       fg.push(<FormGroup  inline>
+          <Col  sm={5} >
+            <Button disabled={true}>{data.name+'['+(data.status==-1? this.minnUtil.get('account_thirdpart_unbinding'):this.minnUtil.get('account_thirdpart_binding'))+']'}</Button>
+          </Col>
+          <Col sm={5} >
+          <Button   onClick={this.handleThirdPartBindUnBind.bind(this,data)}>{(data.status==-1? this.minnUtil.get('account_thirdpart_bind'):this.minnUtil.get('account_thirdpart_unbind'))}</Button>
+          </Col>
+        </FormGroup>);
+       }
+      state.fg=fg;
+      state.thirdpartShow=true;
+      state.qrcodeShow=false;
+     }
+
+     if(state.actionType=='unBindThirdPardSuccess'){
+        MenubarAction.getThirdParts();
      }
     state.actionType='';
     this.setState(state);
@@ -133,6 +155,23 @@ class Menubar extends React.Component {
     MenubarAction.qrcodeLogin(this.minnUtil.getCurrentLocale());
   }
 
+  handleThirdPartLogin(event){
+    event.preventDefault();
+    MenubarAction.getThirdParts();
+  }
+  handleThirdPartBindUnBind(data,event) {
+    if(data.status==-1){
+        window.open(data.var1);
+         this.setState({thirdpartShow:false});
+    }else{
+      let messageBody={};
+       messageBody.id=data.id;
+       MenubarAction.unBindThirdPard(messageBody);
+    }
+
+  }
+
+
   render() {
 
     return (
@@ -160,6 +199,7 @@ class Menubar extends React.Component {
          <Navbar.Collapse >
           <Nav id='privateMenu_id' ref='privateMenu_id_ref'>
           <li><Link to={MainConstant.app+'/'} onClick={this.handleQrCodeLogin.bind(this)}>{this.minnUtil.get('login_scanlogin')}</Link></li>
+          <li><Link to={MainConstant.app+'/'} onClick={this.handleThirdPartLogin.bind(this)}>{this.minnUtil.get('account_thirdpart_bind')}</Link></li>
           <li><Link to={MainConstant.app+'/'} >{this.minnUtil.get('main_home')}</Link></li>
           <li className='dropdown' style={{display:'none'}}>
               <a href='#' className='dropdown-toggle' data-toggle='dropdown'><span id='systemmng_id'></span> <span className='caret'></span></a>
@@ -217,6 +257,22 @@ class Menubar extends React.Component {
           <iframe id="qrcode" name="qrcode" src="third-part/qrcode.html" frameBorder="0"   style={{position: 'fixed', height: '200px', width: '570px',frameBorder:0,scrolling:'no',overFlow:'hidden'}}/>
           </Modal.Body>
         </Modal>
+        <Modal
+            show={this.state.thirdpartShow}
+            onHide={() => this.setState({ thirdpartShow: false})}
+            container={this}  id='thridpart_id' ref='thridpart_id'
+            aria-labelledby="contained-modal-title">
+            <Modal.Header closeButton>
+              <Modal.Title id="contained-modal-title">{this.minnUtil.get('account_thirdpart_bind_title')}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{height:'230px',width:'300px'}}>
+            <Form horizontal id='submitform_id'>
+
+              {this.state.fg}
+            </Form>
+
+            </Modal.Body>
+          </Modal>
         </div>
     );
   }

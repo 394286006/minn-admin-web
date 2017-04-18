@@ -7,10 +7,10 @@ import ReactDOM from 'react-dom';
 import templateComponent from './templateComponent';
 import {Link} from 'react-router';
 import {first, without, findWhere} from 'underscore';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'; 
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import { Panel,ButtonToolbar,Button,Modal ,Grid,Row,Col,Table,Well,FormControl,DropdownButton,MenuItem,Form,FormGroup,ControlLabel,Alert} from 'react-bootstrap';
 import MinnUtil from '../../utils/MinnUtil';
-import MainConstant from '../../utils/MainConstant'; 
+import MainConstant from '../../utils/MainConstant';
 import DicMngStore from '../../stores/privilege/DicMngStore'
 import DicMngAction from '../../actions/privilege/DicMngAction';
 import GlobalizationPanel from './GlobalizationPanel';
@@ -19,14 +19,14 @@ class AccountMngPanel extends templateComponent {
   constructor(props) {
     super(props,DicMngStore);
   }
- 
+
   componentDidMount() {
     DicMngStore.listen(this.onChange);
     DicMngAction.getDicType();
-    DicMngAction.getDic(); 
+    DicMngAction.getDic();
 
-           
-  } 
+
+  }
 
   componentWillUnmount() {
     DicMngStore.unlisten(this.onChange);
@@ -41,7 +41,6 @@ class AccountMngPanel extends templateComponent {
     }
 
     if(state.actionType=='getDicLangSuccess'){
-    
       this.refs.globalization_id.getDicLang(state._curid,state._tablename,state.columns,state.languagemkey,state.languagekey,state.langdata);
     }
     if(state.actionType=='getDicTypeSuccess'){
@@ -58,15 +57,15 @@ class AccountMngPanel extends templateComponent {
       $('#del_id').val('');
        this.refresh(null);
     }
-    
+
     state.actionType='';
-    this.setState(state); 
+    this.setState(state);
   }
 
 
    delHandler(event){
-    this.invokeDelHandler(function(){  
-      let messageBody={}; 
+    this.invokeDelHandler(function(){
+      let messageBody={};
        messageBody.id=$('#del_id').val();
        DicMngAction.del(messageBody);
 
@@ -74,27 +73,27 @@ class AccountMngPanel extends templateComponent {
   }
 
   refresh(event) {
-    if (event!=null) 
+    if (event!=null)
        event.preventDefault();
     let messageBody={};
-   
+
     if($('#curpage_id').val()==''){
         messageBody.page=0;
     }else{
        messageBody.page=$('#curpage_id').val();
     }
-   
+
     messageBody.rp=this.refs.datagrid_id.props.options.sizePerPage;
-   
-    
+
+
     messageBody.qtype="pkey";
     messageBody.query=$('#dictype_id').val();
-   
+
     DicMngAction.query(messageBody);
 
   }
 
- 
+
   onPageChange(page,sizePerPage){
 
     $('#curpage_id').val(page-1);
@@ -104,11 +103,11 @@ class AccountMngPanel extends templateComponent {
 
     messageBody.qtype="pkey";
     messageBody.query=$('#dictype_id').val();
-   
+
     DicMngAction.query(messageBody);
   }
 
- 
+
   onRowSelect(row, isSelected , event){
      $('#del_id').val(row.id);
        DicMngAction.getDicLang(row);
@@ -126,22 +125,27 @@ class AccountMngPanel extends templateComponent {
       messageBody.mkey=this.state.key;
       messageBody.sort=this.state.sort;
       messageBody.val=this.state.keyval;
-     
+      messageBody.var1=this.state.var1;
+      messageBody.var2=this.state.var2;
+      messageBody.var3=this.state.var3;
+      messageBody.var4=this.state.var4;
+      messageBody.var5=this.state.var5;
+
       DicMngAction.saveOrUpdate(this.state.myMethod,this.state.selectedRow,messageBody);
-  
+
     }
 
- 
+
     initData(event){
       if(this.state.myMethod=='add'){
         $( '#'+event.id ).find( "input[type='input']" ).val( '' );
       }
       this.setState({ validationState:{alertVisible:'none',code:'',comment:'',sort:'',name:'',input:false},helpBlock:{pwd:'',name:''}});
-         
+
        MinnUtil.genSelectOptions($('#language_id'),this.state.dicData.LANGUAGE,this.minnUtil.getCurrentLocale().split('_')[0]);
-  
+
     }
-   
+
 
   render() {
 
@@ -154,31 +158,31 @@ class AccountMngPanel extends templateComponent {
        <form className='navbar-form '  onSubmit={this.refresh.bind(this)}>
                <input type='hidden' id="del_id" />
                <input type='hidden' id="curpage_id" />
-            
-            <span className='spanlabel'>{this.minnUtil.get('dictionary_type')} :</span> 
+
+            <span className='spanlabel'>{this.minnUtil.get('dictionary_type')} :</span>
             <div className='input-group selectlabel' >
                  <FormControl componentClass="select" id="dictype_id" >
                  </FormControl>
             </div>
-           
+
             <div className='input-group '>
-  
-                <ButtonToolbar> 
-                 <button className='btn btn-default'><span className='glyphicon glyphicon-search'></span></button> 
+
+                <ButtonToolbar>
+                 <button className='btn btn-default'><span className='glyphicon glyphicon-search'></span></button>
                 <Button bsStyle="primary"  onClick={()=>this.setState({ show: true,myMethod:'add'})}>{this.minnUtil.get('common_add')} </Button>
                  <Button bsStyle="primary" onClick={this.modifyHandler.bind(this)}>{this.minnUtil.get('common_modify')}</Button>
                  <Button bsStyle="primary" onClick={this.delHandler.bind(this)}>{this.minnUtil.get('common_delete')}</Button>
                  </ButtonToolbar>
-              
-            </div> 
+
+            </div>
           </form>
-          
+
       <BootstrapTable data={this.state.data}  options={this.tableProp(this)} ref='datagrid_id' remote={true} fetchInfo={{dataTotalSize:this.state.total}}
        pagination={true} striped={true} hover={true} condensed={true} selectRow={this.rowProp(this)}>
        <TableHeaderColumn isKey={true} dataField="id" hidden={true}></TableHeaderColumn>
-        <TableHeaderColumn  dataField="name">{this.minnUtil.get('dictionary_field_keyval')}</TableHeaderColumn>
-        <TableHeaderColumn  dataField="pkey">{this.minnUtil.get('dictionary_field_keyval')}</TableHeaderColumn>
-        <TableHeaderColumn  dataField="value">{this.minnUtil.get('globalization_field_language')}</TableHeaderColumn>
+        <TableHeaderColumn  dataField="name">{this.minnUtil.get('common_name')}</TableHeaderColumn>
+        <TableHeaderColumn  dataField="pkey">{this.minnUtil.get('dictionary_field_key')}</TableHeaderColumn>
+        <TableHeaderColumn  dataField="value">{this.minnUtil.get('dictionary_field_keyval')}</TableHeaderColumn>
         <TableHeaderColumn  dataField="createname">{this.minnUtil.get('common_createname')}</TableHeaderColumn>
         <TableHeaderColumn  dataField="createtime">{this.minnUtil.get('common_createtime')}</TableHeaderColumn>
         </BootstrapTable>
@@ -196,14 +200,14 @@ class AccountMngPanel extends templateComponent {
           <td>
              <GlobalizationPanel id='globalization_id' ref='globalization_id'/>
           </td>
-          </tr>     
+          </tr>
         </tbody>
         </Table>
         </Col>
      </Row>
     </Grid>
     </Panel>
-  
+
       <Modal
           show={this.state.show}  onEntered={this.initData.bind(this)}
           onHide={() => this.setState({ show: false})}
@@ -214,7 +218,7 @@ class AccountMngPanel extends templateComponent {
           </Modal.Header>
           <Modal.Body>
              <Alert bsStyle='warning' style={{display:this.state.validationState['alertVisible']}} >
-                {this.minnUtil.get('validate_check_msg')} 
+                {this.minnUtil.get('validate_check_msg')}
              </Alert>
               <Form horizontal onSubmit={this.saveHandler.bind(this)} id='submitform_id'>
                  <FormGroup validationState={this.state.validationState.name} inline>
@@ -258,9 +262,41 @@ class AccountMngPanel extends templateComponent {
                     <FormControl type="input" id="sort" ref="dictionary_field_sort_id"   placeholder={this.minnUtil.get('dictionary_field_sort')}  value={this.state.sort} onChange={DicMngAction.updateValue}/>
                      <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.sort)}</span>
                   </Col>
-                  
+                  <Col componentClass={ControlLabel} sm={2} >
+                    {this.minnUtil.get('dictionary_field_var1')}
+                  </Col>
+                  <Col sm={4} >
+                    <FormControl type="input" id="var1" ref="dictionary_field_var1_id"   placeholder={this.minnUtil.get('dictionary_field_var1')}  value={this.state.var1} onChange={DicMngAction.updateValue}/>
+                  </Col>
                 </FormGroup>
-               
+                <FormGroup  inline>
+                  <Col componentClass={ControlLabel} sm={2} >
+                    {this.minnUtil.get('dictionary_field_var2')}
+                  </Col>
+                  <Col sm={4} >
+                    <FormControl type="input" id="var2" ref="dictionary_field_var2_id"   placeholder={this.minnUtil.get('dictionary_field_var2')}  value={this.state.var2} onChange={DicMngAction.updateValue}/>
+                  </Col>
+                  <Col componentClass={ControlLabel} sm={2} >
+                    {this.minnUtil.get('dictionary_field_var3')}
+                  </Col>
+                  <Col sm={4} >
+                    <FormControl type="input" id="var3" ref="dictionary_field_var3_id"   placeholder={this.minnUtil.get('dictionary_field_var3')}  value={this.state.var3} onChange={DicMngAction.updateValue}/>
+                  </Col>
+                </FormGroup>
+                <FormGroup  inline>
+                  <Col componentClass={ControlLabel} sm={2} >
+                    {this.minnUtil.get('dictionary_field_var4')}
+                  </Col>  
+                  <Col sm={4} >
+                    <FormControl type="input" id="var4" ref="dictionary_field_var4_id"   placeholder={this.minnUtil.get('dictionary_field_var4')}  value={this.state.var4} onChange={DicMngAction.updateValue}/>
+                  </Col>
+                  <Col componentClass={ControlLabel} sm={2} >
+                    {this.minnUtil.get('dictionary_field_var5')}
+                  </Col>
+                  <Col sm={4} >
+                    <FormControl type="input" id="var5" ref="dictionary_field_var5_id"   placeholder={this.minnUtil.get('dictionary_field_var5')}  value={this.state.var5} onChange={DicMngAction.updateValue}/>
+                  </Col>
+                </FormGroup>
                 <FormGroup>
                   <Col smOffset={5} sm={10}>
                     <Button bsStyle="primary"  type="submit"  id="common_ok_id">
@@ -271,7 +307,7 @@ class AccountMngPanel extends templateComponent {
               </Form>
           </Modal.Body>
         </Modal>
-        
+
   </div>
 
     );

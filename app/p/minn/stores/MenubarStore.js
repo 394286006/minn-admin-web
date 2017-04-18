@@ -5,7 +5,7 @@
 import alt from '../../../alt';
 import MenubarAction from '../actions/MenubarAction';
 
-class MenubarStore {    
+class MenubarStore {
   constructor() {
     this.bindActions(MenubarAction);
     this.privateMenu = new Object();
@@ -17,12 +17,23 @@ class MenubarStore {
     this.loginName='';
     this.qrcodeShow=false;
     this.randomKey='';
+    this.thirdParts=[{name:'支付宝',val:'zhifubao'},{name:'QQ',val:'qq'},{name:'微信',val:'weixin'}];
+    this.fg;
+
   }
 
   onLogoutSuccess(successMessage) {
     this.userInfo=null;
     this.loginName='';
     this.actionType='logoutSuccess';
+  }
+
+  onGetThirdPartsSuccess(data) {
+    this.thirdParts=data.data;
+    this.actionType='getThirdPartsSuccess';
+  }
+  onUnBindThirdPardSuccess(data){
+      this.actionType='unBindThirdPardSuccess';
   }
 
   onLogoutFail(failMessage) {

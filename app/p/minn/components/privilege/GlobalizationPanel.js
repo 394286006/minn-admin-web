@@ -7,10 +7,10 @@ import ReactDOM from 'react-dom';
 import templateComponent from './templateComponent';
 import {Link} from 'react-router';
 import {first, without, findWhere} from 'underscore';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'; 
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import { Panel,ButtonToolbar,Button,Modal ,Grid,Row,Col,Table,Well,FormControl,DropdownButton,MenuItem,Form,FormGroup,ControlLabel,Alert} from 'react-bootstrap';
 import MinnUtil from '../../utils/MinnUtil';
-import MainConstant from '../../utils/MainConstant'; 
+import MainConstant from '../../utils/MainConstant';
 import GlobalizationStore from '../../stores/privilege/GlobalizationStore'
 import GlobalizationAction from '../../actions/privilege/GlobalizationAction';
 
@@ -19,17 +19,17 @@ class GlobalizationPanel extends templateComponent {
     super(props,GlobalizationStore);
     this.langdata=[];
     this._curid='';
-    this._tablename=''; 
+    this._tablename='';
     this.columns=[];
     this.languagemkey={};
     this.languagekey={};
     this.langs=[];
   }
- 
+
   componentDidMount() {
     GlobalizationStore.listen(this.onChange);
 
-           
+
   }
 
   componentWillUnmount() {
@@ -45,7 +45,7 @@ class GlobalizationPanel extends templateComponent {
             state.data[i].languagename=this.languagemkey[state.data[i].language];
             state.data[i].languageidx=this.languagekey[state.data[i].language]
           }
-    
+
     }
     if(state.actionType=='getDicTypeSuccess'){
       $("#dictype_id").append("<option value='"+MainConstant.UNKNOWN+"'></option>");
@@ -64,21 +64,23 @@ class GlobalizationPanel extends templateComponent {
 
    if(state.actionType=='getGlobalDataSuccess'){
        state.data=this.state.data;
-
-    } 
+       $('#gname_id').val(state.selectedRow.name);
+      MinnUtil.genSelectOptions($('#glanguage_id'),this.langs,state.selectedRow.language);
+      MinnUtil.genSelectOptions($('#column_id'),this.columns,state.selectedRow.tablecolumn);
+    }
       state.actionType='';
     this.setState(state);
   }
 
 
    delHandler(event){
-    this.invokeDelHandler(function(){  
-      let messageBody={}; 
+    this.invokeDelHandler(function(){
+      let messageBody={};
        messageBody.id=$('#gdel_id').val();
        GlobalizationAction.del(messageBody);
 
     });
-  } 
+  }
 
 
   init(langs){
@@ -88,12 +90,12 @@ class GlobalizationPanel extends templateComponent {
   }
 
   refresh(event) {
-    if (event!=null) 
+    if (event!=null)
        event.preventDefault();
     let messageBody={};
     messageBody.did=this._curid+'';
     messageBody.tablename=this._tablename;
-   
+
    GlobalizationAction.getDicLang(messageBody);
 
   }
@@ -102,7 +104,7 @@ class GlobalizationPanel extends templateComponent {
 
   getDicLang(did,tablename,columns,languagemkey,languagekey,langdata){
      this._curid=did;
-     this._tablename=tablename; 
+     this._tablename=tablename;
      this.columns=columns;
      this.languagemkey=languagemkey;
      this.languagekey=languagekey
@@ -112,7 +114,7 @@ class GlobalizationPanel extends templateComponent {
     MinnUtil.genSelectOptions($("#column_id"),columns);
   }
 
- 
+
   onRowSelect(row, isSelected , event){
      $('#gdel_id').val(row.id);
      GlobalizationAction.getGlobalData(row);
@@ -138,7 +140,7 @@ class GlobalizationPanel extends templateComponent {
           $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.minnUtil.get('validate_check_msg'),confirmButton: this.minnUtil.get('main_alert_oklabel')});
           return;
         }
-       
+
       this.state.myMethod='add';
       let messageBody={};
       messageBody.name=$('#gname_id').val();
@@ -146,9 +148,9 @@ class GlobalizationPanel extends templateComponent {
       messageBody.tablecolumn=$('#column_id').val();
       messageBody.tableid=this._curid;
       messageBody.tablename=this._tablename;
-     
+
       GlobalizationAction.saveOrUpdate(this.state.myMethod,null,messageBody);
-  
+
     }
 
     showModifyHandler(event){
@@ -164,12 +166,12 @@ class GlobalizationPanel extends templateComponent {
     modifyHandler(event){
       event.preventDefault();
 
-   
+
       if($('#gname_id2').val()==''){
           $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.minnUtil.get('validate_check_msg'),confirmButton: this.minnUtil.get('main_alert_oklabel')});
           return;
         }
-       
+
       this.state.myMethod='modify';
       let messageBody={};
       messageBody.name=$('#gname_id2').val();
@@ -177,30 +179,30 @@ class GlobalizationPanel extends templateComponent {
       messageBody.tablecolumn=$('#column_id2').val();
       messageBody.tableid=this._curid;
       messageBody.tablename=this._tablename;
-     
+
       GlobalizationAction.saveOrUpdate(this.state.myMethod,this.state.selectedRow,messageBody);
 
     }
- 
+
     initData(event){
       if(this.state.myMethod=='add'){
         $( '#'+event.id ).find( "input[type='input']" ).val( '' );
       }
       this.setState({ validationState:{alertVisible:'none',code:'',comment:'',sort:'',name:'',input:false},helpBlock:{pwd:'',name:''}});
-         
+
          $('#gname_id2').val(this.state.selectedRow.name);
        MinnUtil.genSelectOptions($('#glanguage_id2'),this.langs,this.state.selectedRow.language);
        MinnUtil.genSelectOptions($('#column_id2'),this.columns,this.state.selectedRow.tablecolumn);
 
     }
-   
+
 
   render() {
 
     return (
       <div >
       <Panel header={this.minnUtil.get('globalization_modify_title')} bsStyle="primary"  closeButton>
-      
+
            <Form horizontal onSubmit={this.saveHandler.bind(this)} id='submitform_id'>
             <input type='hidden' id="gdel_id" />
                  <FormGroup validationState={this.state.validationState.name} inline>
@@ -210,7 +212,7 @@ class GlobalizationPanel extends templateComponent {
                   <Col sm={5} >
                     <FormControl type="input" id="gname_id" ref="globalization_field_name_id"  placeholder={this.minnUtil.get('globalization_field_name')}  />
                   </Col>
-                  
+
                 </FormGroup>
 
                 <FormGroup validationState={this.state.validationState.column} inline>
@@ -221,7 +223,7 @@ class GlobalizationPanel extends templateComponent {
                     <FormControl componentClass="select" id='column_id' ref="globalization_field_column_id"  />
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.column)}</span>
                   </Col>
-                  
+
                 </FormGroup>
                 <FormGroup validationState={this.state.validationState.language} inline>
                   <Col componentClass={ControlLabel} sm={3} >
@@ -231,14 +233,14 @@ class GlobalizationPanel extends templateComponent {
                     <FormControl componentClass="select" id="glanguage_id" ref="globalization_field_language"   />
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.language)}</span>
                   </Col>
-                  
+
                 </FormGroup>
-               
-               
+
+
                 <FormGroup>
                   <Col smOffset={3} sm={9}>
-                       <ButtonToolbar> 
-             
+                       <ButtonToolbar>
+
                 <Button bsStyle="primary"  onClick={this.saveHandler.bind(this)}>{this.minnUtil.get('common_add')} </Button>
                  <Button bsStyle="primary" onClick={this.showModifyHandler.bind(this)}>{this.minnUtil.get('common_modify')}</Button>
                  <Button bsStyle="primary" onClick={this.delHandler.bind(this)}>{this.minnUtil.get('common_delete')}</Button>
@@ -246,17 +248,17 @@ class GlobalizationPanel extends templateComponent {
                   </Col>
                 </FormGroup>
               </Form>
-       
-      <BootstrapTable data={this.state.data}  options={this.tableProp(this)} ref='datagrid_id' remote={true} 
+
+      <BootstrapTable data={this.state.data}  ref='datagrid_id' remote={true}
         striped={true} hover={true} condensed={true} selectRow={this.rowProp(this)}>
        <TableHeaderColumn isKey={true} dataField="id" hidden={true}></TableHeaderColumn>
         <TableHeaderColumn  dataField="name">{this.minnUtil.get('globalization_field_name')}</TableHeaderColumn>
         <TableHeaderColumn  dataField="languagename">{this.minnUtil.get('globalization_field_language')}</TableHeaderColumn>
         <TableHeaderColumn  dataField="tablecolumn">{this.minnUtil.get('globalization_field_column')}</TableHeaderColumn>
         </BootstrapTable>
-      
+
     </Panel>
-  
+
       <Modal
           show={this.state.show}  onEntered={this.initData.bind(this)} dialogClassName='my-modal'
           onHide={() => this.setState({ show: false})}
@@ -267,7 +269,7 @@ class GlobalizationPanel extends templateComponent {
           </Modal.Header>
           <Modal.Body>
              <Alert bsStyle='warning' style={{display:this.state.validationState['alertVisible']}} >
-                {this.minnUtil.get('validate_check_msg')} 
+                {this.minnUtil.get('validate_check_msg')}
              </Alert>
               <Form horizontal onSubmit={this.modifyHandler.bind(this)} id='submitform_id'>
                  <FormGroup validationState={this.state.validationState.name} inline>
@@ -278,7 +280,7 @@ class GlobalizationPanel extends templateComponent {
                     <FormControl type="input" id="gname_id2" ref="common_name_id"  placeholder={this.minnUtil.get('common_name')}  />
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.name)}</span>
                   </Col>
-                  
+
                 </FormGroup>
 
                 <FormGroup validationState={this.state.validationState.key} inline>
@@ -297,9 +299,9 @@ class GlobalizationPanel extends templateComponent {
                   <Col sm={6} >
                     <FormControl componentClass="select" id="glanguage_id2"  disabled={true}/>
                   </Col>
-                  
+
                 </FormGroup>
-               
+
                 <FormGroup>
                   <Col smOffset={4} sm={5}>
                     <Button bsStyle="primary"  type="submit"  id="common_ok_id">

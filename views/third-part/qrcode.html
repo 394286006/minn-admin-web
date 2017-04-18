@@ -41,7 +41,7 @@ $(document).ready(function(){
   $('#systitle').text(parent.get('title'));
   $('#sysconfig').text(parent.get('info'));
   $('#ok').text(parent.get('config'));
-    var val=parent.get('key');
+    var val=parent.get('key'); 
     if(parent.get('lang')!=''){
       val+='_'+parent.get('lang')
     }
@@ -63,7 +63,7 @@ $(document).ready(function(){
   });
   function checkbarCodeLogin(){
      $.ajax({
-       type: 'POST', 
+       type: 'POST',
        url: '../swfcheckqrcode',
        data: {randomKey:parent.get('key')}
      }).done((data) => {

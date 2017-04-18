@@ -17,6 +17,11 @@ class DicMngStore extends TemplateStore{
     this.key='';
     this.keyval='';
     this.sort='';
+    this.var1='';
+    this.var2='';
+    this.var3='';
+    this.var4='';
+    this.var5='';
     this._curid='';
     this._tablename='';
     this.columns=[];
@@ -25,7 +30,7 @@ class DicMngStore extends TemplateStore{
     this.langdata=null;
   }
 
-   onGetDicSuccess(data) { 
+   onGetDicSuccess(data) {
     this.result=data;
     this.dicData = data.data;
     this.actionType='getDicSuccess';
@@ -50,17 +55,17 @@ class DicMngStore extends TemplateStore{
     this.data=data.result;
     this.total=data.total;
   }
-    
+
   onSaveResourceSuccess(data) {
     this.result=data;
     this.actionType='saveResourceSuccess';
   }
-    
-  onSaveOrUpdateSuccess(data) { 
+
+  onSaveOrUpdateSuccess(data) {
      this.result=data;
      this.actionType='saveOrUpdateSuccess';
   }
-    
+
 
 onGetDicLangSuccess(data){
     this.actionType='getDicLangSuccess';
@@ -81,14 +86,21 @@ onGetDicLangSuccess(data){
     this._tablename=data.tablename;
     if(this.selectedRow!=null){
       this._curid=this.selectedRow.id;
-
       this.name=this.selectedRow.name;
+      this.key=this.selectedRow.pkey;
+      this.keyval=this.selectedRow.value;
+      this.sort=this.selectedRow.sort;
+      this.var1=this.selectedRow.var1;
+      this.var2=this.selectedRow.var2;
+      this.var3=this.selectedRow.var3;
+      this.var4=this.selectedRow.var4;
+      this.var5=this.selectedRow.var5;
      }
 
   }
 
   onUpdateValue(event){
- 
+
     let id=event.target.id;
     this[id] = event.target.value;
     if(id=='name'){
@@ -102,7 +114,7 @@ onGetDicLangSuccess(data){
         this.validationState[event.target.id]='';
         this.helpBlock[event.target.id] ='';
         this.validationState['alertVisible']='none';
-      }    
+      }
     }
     if(id=='mkey'){
       if(this[id]==''){
@@ -114,7 +126,7 @@ onGetDicLangSuccess(data){
          this.validationState[event.target.id]='';
          this.helpBlock[event.target.id] ='';
          this.validationState['alertVisible']='none';
-      }    
+      }
     }
     if(id=='keyval'){
       if(this[id]==''){
@@ -126,7 +138,7 @@ onGetDicLangSuccess(data){
          this.validationState[event.target.id]='';
          this.helpBlock[event.target.id] ='';
          this.validationState['alertVisible']='none';
-      }    
+      }
     }
     if(id=='sort'){
       if(this[id]==''){
@@ -138,7 +150,7 @@ onGetDicLangSuccess(data){
          this.validationState[event.target.id]='';
          this.helpBlock[event.target.id] ='';
          this.validationState['alertVisible']='none';
-      }    
+      }
     }
      if(this.name==''||this.code==''||this.sort==''){
           this.validationState['input']=false;
@@ -148,7 +160,7 @@ onGetDicLangSuccess(data){
      this.result=data;
      this.actionType='delSuccess';
   }
-    
+
 }
 
 export default alt.createStore(DicMngStore);
