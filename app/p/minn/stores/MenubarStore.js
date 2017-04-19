@@ -17,7 +17,7 @@ class MenubarStore {
     this.loginName='';
     this.qrcodeShow=false;
     this.randomKey='';
-    this.thirdParts=[{name:'支付宝',val:'zhifubao'},{name:'QQ',val:'qq'},{name:'微信',val:'weixin'}];
+    this.thirdParts=[];
     this.fg;
 
   }
