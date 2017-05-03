@@ -32,6 +32,8 @@ class AiMngStore extends TemplateStore{
   }
   onClearImgSuccess(){
       this.imgpath='';
+      this.matchname='';
+      this.matchpercent='';
       this.actionType='clearImgSuccess';
   }
 

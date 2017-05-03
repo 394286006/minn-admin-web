@@ -69,22 +69,22 @@ class AiMngPanel extends TemplateComponent {
   compareTensorflow(){
      AiMngAction.compareTensorflow(this.state.filename);
   }
- 
+
   render() {
     return (
       <div >
-      <Panel header={this.minnUtil.get('workflow_config_title')} bsStyle="primary" className="modal-container bounceIn animated" >
+      <Panel header={this.minnUtil.get('ai_title')} bsStyle="primary" className="modal-container bounceIn animated" >
       <Tabs defaultActiveKey={1} id="ai-tab">
         <Tab eventKey={1} title="tensorflow">
         <Grid>
     <Row className="show-grid">
-      <Col xs={5} md={5}> <code><Upload  {...this.uploaderProps} ><Button bsStyle="primary">开始上传</Button></Upload></code></Col>
-      <Col xs={5} md={5}> <Button bsStyle="primary" onClick={this.compareTensorflow.bind(this)}>tensorflow比对</Button></Col>
+      <Col xs={5} md={5}> <code><Upload  {...this.uploaderProps} ><Button bsStyle="primary">{this.minnUtil.get('common_uoload')}</Button></Upload></code></Col>
+      <Col xs={5} md={5}> <Button bsStyle="primary" onClick={this.compareTensorflow.bind(this)}>{this.minnUtil.get('ai_compare')}</Button></Col>
     </Row>
 
     <Row className="show-grid">
       <Col xs={5} md={5}><Image  src={this.state.imgpath} rounded /></Col>
-      <Col xs={5} md={5}><Well>比对结果,名称:{this.state.matchname},匹配率:{this.state.matchpercent}％</Well></Col>
+      <Col xs={5} md={5}><Well>{this.minnUtil.get('ai_result_matchname')}:{this.state.matchname},{this.minnUtil.get('ai_result_matchpercent')}:{this.state.matchpercent}％</Well></Col>
     </Row>
     </Grid>
 
