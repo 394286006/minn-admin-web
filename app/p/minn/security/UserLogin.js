@@ -153,6 +153,9 @@ class UserLogin extends React.Component {
     openPortal(){
       window.open('./public/index.html','_blank');
     }
+    swfManager(){
+      window.open('./Main.html','_blank');
+    }
   
    render() {
     return (
@@ -228,12 +231,17 @@ class UserLogin extends React.Component {
       </FormGroup>
 
       <FormGroup>
-        <Col smOffset={3} sm={2}>
+        <Col smOffset={2} sm={2}>
           <Button bsStyle="primary"  type="submit"  onClick={this.handleSubmit.bind(this)} id="login_action_id">
             {this.minnUtil.get('login_action')}
           </Button>
         </Col>
-        <Col sm={3}>
+         <Col sm={3}>
+        <Button bsStyle="primary"  type="button"  onClick={this.swfManager.bind(this)} id="login_swf_id">
+            {this.minnUtil.get('login_swf_manager')}
+          </Button>
+        </Col>
+        <Col sm={2}>
         <Button bsStyle="primary"  type="button"  onClick={this.openPortal.bind(this)} id="login_portal_id">
             {this.minnUtil.get('login_portal_web')}
           </Button>
