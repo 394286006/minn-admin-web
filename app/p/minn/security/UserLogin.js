@@ -145,9 +145,10 @@ class UserLogin extends React.Component {
     downloadAndroid(){
        document.getElementById("ifile_android").src="download/minnAndroid.apk";
     }
-  
+   
     downloadIos(){
-         document.getElementById("ifile_ios").src="download/minnIos.pkg";
+         document.getElementById("ifile_ios").src="download/minnIos.zip";
+         console.log("download/minnIos.zip");
     }
 
     openPortal(){
