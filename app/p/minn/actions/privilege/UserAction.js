@@ -54,7 +54,7 @@ class UserAction {
     data.index=index;
     data.last=last;
     data.randomKey='';
-    if(index==0){
+    if(index==0||index==3){
       this.actions.tabChangeSuccess(data);
     }else if(index==1){
       $.ajax({

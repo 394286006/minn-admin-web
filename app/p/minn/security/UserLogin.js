@@ -8,7 +8,9 @@ import UserStore from '../stores/privilege/UserStore';
 import UserAction from '../actions/privilege/UserAction';
 import MainConstant from '../utils/MainConstant';
 import MinnUtil from '../utils/MinnUtil';
-import { Button,Modal,Form,FormGroup,Col,FormControl,ControlLabel,Image,Alert} from 'react-bootstrap';
+import { Button,Modal,Form,FormGroup,Col,FormControl,ControlLabel,Image,Alert,Grid,Row} from 'react-bootstrap';
+
+
 
 class UserLogin extends React.Component {
   constructor(props) {
@@ -52,11 +54,15 @@ class UserLogin extends React.Component {
        UserAction.checkLogin();
      }
      if(state.actionType=='tabChangeSuccess'){
+
        if(state.tabIndex==0){
           $('#login_action_id').show();
           $('#main_language_id').show();
           $('#main_language_flagImg_id').show();
        }else if(state.tabIndex==1){
+         $('#login_action_id').hide();
+           $('#main_language_id').hide();
+           $('#main_language_flagImg_id').hide();
            let param={};
            param.key=state.loginKeys;
            param.type='pc';
@@ -69,12 +75,13 @@ class UserLogin extends React.Component {
              param.lang=this.minnUtil.getCurrentLocale();
            }
            $(document).trigger( "randomkeyCompleteEvent",param);
-           $('#login_action_id').hide();
-           $('#main_language_id').hide();
-           $('#main_language_flagImg_id').hide();
+          
        }else if(state.tabIndex==2){
+         $('#login_action_id').hide();
+         $('#main_language_id').hide();
+         $('#main_language_flagImg_id').hide();
          let fg=[];
-         console.log(state.loginKeys);
+        
          for(let i=0;i<state.loginKeys.length;i++){
           let data=state.loginKeys[i];
          fg.push(<FormGroup  inline>
@@ -86,12 +93,14 @@ class UserLogin extends React.Component {
           </FormGroup>);
          }
         state.fg=fg;
-
-
-         $('#login_action_id').hide();
+       
+       }else if(state.tabIndex==3){
+          $('#login_action_id').hide();
          $('#main_language_id').hide();
          $('#main_language_flagImg_id').hide();
+
        }
+
          this.forceUpdate();
       }
 
@@ -133,6 +142,18 @@ class UserLogin extends React.Component {
           window.open(data.var1);
     }
 
+    downloadAndroid(){
+       document.getElementById("ifile_android").src="download/minnAndroid.apk";
+    }
+  
+    downloadIos(){
+         document.getElementById("ifile_ios").src="download/minnIos.pkg";
+    }
+
+    openPortal(){
+      window.open('./public/index.html','_blank');
+    }
+  
    render() {
     return (
       <Modal.Dialog >
@@ -148,8 +169,9 @@ class UserLogin extends React.Component {
         <Tabs onSelect={(index,last)=>this.tabChange(index,last)}>
           <TabList>
            <Tab>{this.minnUtil.get('login_pwd')}</Tab>
-           <Tab>{this.minnUtil.get('login_qrcode')}</Tab>
-          <Tab>{this.minnUtil.get('login_thirdpart')}</Tab>
+           <Tab>{this.minnUtil.get('login_qrcode')}</Tab>    
+           <Tab>{this.minnUtil.get('login_thirdpart')}</Tab>
+           <Tab>{this.minnUtil.get('mobile_xiaochengxu')}</Tab>
          </TabList>
         <TabPanel>
         <FormGroup validationState={this.state.validationState.name}>
@@ -184,6 +206,15 @@ class UserLogin extends React.Component {
      <TabPanel style={{height:'150px'}}>
        {this.state.fg}
     </TabPanel>
+      <TabPanel style={{height:'150px'}}>
+      <FormGroup>
+        <Col componentClass={ControlLabel} sm={0} >
+        </Col>
+        <Col sm={12}>
+           <iframe id="webqrcode" name="webqrcode" src="third-part/webqrcode.html" frameBorder="0"  height="140px" width="200px" style={{position: 'fixed', height: '200px', width: '570px',frameBorder:0,scrolling:'no',overFlow:'hidden'}}/>
+        </Col>
+      </FormGroup>
+     </TabPanel>
      </Tabs>
       <FormGroup >
         <Col componentClass={ControlLabel} sm={2}>
@@ -197,14 +228,31 @@ class UserLogin extends React.Component {
       </FormGroup>
 
       <FormGroup>
-        <Col smOffset={2} sm={10}>
+        <Col smOffset={3} sm={2}>
           <Button bsStyle="primary"  type="submit"  onClick={this.handleSubmit.bind(this)} id="login_action_id">
             {this.minnUtil.get('login_action')}
           </Button>
         </Col>
+        <Col sm={3}>
+        <Button bsStyle="primary"  type="button"  onClick={this.openPortal.bind(this)} id="login_portal_id">
+            {this.minnUtil.get('login_portal_web')}
+          </Button>
+        </Col>
       </FormGroup>
-     </Form>
 
+       <FormGroup>
+        <Col smOffset={2} sm={3}>{this.minnUtil.get('mobile_app_download')}:</Col>
+        <Col sm={2} ><a href="javascript:void" onClick={this.downloadAndroid.bind(this)}>{this.minnUtil.get('mobile_app_android')}</a>
+          <iframe id="ifile_android" name="ifile_android" style={{display:'none'}}/>
+        </Col>
+        <Col sm={2} ><a href="#" onClick={this.downloadIos.bind(this)}>{this.minnUtil.get('mobile_app_ios')}</a>
+          <iframe id="ifile_ios" name="ifile_ios" style={{display:'none'}}/>
+        </Col>
+       
+      </FormGroup>
+
+     </Form>
+     
      </Modal.Body>
 
   </Modal.Dialog>
@@ -212,5 +260,6 @@ class UserLogin extends React.Component {
     );
   }
 }
+
 
 export default UserLogin;
