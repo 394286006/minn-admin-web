@@ -58,7 +58,6 @@ class LuceneMngPanel extends TemplateComponent {
         <Grid>
     <Row className="show-grid">
       <Col xs={5} md={5}> <code>{this.minnUtil.get('lucene_name')}:<input type='text' className='form-control' id="name_id" name="name_id" placeholder={this.minnUtil.get('lucene_name')} />{this.minnUtil.get('lucene_age')}:<input type='text' className='form-control' id="age_id" placeholder={this.minnUtil.get('lucene_age')} />
-      后台自动增加100条数据（名称/年龄+【1-100】）
       <Button bsStyle="primary" onClick={this.add}>{this.minnUtil.get('common_add')}</Button></code></Col>
       <Col xs={5} md={5}><div>{this.minnUtil.get('common_search_name')} <input type='text' className='form-control' id="search_name_id" placeholder={this.minnUtil.get('common_search_name')} />
       <Button className='btn btn-default' onClick={this.query}><span className='glyphicon glyphicon-search'></span></Button></div></Col>
