@@ -6,7 +6,7 @@ import alt from '../../../../alt';
 import TemplateAction from '../privilege/TemplateAction';
 import MinnUtil from '../../utils/MinnUtil';
 import MainConstant from '../../utils/MainConstant';
-class WorkFlowConfigMngAction extends TemplateAction{
+class AiMngAction extends TemplateAction{
   constructor() {
     super(); 
     this.generateActions(
@@ -40,4 +40,4 @@ compareTensorflow(filename){
   }
 }
 
-export default alt.createActions(WorkFlowConfigMngAction);
+export default alt.createActions(AiMngAction);

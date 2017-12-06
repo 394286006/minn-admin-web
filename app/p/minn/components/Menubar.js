@@ -236,6 +236,7 @@ class Menubar extends React.Component {
                 <li><Link id='chart_id' style={{display:'none'}} to={MainConstant.app+'/chart'}></Link></li>
                 <li><Link id='orgChart_id' style={{display:'none'}} to={MainConstant.app+'/orgChart'}></Link></li>
                 <li><Link id='ai_id' style={{display:'none'}} to={MainConstant.app+'/ai'}></Link></li>
+                <li><Link id='lucene_id' style={{display:'none'}} to={MainConstant.app+'/lucene'}></Link></li>
               </ul>
           </li>
           </Nav>

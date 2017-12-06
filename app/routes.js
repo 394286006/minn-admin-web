@@ -15,6 +15,7 @@ import SocketMngPanel from './p/minn/components/socket/SocketMngPanel';
 import ChartMngPanel from './p/minn/components/chart/ChartMngPanel';
 import OrgChartMngPanel from './p/minn/components/chart/OrgChartMngPanel';
 import AiMngPanel from './p/minn/components/ai/AiMngPanel';
+import LuceneMngPanel from './p/minn/components/lucene/LuceneMngPanel';
 
 
 export default (
@@ -31,5 +32,6 @@ export default (
     <Route path={MainConstant.app+'/chart'} component={ChartMngPanel} />
     <Route path={MainConstant.app+'/orgChart'} component={OrgChartMngPanel} />
     <Route path={MainConstant.app+'/ai'} component={AiMngPanel} />
+    <Route path={MainConstant.app+'/lucene'} component={LuceneMngPanel} />
   </Route>
 );
