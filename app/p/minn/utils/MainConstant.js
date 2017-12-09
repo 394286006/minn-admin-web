@@ -20,6 +20,7 @@ module.exports = {
     messageResource:null
           },
    app:'/admin',
+   requestUrl:'',
    UNKNOWN:'unknown',
    PREFIX_AUTO_COMPOMENT:'dynamy',
    sizePerPage:20,

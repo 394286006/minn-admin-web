@@ -42,7 +42,7 @@ class Cube extends TemplateGL{
 
     let webGL=cube.webGL;
     webGL.clear(webGL.COLOR_BUFFER_BIT | webGL.DEPTH_BUFFER_BIT);
-    cube.perspectiveMatrix=makePerspective(60, 840.0/480.0, 0.1, 100.0);
+    cube.perspectiveMatrix=makePerspective(60, 840.0/420.0, 0.1, 80.0);
     cube.loadMvMatrix();
   
     cube.mvTranslate([0.0, 1.0, -6.0]);

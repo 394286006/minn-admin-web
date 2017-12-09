@@ -18,9 +18,10 @@ class Menubar extends React.Component {
     this.minnUtil=MinnUtil.getInstance(document);
     this.userInfo=null;
     $( document ).on( 'loginCompleteEvent', this.loginCompleteEventHandler);
-
+    MainConstant.requestUrl=window.location.href;
   }
  loginCompleteEventHandler(event,param){
+
     if(param!=null){
       this.userInfo=param;
        $('#loginName_id').text(this.userInfo.loginName);
@@ -54,8 +55,9 @@ class Menubar extends React.Component {
        $(document).trigger( 'logoutCompleteEvent',null);
     }
      if(state.actionType=='getPrivateMenuSuccess'){
-        this.invokeGetPrivateMenu(state.privateMenu);
-        this.removeMenu();
+        //this.invokeGetPrivateMenu(state.privateMenu);
+        $(document).trigger( "invokeGetPrivateMenuCompleteEvent",{data:state.privateMenu});
+        //this.removeMenu();
      }
      if(state.actionType=='qrCodeLoginSuccess'){
        state.qrcodeShow=true;
@@ -170,7 +172,6 @@ class Menubar extends React.Component {
     }
 
   }
-
 
   render() {
 
