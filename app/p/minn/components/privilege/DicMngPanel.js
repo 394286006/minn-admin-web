@@ -150,7 +150,7 @@ class AccountMngPanel extends templateComponent {
   render() {
 
     return (
-      <div >
+      <div style={{width:'85%'}}>
       <Panel header={this.minnUtil.get('dictionary_mng_title')} bsStyle="primary" className="modal-container fadeIn animated" >
       <Grid fluid={true}>
       <Row className="show-grid">

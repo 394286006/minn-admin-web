@@ -17,6 +17,7 @@ class MenubarAction {
       'logoutSuccess',
       'getThirdPartsSuccess',
       'unBindThirdPardSuccess',
+      'changeModalStatusSuccess',
       'fail'
     );
   }
@@ -74,7 +75,6 @@ class MenubarAction {
 
     unBindThirdPard(messageBody){
       let param={};
-      console.log();
       param.messageBody=MinnUtil.convert2Json(messageBody);
       $.ajax({ url: 'acountTP?method=unbind',type:'POST',data:param})
         .done(data => {
@@ -83,6 +83,10 @@ class MenubarAction {
         .fail(jqXhr => {
           this.actions.fail(jqXhr.responseJSON.message);
         });
+    }
+
+    changeModalStatus(type,show){
+        this.actions.changeModalStatusSuccess({type:type,show:show});
     }
 
 }

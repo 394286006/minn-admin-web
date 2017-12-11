@@ -43,10 +43,10 @@ class MenuMngPanel extends TemplateComponent {
          }
         
         query+=","
-        if($('#name_id').val()==''){
+        if($('#menu_name_id').val()==''){
           query+=MainConstant.UNKNOWN;
         }else{
-          query+=$('#name_id').val();
+          query+=$('#menu_name_id').val();
         }
         query+=",";
         query+=$('#resource_id').val();
@@ -169,10 +169,10 @@ class MenuMngPanel extends TemplateComponent {
      }
     
     query+=","
-    if($('#name_id').val()==''){
+    if($('#menu_name_id').val()==''){
       query+=MainConstant.UNKNOWN;
     }else{
-      query+=$('#name_id').val();
+      query+=$('#menu_name_id').val();
     }
     query+=",";
     query+=$('#resource_id').val();
@@ -201,10 +201,10 @@ class MenuMngPanel extends TemplateComponent {
      }
     
     query+=","
-    if($('#name_id').val()==''){
+    if($('#menu_name_id').val()==''){
       query+=MainConstant.UNKNOWN;
     }else{
-      query+=$('#name_id').val();
+      query+=$('#menu_name_id').val();
     }
     query+=",";
     query+=$('#resource_id').val();
@@ -287,7 +287,7 @@ class MenuMngPanel extends TemplateComponent {
   render() {
 
     return (
-      <div >
+      <div style={{width:'85%'}}>
       <Panel header={this.minnUtil.get('menu_title')} bsStyle="primary" className="modal-container flipInX animated" >
       <Grid fluid={true}>
       <Row className="show-grid">
@@ -317,13 +317,13 @@ class MenuMngPanel extends TemplateComponent {
         </tbody>
         </Table>
       </Col>
-      <Col  md={10}>
+      <Col  md={10}> 
           <form className='navbar-form '  onSubmit={this.refresh.bind(this)}>
                <input type='hidden' id="del_id" />
                <input type='hidden' id="curpage_id" />
             <span className='spanlabel'>{this.minnUtil.get('menu_name')} :</span>
             <div className='input-group ' >
-              <input type='text' className='form-control' id="name_id" placeholder={this.minnUtil.get('common_search_name')} />
+              <input type='text' className='form-control' id="menu_name_id" placeholder={this.minnUtil.get('common_search_name')} />
             </div>
             <span className='spanlabel'>{this.minnUtil.get('menu_type')} :</span> 
             <div className='input-group selectlabel' >
@@ -384,7 +384,7 @@ class MenuMngPanel extends TemplateComponent {
                     {this.minnUtil.get('common_name')}
                   </Col>
                   <Col sm={4} >
-                    <FormControl type="input" id="name" ref="common_name_id"  placeholder={this.minnUtil.get('common_name')} value={this.state.name}  onChange={MenuMngAction.updateValue}/>
+                    <FormControl type="input" id="name" ref="common_menu_name_id"  placeholder={this.minnUtil.get('common_name')} value={this.state.name}  onChange={MenuMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.name)}</span>
                   </Col>
                   <Col componentClass={ControlLabel} sm={2} >

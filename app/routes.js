@@ -25,7 +25,7 @@ export default (
     <Route path={MainConstant.app+'/menu'} component={MenuMngPanel} />
     <Route path={MainConstant.app+'/department'} component={DepartmentMngPanel} />
     <Route path={MainConstant.app+'/role'} component={RoleMngPanel} />
-    <Route path={MainConstant.app+'/dic'} component={DicMngPanel} />
+    <Route path={MainConstant.app+'/dictionary'} component={DicMngPanel} />
     <Route path={MainConstant.app+'/workflowconfig'} component={WorkFlowConfigMngPanel} />
     <Route path={MainConstant.app+'/leaveprocess'} component={LeaveProcessMngPanel} />
     <Route path={MainConstant.app+'/socket'} component={SocketMngPanel} />

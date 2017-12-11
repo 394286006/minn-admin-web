@@ -34,9 +34,9 @@ class Home extends React.Component {
 
 
     return (
-       <div>
+       <div style={{width:"90%"}} >
       <Panel id='panel_id' header={this.minnUtil.get('main_home')} bsStyle="primary" className="modal-container flipInX animated" >
-       <canvas id="glcanvas" width="100%" height="100%"></canvas>
+       <canvas id="glcanvas" width="80%" height="100%"></canvas>
        </Panel>
 
      </div>

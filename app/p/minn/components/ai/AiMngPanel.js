@@ -72,7 +72,7 @@ class AiMngPanel extends TemplateComponent {
 
   render() {
     return (
-      <div >
+      <div style={{width:'85%'}}>
       <Panel header={this.minnUtil.get('ai_title')} bsStyle="primary" className="modal-container bounceIn animated" >
       <Tabs defaultActiveKey={1} id="ai-tab">
         <Tab eventKey={1} title="tensorflow">

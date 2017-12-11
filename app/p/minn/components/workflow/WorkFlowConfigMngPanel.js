@@ -352,7 +352,7 @@ node_invokeTree(treeData){
   render() {
 
     return (
-      <div >
+      <div style={{width:'85%'}}>
       <Panel header={this.minnUtil.get('workflow_config_title')} bsStyle="primary" className="modal-container bounceIn animated" >
       <Grid fluid={true}>
       <Row className="show-grid">

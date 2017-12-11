@@ -16,6 +16,7 @@ class MenubarStore {
     this.userInfo=null;
     this.loginName='';
     this.qrcodeShow=false;
+    this.thirdpartShow=false;
     this.randomKey='';
     this.thirdParts=[];
     this.fg;
@@ -60,6 +61,14 @@ class MenubarStore {
 
   }
 
+  onChangeModalStatusSuccess(data) {
+    if(data.type=='qrcode'){
+      this.qrcodeShow=data.show;
+    }
+    if(data.type=='thirdpart'){
+      this.thirdpartShow=data.show;
+    }
+  }
   onFail(jqXhr) {
    // toastr.error(jqXhr.responseJSON.message);
   }

@@ -200,12 +200,12 @@ class GlobalizationPanel extends templateComponent {
   render() {
 
     return (
-      <div >
+      <div>
       <Panel header={this.minnUtil.get('globalization_modify_title')} bsStyle="primary"  closeButton>
 
            <Form horizontal onSubmit={this.saveHandler.bind(this)} id='submitform_id'>
             <input type='hidden' id="gdel_id" />
-                 <FormGroup validationState={this.state.validationState.name} inline>
+                 <FormGroup validationState={this.state.validationState.name} >
                   <Col componentClass={ControlLabel} sm={3} >
                     {this.minnUtil.get('globalization_field_name')}
                   </Col>
@@ -215,7 +215,7 @@ class GlobalizationPanel extends templateComponent {
 
                 </FormGroup>
 
-                <FormGroup validationState={this.state.validationState.column} inline>
+                <FormGroup validationState={this.state.validationState.column}>
                   <Col componentClass={ControlLabel} sm={3} >
                     {this.minnUtil.get('globalization_field_column')}
                   </Col>
@@ -225,7 +225,7 @@ class GlobalizationPanel extends templateComponent {
                   </Col>
 
                 </FormGroup>
-                <FormGroup validationState={this.state.validationState.language} inline>
+                <FormGroup validationState={this.state.validationState.language} >
                   <Col componentClass={ControlLabel} sm={3} >
                     {this.minnUtil.get('globalization_field_language')}
                   </Col>

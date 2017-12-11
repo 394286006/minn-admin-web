@@ -125,7 +125,7 @@ class ThirdPartPanel extends templateComponent {
   render() {
 
     return (
-      <div>
+      <div style={{width:'85%'}}>
       <Panel header={this.minnUtil.get('acount_thirdpart_manager')} bsStyle="primary"  closeButton>
            <Form horizontal id='submitform_id'>
             <input type='hidden' id="c_del_id" />

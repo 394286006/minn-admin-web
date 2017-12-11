@@ -43,8 +43,8 @@ class RoleMngPanel extends templateComponent {
     if(state.actionType=='getDicSuccess'){
      
       let actives=state.dicData.ACTIVETYPE;
-      $("#active_id").append("<option value='"+MainConstant.UNKNOWN+"'></option>");
-      MinnUtil.genSelectOptions($("#active_id"),state.dicData.ACTIVETYPE,MainConstant.UNKNOWN,1);
+      $("#role_active_id").append("<option value='"+MainConstant.UNKNOWN+"'></option>");
+      MinnUtil.genSelectOptions($("#role_active_id"),state.dicData.ACTIVETYPE,MainConstant.UNKNOWN,1);
     }
     if(state.actionType=='saveOrUpdateSuccess'){
        this.setState({ show: false});
@@ -75,14 +75,14 @@ class RoleMngPanel extends templateComponent {
   }
 
   invokeTreeMenu(treeData){
-     $('#menu_sub_sys_div').empty();
-     $('#menu_sub_sys_div').removeAttr('class');
-     $('#menu_sub_sys_div').removeAttr('role');
-     $('#menu_sub_sys_div').jstree({ 'checkbox':{'three_state':false},'cascade':false,'plugins':["checkbox"],'core' : {'data' :treeData} });
+     $('#role_sys_menu_div').empty();
+     $('#role_sys_menu_div').removeAttr('class');
+     $('#role_sys_menu_div').removeAttr('role');
+     $('#role_sys_menu_div').jstree({ 'checkbox':{'three_state':false},'cascade':false,'plugins':["checkbox"],'core' : {'data' :treeData} });
   }
 
   saveResource(event){
-     let  nodes=$('#menu_sub_sys_div').jstree(true).get_checked(true);
+     let  nodes=$('#role_sys_menu_div').jstree(true).get_checked(true);
       if(nodes.length==0){
     $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.minnUtil.get('role_resource_selected'),confirmButton: this.minnUtil.get('main_alert_oklabel')});
       return;
@@ -90,7 +90,7 @@ class RoleMngPanel extends templateComponent {
      let resourceids='';
      let key=new Object();
      for(let i=0;i<nodes.length;i++){
-        let pathstr= $('#menu_sub_sys_div').jstree(true).get_path(nodes[i],',',true);
+        let pathstr= $('#role_sys_menu_div').jstree(true).get_path(nodes[i],',',true);
         let ids=pathstr.split(",");
         for(let j=0;j<ids.length;j++){
           key['p_'+ids[j]]=ids[j];
@@ -140,7 +140,7 @@ class RoleMngPanel extends templateComponent {
     }
     query+=","
   
-    query+=$('#active_id').val();
+    query+=$('#role_active_id').val();
    
     
     messageBody.qtype="name,active";
@@ -166,8 +166,8 @@ class RoleMngPanel extends templateComponent {
       query=$('#name_id').val();
     }
     query+=","
-    if($('#active_id').val()==''){
-      query+=$('#active_id').val();
+    if($('#role_active_id').val()==''){
+      query+=$('#role_active_id').val();
     }else{
       query+=MainConstant.UNKNOWN;
     }
@@ -197,7 +197,7 @@ class RoleMngPanel extends templateComponent {
       messageBody.code=this.state.code;
       messageBody.sort=this.state.sort;
       messageBody.comment=this.state.comment;
-      messageBody.active=$('#common_active_id').val();
+      messageBody.active=$('#common_role_active_id').val();
      
       RoleMngAction.saveOrUpdate(this.state.myMethod,this.state.selectedRow,messageBody);
   
@@ -211,7 +211,7 @@ class RoleMngPanel extends templateComponent {
       this.setState({ validationState:{alertVisible:'none',code:'',comment:'',sort:'',name:'',input:false},helpBlock:{pwd:'',name:''}});
          
        MinnUtil.genSelectOptions($('#language_id'),this.state.dicData.LANGUAGE,this.minnUtil.getCurrentLocale().split('_')[0]);
-       MinnUtil.genSelectOptions($('#common_active_id'),this.state.dicData.ACTIVETYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.active));
+       MinnUtil.genSelectOptions($('#common_role_active_id'),this.state.dicData.ACTIVETYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.active));
 
     }
   
@@ -231,7 +231,7 @@ class RoleMngPanel extends templateComponent {
   render() {
 
     return (
-      <div >
+      <div style={{width:'85%'}}>
       <Panel header={this.minnUtil.get('role_title')} bsStyle="primary" className="modal-container bounceIn animated" >
       <Grid fluid={true}>
       <Row className="show-grid">
@@ -245,7 +245,7 @@ class RoleMngPanel extends templateComponent {
             </div>
             <span className='spanlabel'>{this.minnUtil.get('common_active')} :</span> 
             <div className='input-group selectlabel' >
-                 <FormControl componentClass="select" id="active_id" placeholder={this.minnUtil.get('common_active')} >
+                 <FormControl componentClass="select" id="role_active_id" placeholder={this.minnUtil.get('common_active')} >
                  </FormControl>
             </div>
            
@@ -291,7 +291,7 @@ class RoleMngPanel extends templateComponent {
         <tbody>
         <tr>
           <td>
-           <Well id="menu_sub_sys_div" className="welllabel">
+           <Well id="role_sys_menu_div" className="welllabel">
             </Well>
           </td>
           </tr>     
@@ -343,7 +343,7 @@ class RoleMngPanel extends templateComponent {
                     {this.minnUtil.get('common_active')}
                   </Col>
                   <Col sm={4} >
-                    <FormControl componentClass="select" id="common_active_id"  />
+                    <FormControl componentClass="select" id="common_role_active_id"  />
                   </Col>
                 </FormGroup>
 

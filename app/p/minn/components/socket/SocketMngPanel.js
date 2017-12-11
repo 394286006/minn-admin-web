@@ -96,7 +96,7 @@ class SocketMngPanel extends React.Component{
   render() {
 
     return (
-      <div >
+      <div style={{width:'85%'}}>
       <Panel header={'webSocket测试'} bsStyle="primary" className="modal-container bounceIn animated" >
       <Grid fluid={true}>
       <Row className="show-grid">

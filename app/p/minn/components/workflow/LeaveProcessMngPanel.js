@@ -268,7 +268,7 @@ class LeaveProcessMngPanel extends TemplateComponent {
   render() {
 
     return (
-      <div >
+      <div style={{width:'85%'}}>
       <Panel header={this.minnUtil.get('menu_title')} bsStyle="primary" className="modal-container flipInX animated" >
       <Grid fluid={true}>
       <Row className="show-grid">

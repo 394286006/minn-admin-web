@@ -52,7 +52,7 @@ class LuceneMngPanel extends TemplateComponent {
 
   render() {
     return ( 
-      <div >        
+      <div style={{width:'85%'}}>        
       <Panel header={this.minnUtil.get('lucene_title')} bsStyle="primary" className="modal-container bounceIn animated" >
      
         <Grid>

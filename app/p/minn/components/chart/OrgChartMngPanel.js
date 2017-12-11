@@ -83,7 +83,7 @@ class OrgChartMngPanel extends React.Component{
   render() {
 
     return (
-      <div >
+      <div style={{width:'85%'}}>
       <Panel header={'结构思维图'} bsStyle="primary" className="modal-container bounceIn animated" >
       <Grid fluid={true}>
       <Row className="show-grid">

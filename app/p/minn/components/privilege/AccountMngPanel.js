@@ -39,8 +39,8 @@ class AccountMngPanel extends TemplateComponent {
     if(state.actionType=='getDicSuccess'){
 
       let actives=state.dicData.ACTIVETYPE;
-      $("#active_id").append("<option value='"+MainConstant.UNKNOWN+"'></option>");
-      MinnUtil.genSelectOptions($("#active_id"),state.dicData.ACTIVETYPE,MainConstant.UNKNOWN,1);
+      $("#account_active_id").append("<option value='"+MainConstant.UNKNOWN+"'></option>");
+      MinnUtil.genSelectOptions($("#account_active_id"),state.dicData.ACTIVETYPE,MainConstant.UNKNOWN,1);
     }
     if(state.actionType=='saveOrUpdateSuccess'){
        this.setState({ show: false});
@@ -66,14 +66,14 @@ class AccountMngPanel extends TemplateComponent {
   }
 
   invokeTreeMenu(treeData){
-     $('#menu_sub_sys_div').empty();
-     $('#menu_sub_sys_div').removeAttr('class');
-     $('#menu_sub_sys_div').removeAttr('role');
-     $('#menu_sub_sys_div').jstree({ 'checkbox':{'three_state':false},'cascade':false,'plugins':["checkbox"],'core' : {'data' :treeData} });
+     $('#account_sys_menu_div').empty();
+     $('#account_sys_menu_div').removeAttr('class');
+     $('#account_sys_menu_div').removeAttr('role');
+     $('#account_sys_menu_div').jstree({ 'checkbox':{'three_state':false},'cascade':false,'plugins':["checkbox"],'core' : {'data' :treeData} });
   }
 
   saveResource(event){
-     let  nodes=$('#menu_sub_sys_div').jstree(true).get_checked(true);
+     let  nodes=$('#account_sys_menu_div').jstree(true).get_checked(true);
       if(nodes.length==0){
     $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.minnUtil.get('role_resource_selected'),confirmButton: this.minnUtil.get('main_alert_oklabel')});
       return;
@@ -81,7 +81,7 @@ class AccountMngPanel extends TemplateComponent {
      let role_ids='';
      let key=new Object();
      for(let i=0;i<nodes.length;i++){
-        let pathstr= $('#menu_sub_sys_div').jstree(true).get_path(nodes[i],',',true);
+        let pathstr= $('#account_sys_menu_div').jstree(true).get_path(nodes[i],',',true);
         let ids=pathstr.split(",");
         for(let j=0;j<ids.length;j++){
           key['p_'+ids[j]]=ids[j];
@@ -123,14 +123,14 @@ class AccountMngPanel extends TemplateComponent {
 
     let query=MainConstant.UNKNOWN;
 
-    if($('#name_id').val()==''){
+    if($('#account_name_id').val()==''){
       query=MainConstant.UNKNOWN;
     }else{
-      query=$('#name_id').val();
+      query=$('#account_name_id').val();
     }
     query+=","
 
-    query+=$('#active_id').val();
+    query+=$('#account_active_id').val();
 
 
     messageBody.qtype="name,active";
@@ -150,14 +150,14 @@ class AccountMngPanel extends TemplateComponent {
 
     let query=MainConstant.UNKNOWN;
 
-    if($('#name_id').val()==''){
+    if($('#account_name_id').val()==''){
       query=MainConstant.UNKNOWN;
     }else{
-      query=$('#name_id').val();
+      query=$('#account_name_id').val();
     }
     query+=","
-    if($('#active_id').val()==''){
-      query+=$('#active_id').val();
+    if($('#account_active_id').val()==''){
+      query+=$('#account_active_id').val();
     }else{
       query+=MainConstant.UNKNOWN;
     }
@@ -186,7 +186,7 @@ class AccountMngPanel extends TemplateComponent {
       messageBody.pwd=this.state.pwd;
       messageBody.type=$('#type_id').val();
       messageBody.loginType=$('#logintype_id').val();
-      messageBody.active=$('#common_active_id').val();
+      messageBody.active=$('#common_account_active_id').val();
       messageBody.departmentId=$('#dep_id').val();
 
       AccountMngAction.saveOrUpdate(this.state.myMethod,this.state.selectedRow,messageBody);
@@ -200,7 +200,7 @@ class AccountMngPanel extends TemplateComponent {
       this.setState({ validationState:{alertVisible:'none',pwd:'',name:'',input:false},helpBlock:{pwd:'',name:''}});
 
        MinnUtil.genSelectOptions($('#dep_id'),this.state.dicData.DEPARTMENTCODE,(this.state.myMethod=='add'? null:this.state.selectedRow.departmentId));
-       MinnUtil.genSelectOptions($('#common_active_id'),this.state.dicData.ACTIVETYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.active));
+       MinnUtil.genSelectOptions($('#common_account_active_id'),this.state.dicData.ACTIVETYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.active));
        MinnUtil.genSelectOptions($('#logintype_id'),this.state.dicData.LOGINTYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.logintype));
        MinnUtil.genSelectOptions($('#type_id'),this.state.dicData.ACCOUNTTYPE,(this.state.myMethod=='add'? null:this.state.selectedRow.type));
 
@@ -224,7 +224,7 @@ class AccountMngPanel extends TemplateComponent {
   render() {
 
     return (
-      <div >
+      <div style={{width:'85%'}}>
       <Panel header={this.minnUtil.get('account_title')} bsStyle="primary" className="modal-container bounceIn animated" >
       <Grid fluid={true}>
       <Row className="show-grid">
@@ -234,11 +234,11 @@ class AccountMngPanel extends TemplateComponent {
                <input type='hidden' id="curpage_id" />
             <span className='spanlabel'>{this.minnUtil.get('common_search_name')} :</span>
             <div className='input-group ' >
-              <input type='text' className='form-control' id="name_id" placeholder={this.minnUtil.get('common_search_name')} />
+              <input type='text' className='form-control' id="account_name_id" placeholder={this.minnUtil.get('common_search_name')} />
             </div>
             <span className='spanlabel'>{this.minnUtil.get('common_active')} :</span>
             <div className='input-group selectlabel' >
-                 <FormControl componentClass="select" id="active_id" placeholder={this.minnUtil.get('common_active')} >
+                 <FormControl componentClass="select" id="account_active_id" placeholder={this.minnUtil.get('common_active')} >
                  </FormControl>
             </div>
 
@@ -284,7 +284,7 @@ class AccountMngPanel extends TemplateComponent {
         <tbody>
         <tr>
           <td>
-           <Well id="menu_sub_sys_div" className="welllabel">
+           <Well id="account_sys_menu_div" className="welllabel">
             </Well>
           </td>
           </tr>
@@ -313,7 +313,7 @@ class AccountMngPanel extends TemplateComponent {
                     {this.minnUtil.get('common_name')}
                   </Col>
                   <Col sm={10} >
-                    <FormControl type="input" id="name" ref="common_name_id"  placeholder={this.minnUtil.get('common_name')} value={this.state.name}  onChange={AccountMngAction.updateValue}/>
+                    <FormControl type="input" id="name" ref="common_account_name_id"  placeholder={this.minnUtil.get('common_name')} value={this.state.name}  onChange={AccountMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.name)}</span>
                   </Col>
                 </FormGroup>
@@ -362,7 +362,7 @@ class AccountMngPanel extends TemplateComponent {
                         {this.minnUtil.get('common_active')}
                   </Col>
                   <Col sm={10}>
-                    <FormControl componentClass="select" id="common_active_id"  >
+                    <FormControl componentClass="select" id="common_account_active_id"  >
 
                   </FormControl>
                   </Col>

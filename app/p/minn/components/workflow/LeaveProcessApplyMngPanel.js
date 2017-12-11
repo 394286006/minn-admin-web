@@ -24,7 +24,7 @@ class MenuMngPanel extends templateComponent {
     this.refreshTreeMenu(null);
     MenuMngAction.getDic(); 
     
-    $('#menu_sub_sys_div').on("click.jstree", function (e, data) {
+    $('#leave_sys_menu_div').on("click.jstree", function (e, data) {
 
        let messageBody={}; 
        
@@ -37,7 +37,7 @@ class MenuMngPanel extends templateComponent {
         messageBody.rp=MainConstant.sizePerPage;
         let query='-1';
 
-        var nodes= $('#menu_sub_sys_div').jstree(true).get_selected ();
+        var nodes= $('#leave_sys_menu_div').jstree(true).get_selected ();
          if(nodes.length>0){
            query=nodes[0];
          }
@@ -103,16 +103,16 @@ class MenuMngPanel extends templateComponent {
   }
 
   invokeTreeMenu(treeData){
-     $('#menu_sub_sys_div').empty();
-     $('#menu_sub_sys_div').removeAttr('class');
-     $('#menu_sub_sys_div').removeAttr('role');
-     $('#menu_sub_sys_div').jstree({ 'core' : {'data' :treeData} ,data:true});
+     $('#leave_sys_menu_div').empty();
+     $('#leave_sys_menu_div').removeAttr('class');
+     $('#leave_sys_menu_div').removeAttr('role');
+     $('#leave_sys_menu_div').jstree({ 'core' : {'data' :treeData} ,data:true});
 
 
   }
 
   saveResource(event){
-     let  nodes=$('#menu_sub_sys_div').jstree(true).get_checked(true);
+     let  nodes=$('#leave_sys_menu_div').jstree(true).get_checked(true);
      if(nodes.length==0){
     $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.minnUtil.get('role_resource_selected'),confirmButton: this.minnUtil.get('main_alert_oklabel')});
       return;
@@ -120,7 +120,7 @@ class MenuMngPanel extends templateComponent {
      let role_ids='';
      let key=new Object();
      for(let i=0;i<nodes.length;i++){
-        let pathstr= $('#menu_sub_sys_div').jstree(true).get_path(nodes[i],',',true);
+        let pathstr= $('#leave_sys_menu_div').jstree(true).get_path(nodes[i],',',true);
         let ids=pathstr.split(",");
         for(let j=0;j<ids.length;j++){
           key['p_'+ids[j]]=ids[j];
@@ -163,7 +163,7 @@ class MenuMngPanel extends templateComponent {
    
     let query='-1';
 
-    var nodes= $('#menu_sub_sys_div').jstree(true).get_selected ();
+    var nodes= $('#leave_sys_menu_div').jstree(true).get_selected ();
      if(nodes.length>0){
        query=nodes[0];
      }
@@ -195,7 +195,7 @@ class MenuMngPanel extends templateComponent {
    
     let query='-1';
 
-     var nodes= $('#menu_sub_sys_div').jstree(true).get_selected ();
+     var nodes= $('#leave_sys_menu_div').jstree(true).get_selected ();
      if(nodes.length>0){
        query=nodes[0];
      }
@@ -224,7 +224,7 @@ class MenuMngPanel extends templateComponent {
     }
 
     showWinHandler(event){
-      let nodes= $('#menu_sub_sys_div').jstree(true).get_selected (true);
+      let nodes= $('#leave_sys_menu_div').jstree(true).get_selected (true);
 
        if(nodes.length==0){
          $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.minnUtil.get('menu_resource_selected'),confirmButton: this.minnUtil.get('main_alert_oklabel')});
@@ -243,7 +243,7 @@ class MenuMngPanel extends templateComponent {
       }
 
       let messageBody={};
-       var nodes= $('#menu_sub_sys_div').jstree(true).get_selected ();
+       var nodes= $('#leave_sys_menu_div').jstree(true).get_selected ();
         messageBody.pId=nodes[0];
         messageBody.name=this.state.name;
         messageBody.language=$('#language_id').val();
@@ -287,7 +287,7 @@ class MenuMngPanel extends templateComponent {
   render() {
 
     return (
-      <div >
+      <div style={{width:'85%'}}>
       <Panel header={this.minnUtil.get('menu_title')} bsStyle="primary" className="modal-container flipInX animated" >
       <Grid fluid={true}>
       <Row className="show-grid">
@@ -310,7 +310,7 @@ class MenuMngPanel extends templateComponent {
         <tbody>
         <tr>
           <td>
-           <Well id="menu_sub_sys_div" className="welllabel">
+           <Well id="leave_sys_menu_div" className="welllabel">
             </Well>
           </td>
           </tr>     

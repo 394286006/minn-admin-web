@@ -55,9 +55,7 @@ class Menubar extends React.Component {
        $(document).trigger( 'logoutCompleteEvent',null);
     }
      if(state.actionType=='getPrivateMenuSuccess'){
-        //this.invokeGetPrivateMenu(state.privateMenu);
         $(document).trigger( "invokeGetPrivateMenuCompleteEvent",{data:state.privateMenu});
-        //this.removeMenu();
      }
      if(state.actionType=='qrCodeLoginSuccess'){
        state.qrcodeShow=true;
@@ -80,7 +78,7 @@ class Menubar extends React.Component {
        let fg=[];
        for(let i=0;i<state.thirdParts.length;i++){
         let data=state.thirdParts[i];
-       fg.push(<FormGroup  inline>
+       fg.push(<FormGroup >
           <Col  sm={5} >
             <Button disabled={true}>{data.name+'['+(data.status==-1? this.minnUtil.get('account_thirdpart_unbinding'):this.minnUtil.get('account_thirdpart_binding'))+']'}</Button>
           </Col>
@@ -93,10 +91,10 @@ class Menubar extends React.Component {
       state.thirdpartShow=true;
       state.qrcodeShow=false;
      }
-
      if(state.actionType=='unBindThirdPardSuccess'){
         MenubarAction.getThirdParts();
      }
+   
     state.actionType='';
     this.setState(state);
 
@@ -128,11 +126,6 @@ class Menubar extends React.Component {
     }
 
   }
-
-  removeMenu(){
-    //$('a[style="display:none;"]' ).remove();
-  }
-
 
   handleSubmit(event) {
     event.preventDefault();
@@ -173,6 +166,12 @@ class Menubar extends React.Component {
 
   }
 
+  changeQrCodeStatus(event){
+      MenubarAction.changeModalStatus('qrcode',false)
+  }
+  changeThirdPartStatus(event){
+      MenubarAction.changeModalStatus('thirdpart',false)
+  }
   render() {
 
     return (
@@ -201,7 +200,7 @@ class Menubar extends React.Component {
           <Nav id='privateMenu_id' ref='privateMenu_id_ref'>
           <li><Link to={MainConstant.app+'/'} onClick={this.handleQrCodeLogin.bind(this)}>{this.minnUtil.get('login_scanlogin')}</Link></li>
           <li><Link to={MainConstant.app+'/'} onClick={this.handleThirdPartLogin.bind(this)}>{this.minnUtil.get('account_thirdpart_bind')}</Link></li>
-          <li><Link to={MainConstant.app+'/'} >{this.minnUtil.get('main_home')}</Link></li>
+          <li><Link to={MainConstant.app+'/'} style={{display:'none'}}>{this.minnUtil.get('main_home')}</Link></li>
           <li className='dropdown' style={{display:'none'}}>
               <a href='#' className='dropdown-toggle' data-toggle='dropdown'><span id='systemmng_id'></span> <span className='caret'></span></a>
               <ul className='dropdown-menu'>
@@ -250,7 +249,7 @@ class Menubar extends React.Component {
       </Navbar>
       <Modal
           show={this.state.qrcodeShow}
-          onHide={() => this.setState({ qrcodeShow: false})}
+          onHide={this.changeQrCodeStatus.bind(this)}
           container={this}  id='qrcode_id' ref='qrcode_id'
           aria-labelledby="contained-modal-title">
           <Modal.Header closeButton>
@@ -262,14 +261,14 @@ class Menubar extends React.Component {
         </Modal>
         <Modal
             show={this.state.thirdpartShow}
-            onHide={() => this.setState({ thirdpartShow: false})}
+            onHide={this.changeThirdPartStatus.bind(this)}
             container={this}  id='thridpart_id' ref='thridpart_id'
             aria-labelledby="contained-modal-title">
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title">{this.minnUtil.get('account_thirdpart_bind_title')}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{height:'230px',width:'300px'}}>
-            <Form horizontal id='submitform_id'>
+            <Form horizontal>
 
               {this.state.fg}
             </Form>
