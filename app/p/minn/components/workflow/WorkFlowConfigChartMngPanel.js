@@ -11,43 +11,50 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import { Panel,ButtonToolbar,Button,Modal ,Grid,Row,Col,Table,Well,FormControl,DropdownButton,MenuItem,Form,FormGroup,ControlLabel,Alert} from 'react-bootstrap';
 import MinnUtil from '../../utils/MinnUtil';
 import MainConstant from '../../utils/MainConstant'; 
-import WorkFlowConfigMngStore from '../../stores/workflow/WorkFlowConfigMngStore'
-import WorkFlowConfigMngAction from '../../actions/workflow/WorkFlowConfigMngAction';
-
-class WorkFlowConfigMngPanel extends TemplateComponent {
-  constructor(props) {
-    super(props,WorkFlowConfigMngStore); 
+import WorkFlowConfigChartMngStore from '../../stores/workflow/WorkFlowConfigChartMngStore'
+import WorkFlowConfigChartMngAction from '../../actions/workflow/WorkFlowConfigChartMngAction';
+var myDiagram;
+var ztreeProcessNode;
+var flowgo;
+var tmpdata;
+class WorkFlowConfigChartMngPanel extends TemplateComponent {
+   constructor(props) {
+    super(props,WorkFlowConfigChartMngStore); 
     this.process_selectedNode=null; 
+    this.ztreeResource=null;
+    tmpdata=this.modelData;
   } 
     
   componentDidMount() {
-    WorkFlowConfigMngStore.listen(this.onChange);
-    WorkFlowConfigMngAction.getDic();  
-    $('#ztree_process_definition_id').on("loaded.jstree", function (e, data) {
-     WorkFlowConfigMngAction.process_selectedNode($('#ztree_process_definition_id').jstree(true).get_selected(true)[0]['original']);
+    WorkFlowConfigChartMngStore.listen(this.onChange);
+    WorkFlowConfigChartMngAction.getDic();  
+    $('#ztree_process_definition_config_id').on("loaded.jstree", function (e, data) {
+     WorkFlowConfigChartMngAction.process_selectedNode($('#ztree_process_definition_config_id').jstree(true).get_selected(true)[0]['original']);
     }); 
-    $('#ztree_process_definition_id').on("activate_node.jstree", function (e, data) {
-     WorkFlowConfigMngAction.process_selectedNode(data.node.original);
+    $('#ztree_process_definition_config_id').on("activate_node.jstree", function (e, data) {
+     WorkFlowConfigChartMngAction.process_selectedNode(data.node.original);
     });
-    WorkFlowConfigMngAction.process_queryTree({}); 
+    WorkFlowConfigChartMngAction.process_queryTree({}); 
 
-    $('#ztree_process_node_id').on("loaded.jstree", function (e, data) {
-      let nodes=$('#ztree_process_node_id').jstree(true).get_selected(true);
+    $('#ztree_process_node_config_id').on("loaded.jstree", function (e, data) {
+      let nodes=$('#ztree_process_node_config_id').jstree(true).get_selected(true);
       if(nodes.length>0)
-       WorkFlowConfigMngAction.node_selectedNode(nodes[0]['original']);
+       WorkFlowConfigChartMngAction.node_selectedNode(nodes[0]['original']);
     }); 
-    $('#ztree_process_node_id').on("activate_node.jstree", function (e, data) {
-      WorkFlowConfigMngAction.node_selectedNode(data.node.original);
-      WorkFlowConfigMngAction.target_queryTree(data.node.original); 
+    $('#ztree_process_node_config_id').on("activate_node.jstree", function (e, data) {
+      WorkFlowConfigChartMngAction.node_selectedNode(data.node.original);
+      WorkFlowConfigChartMngAction.target_queryTree(data.node.original); 
          
     });
-    WorkFlowConfigMngAction.node_queryTree({});  
+    WorkFlowConfigChartMngAction.node_queryTree({});  
 
-     WorkFlowConfigMngAction.resource_queryTree({}); 
+     WorkFlowConfigChartMngAction.resource_queryTree({}); 
+
+     this.initFlowChart();
   }  
 
   componentWillUnmount() {
-    WorkFlowConfigMngStore.unlisten(this.onChange);
+    WorkFlowConfigChartMngStore.unlisten(this.onChange);
   }
 
   onChange(state) {
@@ -75,26 +82,30 @@ class WorkFlowConfigMngPanel extends TemplateComponent {
     }
 
     if(state.actionType=='processSaveOrUpdateSuccess'){
-       WorkFlowConfigMngAction.process_queryTree({}); 
+       WorkFlowConfigChartMngAction.process_queryTree({}); 
        this.setState({ processshow: false});
     }
-
-
+      
     if(state.actionType=='processSaveAllSuccess'){
-       WorkFlowConfigMngAction.process_queryTree({}); 
+       WorkFlowConfigChartMngAction.process_queryTree({}); 
        this.alertShowMsg('保存成功');
-    }  
-        
-
+    } 
+    
     if(state.actionType=='processSelectedNodeSuccess'){
-      this.process_selectedNode=$('#ztree_process_definition_id').jstree(true).get_selected(true)[0];
+      this.process_selectedNode=$('#ztree_process_definition_config_id').jstree(true).get_selected(true)[0];
       $('#process_del_id').val(this.process_selectedNode.id);
       $('#process_del_gid').val(this.process_selectedNode.original.gid);
+      if(this.process_selectedNode.original.pnId==-2){
+       let param={};
+        param.processId=this.process_selectedNode.original.id;  
+        WorkFlowConfigChartMngAction.getModel(param);
+      }
     }
 
     if(state.actionType=='processDelSuccess'){
        $('#process_del_id').val('');
-       WorkFlowConfigMngAction.process_queryTree({}); 
+        $('#process_del_gid').val('');
+       WorkFlowConfigChartMngAction.process_queryTree({}); 
     }
 
    if(state.actionType=='nodeQueryTreeSuccess'){
@@ -102,26 +113,28 @@ class WorkFlowConfigMngPanel extends TemplateComponent {
     }  
 
     if(state.actionType=='nodeSaveOrUpdateSuccess'){
-       WorkFlowConfigMngAction.node_queryTree({}); 
+       WorkFlowConfigChartMngAction.node_queryTree({}); 
        this.setState({ nodeshow: false});
     }
 
     if(state.actionType=='nodeSelectedNodeSuccess'){
-      this.node_selectedNode=$('#ztree_process_node_id').jstree(true).get_selected(true)[0];
+      this.node_selectedNode=$('#ztree_process_node_config_id').jstree(true).get_selected(true)[0];
       $('#node_del_id').val(this.node_selectedNode.id);
     }
 
     if(state.actionType=='nodeDelSuccess'){
        $('#node_del_id').val('');
-       WorkFlowConfigMngAction.node_queryTree({}); 
+       WorkFlowConfigChartMngAction.node_queryTree({}); 
     }
 
-
+   if(state.actionType=='getModelSuccess'){
+       myDiagram.model = go.Model.fromJson(state.modelData);
+       loadDiagramProperties();     
+    }   
     
-
+  
     if(state.actionType=='saveOrUpdateSuccess'){
        //this.setState({ processshow: false});
-       
     }
 
  
@@ -130,18 +143,23 @@ class WorkFlowConfigMngPanel extends TemplateComponent {
   }
 
   treeDropCopy(operation, node, node_parent, node_position, more){
-     //console.log('operation:'+operation);
     if(more) {
          more.origin.settings.dnd.always_copy = true;    
 
       }
     return true;
-  } 
-   resource_invokeTree(treeData){
-     $('#ztree_resource_id').empty();
-     $('#ztree_resource_id').removeAttr('class');
-     $('#ztree_resource_id').removeAttr('role');
-     $('#ztree_resource_id').jstree({ 'core' : {'animation':0,'check_callback':true,'data' :treeData} ,data:true, 'plugins':['dnd']});
+  }    
+   resource_invokeTree(treeData){  
+     treeData.push({ text: "Comment", figure: "RoundedRectangle", fill: "lightyellow" ,id:'JS',code:'JS'});
+     this.ztreeResource =
+      flowgo(go.Palette, "ztree_resource_config_id",  
+        {
+          maxSelectionCount: 1,
+          nodeTemplateMap: myDiagram.nodeTemplateMap,  
+          model: new go.GraphLinksModel(treeData, [
+            { points: new go.List(go.Point).addAll([new go.Point(0, 0), new go.Point(30, 0), new go.Point(30, 40), new go.Point(60, 40)]) }
+          ])
+        });
   }
 
  target_invokeTree(treeData){
@@ -159,27 +177,25 @@ class WorkFlowConfigMngPanel extends TemplateComponent {
   }            
  
   process_invokeTree(treeData){
-     $('#ztree_process_definition_id').empty();
-     $('#ztree_process_definition_id').removeAttr('class');
-     $('#ztree_process_definition_id').removeAttr('role');
-     $('#ztree_process_definition_id').jstree({ 'core' : {'animation':0,'check_callback':this.treeDropCopy,'data' :treeData} ,data:true, 'plugins':['dnd','contextmenu']}).on('copy_node.jstree',function(node,data,parent){
+     $('#ztree_process_definition_config_id').empty();
+     $('#ztree_process_definition_config_id').removeAttr('class');
+     $('#ztree_process_definition_config_id').removeAttr('role');
+     $('#ztree_process_definition_config_id').jstree({ 'core' : {'animation':0,'check_callback':this.treeDropCopy,'data' :treeData} ,data:true, 'plugins':['dnd','contextmenu']}).on('copy_node.jstree',function(node,data,parent){
          data.node.original.code=data.original.original.code;
          data.node.original.sort=data.original.original.sort;
          data.node.original.id=data.parent+'_'+data.original.original.id;
          data.node.original.pnId=data.original.original.id;
          data.node.original.pid=data.node.parent;
          data.node.original.text=data.original.original.text;
-        // console.log(data.node.original.id);
      });
   }
 
   process_delHandler(event){
-    this.invokeDelHandler(function(){  
+    this.invokeDelHandler(function(){    
       let messageBody={}; 
        messageBody.id=$('#process_del_id').val();
-        messageBody.gid=$('#process_del_gid').val();
-       WorkFlowConfigMngAction.process_del(messageBody);
-
+       messageBody.gid=$('#process_del_gid').val();
+       WorkFlowConfigChartMngAction.process_del(messageBody);
     });
   }
 
@@ -190,7 +206,7 @@ class WorkFlowConfigMngPanel extends TemplateComponent {
         return;
       } 
     
-       var nodes= $('#ztree_process_definition_id').jstree(true).get_selected(true);
+       var nodes= $('#ztree_process_definition_config_id').jstree(true).get_selected(true);
       
        if(this.state.process_pid=='-2'&&this.state.myMethod=='modify'){
         $.alert({title: this.minnUtil.get('alert_title_msg'),content: '根节点不能编辑',confirmButton: this.minnUtil.get('main_alert_oklabel')});
@@ -205,14 +221,14 @@ class WorkFlowConfigMngPanel extends TemplateComponent {
       messageBody.sort=this.state.process_sort;
       messageBody.active=$('#process_common_active_id').val();
      
-      WorkFlowConfigMngAction.process_saveOrUpdate(this.state.myMethod,this.state.process_selectedNode,messageBody);
+      WorkFlowConfigChartMngAction.process_saveOrUpdate(this.state.myMethod,this.state.process_selectedNode,messageBody);
   
-    }
+    }       
 
+    process_saveAllHandler(){    
+      saveDiagramProperties(); 
 
-
-    process_saveAllHandler(){
-      let treeObj=$('#ztree_process_definition_id').jstree(true);
+      let treeObj=$('#ztree_process_definition_config_id').jstree(true);
       treeObj.select_all();
       let  nodes= treeObj.get_selected(true);
 
@@ -239,18 +255,19 @@ class WorkFlowConfigMngPanel extends TemplateComponent {
         namestr+=vobj.text;
         codestr+=vobj.code;
     }  
-    let messageBody={};
+    let messageBody={};   
     messageBody.ids=idstr;
     messageBody.pIds=pIdstr;
     messageBody.name=namestr;
     messageBody.pnIds=pnIds;
     messageBody.sorts=sortstr;
-    messageBody.codes=codestr;      
+    messageBody.codes=codestr;
+    messageBody.model=myDiagram.model.toJson();
     messageBody.processId=this.process_selectedNode.id;
-    messageBody.modelExists=false; 
+    messageBody.modelExists=this.state.modelExists; 
+              
+    WorkFlowConfigChartMngAction.process_saveOrUpdate('save',null,messageBody);
 
-    WorkFlowConfigMngAction.process_saveOrUpdate('save',null,messageBody);
-   
   }
  
   process_initData(event){
@@ -258,24 +275,28 @@ class WorkFlowConfigMngPanel extends TemplateComponent {
       $( '#'+event.id ).find( "input[type='input']" ).val( '' );
     }
  //   this.setState({ validationState:{alertVisible:'none',pwd:'',name:'',input:false},helpBlock:{pwd:'',name:''}});
-       WorkFlowConfigMngAction.changeModelType('process',this.state.myMethod);
+       WorkFlowConfigChartMngAction.changeModelType('process',this.state.myMethod);
      MinnUtil.genSelectOptions($('#process_common_active_id'),this.state.dicData.ACTIVETYPE,this.state.process_selectedNode.active);
     
   }
 
-node_invokeTree(treeData){
-     $('#ztree_process_node_id').empty();
-     $('#ztree_process_node_id').removeAttr('class');
-     $('#ztree_process_node_id').removeAttr('role');
-     $('#ztree_process_node_id').jstree({ 'core' : {"animation" : 0,"check_callback" : true,'data' :treeData} ,data:true, 'plugins':['dnd','contextmenu']});
-     
+node_invokeTree(treeData){ 
+    ztreeProcessNode =
+      flowgo(go.Palette, "ztree_process_node_config_id", 
+        {
+          maxSelectionCount: 1,
+          nodeTemplateMap: myDiagram.nodeTemplateMap,  
+          model: new go.GraphLinksModel(treeData, [
+            { points: new go.List(go.Point).addAll([new go.Point(0, 0), new go.Point(30, 0), new go.Point(30, 40), new go.Point(60, 40)]) }
+          ])
+        });
   }
 
   node_delHandler(event){
     this.invokeDelHandler(function(){  
       let messageBody={}; 
        messageBody.id=$('#node_del_id').val();
-       WorkFlowConfigMngAction.node_del(messageBody);
+    //   WorkFlowConfigChartMngAction.node_del(messageBody);
 
     });
   }
@@ -287,7 +308,7 @@ node_invokeTree(treeData){
         return;
       } 
     
-     //  var nodes= $('#ztree_process_definition_id').jstree(true).get_selected(true);
+     //  var nodes= $('#ztree_process_definition_config_id').jstree(true).get_selected(true);
       
        if(this.state.node_pid=='-2'&&this.state.myMethod=='modify'){
         $.alert({title: this.minnUtil.get('alert_title_msg'),content: this.minnUtil.get('workflow_config_root_node_edit'),confirmButton: this.minnUtil.get('main_alert_oklabel')});
@@ -302,7 +323,7 @@ node_invokeTree(treeData){
       messageBody.sort=this.state.node_sort;
       messageBody.url=this.state.node_url; 
      
-      WorkFlowConfigMngAction.node_saveOrUpdate(this.state.myMethod,this.state.node_selectedNode,messageBody);
+      WorkFlowConfigChartMngAction.node_saveOrUpdate(this.state.myMethod,this.state.node_selectedNode,messageBody);
    
     }
  
@@ -311,7 +332,7 @@ node_invokeTree(treeData){
       //$( '#'+event.id ).find( "input[type='input']" ).val( '' );
     }
  //   this.setState({ validationState:{alertVisible:'none',pwd:'',name:'',input:false},helpBlock:{pwd:'',name:''}});
-       WorkFlowConfigMngAction.changeModelType('node',this.state.myMethod);
+       WorkFlowConfigChartMngAction.changeModelType('node',this.state.myMethod);
      //MinnUtil.genSelectOptions($('#node_common_active_id'),this.state.dicData.ACTIVETYPE,this.state.node_selectedNode.active);
     
   }
@@ -344,7 +365,7 @@ node_invokeTree(treeData){
     messageBody.pIds=pIdstr;
     messageBody.types=typestr;
 
-    WorkFlowConfigMngAction.target_saveOrUpdate('save',null,messageBody);
+    WorkFlowConfigChartMngAction.target_saveOrUpdate('save',null,messageBody);
    
   }
 
@@ -352,14 +373,190 @@ node_invokeTree(treeData){
 
   }
 
+  initFlowChart(){
+    flowgo= go.GraphObject.make;   
+    myDiagram =
+      flowgo(go.Diagram, "myDiagramDiv",  
+        {
+          grid: flowgo(go.Panel, "Grid",
+                  flowgo(go.Shape, "LineH", { stroke: "lightgray", strokeWidth: 0.5 }),
+                  flowgo(go.Shape, "LineH", { stroke: "gray", strokeWidth: 0.5, interval: 10 }),
+                  flowgo(go.Shape, "LineV", { stroke: "lightgray", strokeWidth: 0.5 }),
+                  flowgo(go.Shape, "LineV", { stroke: "gray", strokeWidth: 0.5, interval: 10 })
+                ),
+          allowDrop: true,  
+          "draggingTool.dragsLink": true,
+          "draggingTool.isGridSnapEnabled": true,
+          "linkingTool.isUnconnectedLinkValid": true,
+          "linkingTool.portGravity": 20,
+          "relinkingTool.isUnconnectedLinkValid": true,
+          "relinkingTool.portGravity": 20,
+          "relinkingTool.fromHandleArchetype":
+            flowgo(go.Shape, "Diamond", { segmentIndex: 0, cursor: "pointer", desiredSize: new go.Size(8, 8), fill: "tomato", stroke: "darkred" }),
+          "relinkingTool.toHandleArchetype":
+            flowgo(go.Shape, "Diamond", { segmentIndex: -1, cursor: "pointer", desiredSize: new go.Size(8, 8), fill: "darkred", stroke: "tomato" }),
+          "linkReshapingTool.handleArchetype":
+            flowgo(go.Shape, "Diamond", { desiredSize: new go.Size(7, 7), fill: "lightblue", stroke: "deepskyblue" }),
+          rotatingTool: flowgo(TopRotatingTool),  
+          "rotatingTool.snapAngleMultiple": 15,
+          "rotatingTool.snapAngleEpsilon": 15,
+          "undoManager.isEnabled": true
+        });
+
+    myDiagram.addDiagramListener("Modified", function(e) {
+      var idx = document.title.indexOf("*");
+      if (myDiagram.isModified) {
+        if (idx < 0) document.title += "*";
+      } else {
+        if (idx >= 0) document.title = document.title.substr(0, idx);
+      }
+    });
+
+
+    function makePort(name, spot, output, input) {
+    
+      return flowgo(go.Shape, "Circle",
+               {
+                  fill: null,  
+                  stroke: null,
+                  desiredSize: new go.Size(7, 7),
+                  alignment: spot,  
+                  alignmentFocus: spot,  
+                  portId: name, 
+                  fromSpot: spot, toSpot: spot,  
+                  fromLinkable: output, toLinkable: input, 
+                  cursor: "pointer" 
+               });
+    }
+
+    var nodeSelectionAdornmentTemplate =
+      flowgo(go.Adornment, "Auto",
+        flowgo(go.Shape, { fill: null, stroke: "deepskyblue", strokeWidth: 1.5, strokeDashArray: [4, 2] }),
+        flowgo(go.Placeholder)
+      );
+
+    var nodeResizeAdornmentTemplate =
+      flowgo(go.Adornment, "Spot",
+        { locationSpot: go.Spot.Right },
+        flowgo(go.Placeholder),
+        flowgo(go.Shape, { alignment: go.Spot.TopLeft, cursor: "nw-resize", desiredSize: new go.Size(6, 6), fill: "lightblue", stroke: "deepskyblue" }),
+        flowgo(go.Shape, { alignment: go.Spot.Top, cursor: "n-resize", desiredSize: new go.Size(6, 6), fill: "lightblue", stroke: "deepskyblue" }),
+        flowgo(go.Shape, { alignment: go.Spot.TopRight, cursor: "ne-resize", desiredSize: new go.Size(6, 6), fill: "lightblue", stroke: "deepskyblue" }),
+
+        flowgo(go.Shape, { alignment: go.Spot.Left, cursor: "w-resize", desiredSize: new go.Size(6, 6), fill: "lightblue", stroke: "deepskyblue" }),
+        flowgo(go.Shape, { alignment: go.Spot.Right, cursor: "e-resize", desiredSize: new go.Size(6, 6), fill: "lightblue", stroke: "deepskyblue" }),
+
+        flowgo(go.Shape, { alignment: go.Spot.BottomLeft, cursor: "se-resize", desiredSize: new go.Size(6, 6), fill: "lightblue", stroke: "deepskyblue" }),
+        flowgo(go.Shape, { alignment: go.Spot.Bottom, cursor: "s-resize", desiredSize: new go.Size(6, 6), fill: "lightblue", stroke: "deepskyblue" }),
+        flowgo(go.Shape, { alignment: go.Spot.BottomRight, cursor: "sw-resize", desiredSize: new go.Size(6, 6), fill: "lightblue", stroke: "deepskyblue" })
+      );
+
+    var nodeRotateAdornmentTemplate =
+      flowgo(go.Adornment,
+        { locationSpot: go.Spot.Center, locationObjectName: "CIRCLE" },
+        flowgo(go.Shape, "Circle", { name: "CIRCLE", cursor: "pointer", desiredSize: new go.Size(7, 7), fill: "lightblue", stroke: "deepskyblue" }),
+        flowgo(go.Shape, { geometryString: "M3.5 7 L3.5 30", isGeometryPositioned: true, stroke: "deepskyblue", strokeWidth: 1.5, strokeDashArray: [4, 2] })
+      );
+
+    myDiagram.nodeTemplate =
+      flowgo(go.Node, "Spot",
+        { locationSpot: go.Spot.Center },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        { selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate },
+        { resizable: true, resizeObjectName: "PANEL", resizeAdornmentTemplate: nodeResizeAdornmentTemplate },
+        { rotatable: true, rotateAdornmentTemplate: nodeRotateAdornmentTemplate },
+        new go.Binding("angle").makeTwoWay(),
+        flowgo(go.Panel, "Auto",
+          { name: "PANEL" },
+          new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
+          flowgo(go.Shape, "Rectangle",  
+            {
+              portId: "", 
+              fromLinkable: true, toLinkable: true, cursor: "pointer",
+              fill: "white",  
+              strokeWidth: 2
+            },
+            new go.Binding("figure"),
+            new go.Binding("fill")),
+          flowgo(go.TextBlock,
+            {
+              font: "bold 11pt Helvetica, Arial, sans-serif",
+              margin: 8,
+              maxSize: new go.Size(160, NaN),
+              wrap: go.TextBlock.WrapFit,
+              editable: true
+            },
+            new go.Binding("text").makeTwoWay())
+        ),
+ 
+        makePort("T", go.Spot.Top, false, true),
+        makePort("L", go.Spot.Left, true, true),
+        makePort("R", go.Spot.Right, true, true),
+        makePort("B", go.Spot.Bottom, true, false),
+        {
+          mouseEnter: function(e, node) { showSmallPorts(node, true); },
+          mouseLeave: function(e, node) { showSmallPorts(node, false); }
+        }
+      );
+
+    function showSmallPorts(node, show) {
+      node.ports.each(function(port) {
+        if (port.portId !== "") {  
+          port.fill = show ? "rgba(0,0,0,.3)" : null;
+        }
+      });
+    }
+
+    var linkSelectionAdornmentTemplate =
+      flowgo(go.Adornment, "Link",
+        flowgo(go.Shape,
+          { isPanelMain: true, fill: null, stroke: "deepskyblue", strokeWidth: 0 }) 
+      );
+
+    myDiagram.linkTemplate =
+      flowgo(go.Link,  
+        { selectable: true, selectionAdornmentTemplate: linkSelectionAdornmentTemplate },
+        { relinkableFrom: true, relinkableTo: true, reshapable: true },
+        {
+          routing: go.Link.AvoidsNodes,
+          curve: go.Link.JumpOver,
+          corner: 5,
+          toShortLength: 4
+        },
+        new go.Binding("points").makeTwoWay(),
+        flowgo(go.Shape, 
+          { isPanelMain: true, strokeWidth: 2 }),
+        flowgo(go.Shape,  
+          { toArrow: "Standard", stroke: null }),
+        flowgo(go.Panel, "Auto",
+          new go.Binding("visible", "isSelected").ofObject(),
+          flowgo(go.Shape, "RoundedRectangle",  
+            { fill: "#F8F8F8", stroke: null }),
+          flowgo(go.TextBlock,
+            {
+              textAlign: "center",
+              font: "10pt helvetica, arial, sans-serif",
+              stroke: "#919191",
+              margin: 2,
+              minSize: new go.Size(10, NaN),
+              editable: true
+            },
+            new go.Binding("text").makeTwoWay())
+        )
+      );  
+
+    load();  
+
+  }
+
   render() {
 
     return (
       <div style={{width:'85%'}}>
-      <Panel header={this.minnUtil.get('workflow_config_title')} bsStyle="primary" className="modal-container bounceIn animated" >
+      <Panel header={this.minnUtil.get('workflow_config_title')} id="header_id" bsStyle="primary" className="modal-container bounceIn animated" >
       <Grid fluid={true}>
       <Row className="show-grid">
-      <Col sm={12} md={3}>
+      <Col sm={12} md={2}>
         <Table responsive>
            <thead>
             <tr>
@@ -383,15 +580,18 @@ node_invokeTree(treeData){
         <tbody>
         <tr>
           <td>
-           <Well id="ztree_process_definition_id" className="welllabel">
+           <Well id="ztree_process_definition_config_id" className="welllabel">
             </Well>
           </td>
           </tr>     
         </tbody>
         </Table>
       </Col>
-      <Col sm={12} md={3}>
-        <Table responsive>
+      <Col sm={12} md={6}>
+        <div id="myDiagramDiv" style={{border: 'solid 1px black',height: '520px'}}></div>
+      </Col>
+      <Col  md={2}>
+      <Table responsive>
            <thead>
             <tr>
             <th>
@@ -412,40 +612,14 @@ node_invokeTree(treeData){
         <tbody>
         <tr>
           <td>
-           <Well id="ztree_process_node_id" className="welllabel">
+           <Well id="ztree_process_node_config_id" className="welllabel">
             </Well>
           </td>
           </tr>     
         </tbody>
         </Table>
       </Col>
-      <Col  md={3}>
-          <Table responsive>
-           <thead>
-            <tr>
-            <th>
-              <form className='navbar-form navbar-form-label'>
-               <span className='spanlabel'>{this.minnUtil.get('workflow_config_node_process_config')}:</span>
-                <div className='input-group '>
-                <ButtonToolbar>               
-                <Button bsStyle="primary" onClick={this.target_saveAllHandler.bind(this)}>{this.minnUtil.get('common_save')} </Button>
-                 </ButtonToolbar>
-               </div>
-               </form>
-             </th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>
-           <Well id="ztree_target_id" className="welllabel">
-            </Well>
-          </td>
-          </tr>     
-        </tbody>
-        </Table>
-        </Col>
-        <Col  md={3}>
+        <Col  md={2}>
           <Table responsive>
            <thead>
             <tr>
@@ -464,7 +638,7 @@ node_invokeTree(treeData){
         <tbody>
         <tr>
           <td>
-           <Well id="ztree_resource_id" className="welllabel">
+           <Well id="ztree_resource_config_id" className="welllabel">
             </Well>
           </td>
           </tr>     
@@ -493,7 +667,7 @@ node_invokeTree(treeData){
                     {this.minnUtil.get('common_name')}
                   </Col>
                   <Col sm={10} >
-                    <FormControl type="input" id="process_name" ref="common_name_id"  placeholder={this.minnUtil.get('common_name')} value={this.state.process_name}  onChange={WorkFlowConfigMngAction.updateValue}/>
+                    <FormControl type="input" id="process_name" ref="common_name_id"  placeholder={this.minnUtil.get('common_name')} value={this.state.process_name}  onChange={WorkFlowConfigChartMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.process_name)}</span>
                   </Col>
                 </FormGroup>
@@ -502,7 +676,7 @@ node_invokeTree(treeData){
                     {this.minnUtil.get('menu_code')}
                   </Col>
                   <Col sm={10} >
-                    <FormControl type="input" id="process_code" ref="menu_code_id"  placeholder={this.minnUtil.get('menu_code')} value={this.state.process_code}  onChange={WorkFlowConfigMngAction.updateValue}/>
+                    <FormControl type="input" id="process_code" ref="menu_code_id"  placeholder={this.minnUtil.get('menu_code')} value={this.state.process_code}  onChange={WorkFlowConfigChartMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.process_code)}</span>
                   </Col>
                 </FormGroup>
@@ -512,7 +686,7 @@ node_invokeTree(treeData){
                     {this.minnUtil.get('menu_sort')}
                   </Col>
                   <Col sm={10} >
-                    <FormControl type="input" id="process_sort" ref="menu_sort_id"  placeholder={this.minnUtil.get('menu_sort')} value={this.state.process_sort}  onChange={WorkFlowConfigMngAction.updateValue}/>
+                    <FormControl type="input" id="process_sort" ref="menu_sort_id"  placeholder={this.minnUtil.get('menu_sort')} value={this.state.process_sort}  onChange={WorkFlowConfigChartMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.sort)}</span>
                   </Col>
                 </FormGroup>
@@ -557,7 +731,7 @@ node_invokeTree(treeData){
                     {this.minnUtil.get('common_name')}
                   </Col>
                   <Col sm={10} >
-                    <FormControl type="input" id="node_name" ref="common_name_id"  placeholder={this.minnUtil.get('common_name')} value={this.state.node_name}  onChange={WorkFlowConfigMngAction.updateValue}/>
+                    <FormControl type="input" id="node_name" ref="common_name_id"  placeholder={this.minnUtil.get('common_name')} value={this.state.node_name}  onChange={WorkFlowConfigChartMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.node_name)}</span>
                   </Col>
                 </FormGroup>
@@ -566,7 +740,7 @@ node_invokeTree(treeData){
                     {this.minnUtil.get('menu_code')}
                   </Col>
                   <Col sm={10} >
-                    <FormControl type="input" id="node_code" ref="node_code_id"  placeholder={this.minnUtil.get('menu_code')} value={this.state.node_code}  onChange={WorkFlowConfigMngAction.updateValue}/>
+                    <FormControl type="input" id="node_code" ref="node_code_id"  placeholder={this.minnUtil.get('menu_code')} value={this.state.node_code}  onChange={WorkFlowConfigChartMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.node_code)}</span>
                   </Col>
                 </FormGroup>
@@ -575,7 +749,7 @@ node_invokeTree(treeData){
                     {this.minnUtil.get('menu_url')}
                   </Col>
                   <Col sm={10} >
-                    <FormControl type="input" id="node_url" ref="node_sort_id"  placeholder={this.minnUtil.get('menu_url')} value={this.state.node_url}  onChange={WorkFlowConfigMngAction.updateValue}/>
+                    <FormControl type="input" id="node_url" ref="node_sort_id"  placeholder={this.minnUtil.get('menu_url')} value={this.state.node_url}  onChange={WorkFlowConfigChartMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.node_url)}</span>
                   </Col>
                 </FormGroup>
@@ -584,7 +758,7 @@ node_invokeTree(treeData){
                     {this.minnUtil.get('menu_sort')}
                   </Col>
                   <Col sm={10} >
-                    <FormControl type="input" id="node_sort" ref="node_sort_id"  placeholder={this.minnUtil.get('menu_sort')} value={this.state.node_sort}  onChange={WorkFlowConfigMngAction.updateValue}/>
+                    <FormControl type="input" id="node_sort" ref="node_sort_id"  placeholder={this.minnUtil.get('menu_sort')} value={this.state.node_sort}  onChange={WorkFlowConfigChartMngAction.updateValue}/>
                     <span className='help-block'>{this.minnUtil.get(this.state.helpBlock.node_sort)}</span>
                   </Col>
                 </FormGroup>
@@ -605,4 +779,30 @@ node_invokeTree(treeData){
   }
 }
 
-export default WorkFlowConfigMngPanel;
+function TopRotatingTool() {
+    go.RotatingTool.call(this);
+  }
+  go.Diagram.inherit(TopRotatingTool, go.RotatingTool);
+
+  TopRotatingTool.prototype.updateAdornments = function(part) {
+    go.RotatingTool.prototype.updateAdornments.call(this, part);
+    var adornment = part.findAdornment("Rotating");
+    if (adornment !== null) {
+      adornment.location = part.rotateObject.getDocumentPoint(new go.Spot(0.5, 0, 0, -30));  // above middle top
+    }
+  };
+
+  TopRotatingTool.prototype.rotate = function(newangle) {
+    go.RotatingTool.prototype.rotate.call(this, newangle + 90);
+  };
+
+ 
+  function saveDiagramProperties() {
+    myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
+  }
+  function loadDiagramProperties(e) {
+    var pos = myDiagram.model.modelData.position;
+    if (pos) myDiagram.initialPosition = go.Point.parse(pos);
+  }
+
+export default WorkFlowConfigChartMngPanel;
