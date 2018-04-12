@@ -4,7 +4,7 @@
 */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import templateComponent from './templateComponent';
+import TemplateComponent from './TemplateComponent';
 import {Link} from 'react-router';
 import {first, without, findWhere} from 'underscore';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
@@ -14,7 +14,7 @@ import MainConstant from '../../utils/MainConstant';
 import ThirdPartStore from '../../stores/privilege/ThirdPartStore'
 import ThirdPartAction from '../../actions/privilege/ThirdPartAction';
 
-class ThirdPartPanel extends templateComponent {
+class ThirdPartPanel extends TemplateComponent {
   constructor(props) {
     super(props,ThirdPartStore);
   }

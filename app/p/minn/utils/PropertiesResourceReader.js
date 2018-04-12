@@ -2,6 +2,7 @@
 * @auth:minn
 * @qq:394286006
 */
+import MainConstant from './MainConstant';
 class PropertiesResourceReader {
   constructor(pkg,locales,prefix,callback) {
     this.properties={};
@@ -34,7 +35,6 @@ class PropertiesResourceReader {
   }
 
   ajaxLoad(pkg,locale,prefix){
-      
     $.ajax({ url: pkg+'/'+locale.locale+'/'+prefix+'.properties' })
           .done(data => {  
             this.file2Map(data,locale.locale);

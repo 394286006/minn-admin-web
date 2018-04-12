@@ -20,7 +20,7 @@ class LeaveProcessMngAction extends TemplateAction{
 
   getDic() {
 
-    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\',\'WORKFLOWSTATUS\',\'WORKFLOWPASS\',\'WORKFLOWPROCESS\''}})
+    $.ajax({ url: MainConstant.baseApp +'/dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\',\'WORKFLOWSTATUS\',\'WORKFLOWPASS\',\'WORKFLOWPROCESS\''}})
       .done(data => {
         this.actions.getDicSuccess(data);
       }) 
@@ -36,7 +36,7 @@ class LeaveProcessMngAction extends TemplateAction{
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
      
-    $.ajax({ url: 'workFlow?method=queryModelTree',type:'GET',data:param })
+    $.ajax({ url: MainConstant.workflowApp +'/workFlow?method=queryModelTree',type:'GET',data:param })
       .done(data => {
         this.actions.queryModelTreeSuccess(data);
       })
@@ -52,7 +52,7 @@ class LeaveProcessMngAction extends TemplateAction{
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'leaveProcess?method=query',type:'POST',data:param})
+    $.ajax({ url: MainConstant.workflowApp +'/leaveProcess?method=query',type:'POST',data:param})
       .done(data => {
         this.actions.querySuccess(data.data);
       })
@@ -70,9 +70,9 @@ class LeaveProcessMngAction extends TemplateAction{
   saveOrUpdate(method,selectRow,messageBody){
 
     
-     let url='leaveProcess?method=save';
+     let url=MainConstant.workflowApp +'/leaveProcess?method=save';
       if(method=='modify'){
-        url='leaveProcess?method=update';
+        url=MainConstant.workflowApp +'/leaveProcess?method=update';
         messageBody.id=selectRow.id;
       }
 
@@ -91,7 +91,7 @@ class LeaveProcessMngAction extends TemplateAction{
    del(messageBody){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url: 'leaveProcess?method=del',type:'POST',data:param })
+     $.ajax({ url: MainConstant.workflowApp +'/leaveProcess?method=del',type:'POST',data:param })
       .done(data => {
 
         this.actions.delSuccess(data);
@@ -108,7 +108,7 @@ class LeaveProcessMngAction extends TemplateAction{
       messageBody.did=row.id+'';
       messageBody.tablename='resource';
       param.messageBody=  MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'dic?method=getDicLang',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/dic?method=getDicLang',type:'POST',data:param})
       .done(data => {
         data.tablename='resource';
         data.selectedRow=row;
@@ -133,7 +133,7 @@ class LeaveProcessMngAction extends TemplateAction{
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'leaveProcess?method=launch',type:'POST',data:param})
+    $.ajax({ url: MainConstant.workflowApp +'/leaveProcess?method=launch',type:'POST',data:param})
       .done(data => {
         this.actions.launchSuccess(data.data);
       })
@@ -146,7 +146,7 @@ class LeaveProcessMngAction extends TemplateAction{
      let param={};
      param.messageType=0;
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url:'workFlow?method=saveAudit',type:'POST',data:param })
+     $.ajax({ url:MainConstant.workflowApp +'/workFlow?method=saveAudit',type:'POST',data:param })
       .done(data => { 
         this.actions.saveAuditSuccess(data);    
       })
@@ -167,7 +167,7 @@ class LeaveProcessMngAction extends TemplateAction{
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'processAudit?method=query',type:'POST',data:param})
+    $.ajax({ url: MainConstant.workflowApp +'/processAudit?method=query',type:'POST',data:param})
       .done(data => {
         this.actions.queryAuditSuccess(data.data);
       })

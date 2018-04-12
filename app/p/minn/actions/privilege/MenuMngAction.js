@@ -16,7 +16,7 @@ class MenuMngAction extends TemplateAction{
 
   getDic() {
 
-    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\',\'RESOURCETYPE\',\'RESOURCEURLTYPE\',\'ACTIVETYPE\''}})
+    $.ajax({ url: MainConstant.baseApp +'/dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\',\'RESOURCETYPE\',\'RESOURCEURLTYPE\',\'ACTIVETYPE\''}})
       .done(data => {
         this.actions.getDicSuccess(data);
       })
@@ -31,7 +31,7 @@ class MenuMngAction extends TemplateAction{
      let param={};
 
      
-    $.ajax({ url: 'menu?method=getResource&atype=swf',type:'GET',data:param })
+    $.ajax({ url: MainConstant.baseApp + '/menu?method=getResource&atype=swf',type:'GET',data:param })
       .done(data => {
         this.actions.getResourceSuccess(data);
       })
@@ -47,7 +47,7 @@ class MenuMngAction extends TemplateAction{
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'menu?method=query',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp + '/menu?method=query',type:'POST',data:param})
       .done(data => {
         this.actions.querySuccess(data.data);
       })
@@ -65,9 +65,9 @@ class MenuMngAction extends TemplateAction{
   saveOrUpdate(method,selectRow,messageBody){
 
     
-     let url='menu?method=save';
+     let url=MainConstant.baseApp + '/menu?method=save';
       if(method=='modify'){
-        url='menu?method=update';
+        url=MainConstant.baseApp + '/menu?method=update';
         messageBody.id=selectRow.id;
         messageBody.gid=selectRow.gid;
         messageBody.pId=selectRow.pId;
@@ -88,7 +88,7 @@ class MenuMngAction extends TemplateAction{
    del(messageBody){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url: 'menu?method=del',type:'POST',data:param })
+     $.ajax({ url: MainConstant.baseApp + '/menu?method=del',type:'POST',data:param })
       .done(data => {
 
         this.actions.delSuccess(data);
@@ -105,7 +105,7 @@ class MenuMngAction extends TemplateAction{
       messageBody.did=row.id+'';
       messageBody.tablename='resource';
       param.messageBody=  MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'dic?method=getDicLang',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp + '/dic?method=getDicLang',type:'POST',data:param})
       .done(data => {
         data.tablename='resource';
         data.selectedRow=row;

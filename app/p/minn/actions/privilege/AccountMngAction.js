@@ -16,9 +16,9 @@ class AccountMngAction extends TemplateAction{
   }
 
 saveOrUpdate(method,selectRow,messageBody){
-     let url='account?method=save';
+     let url=MainConstant.baseApp +'/account?method=save';
       if(method=='modify'){
-        url='account?method=update';
+        url=MainConstant.baseApp +'/account?method=update';
         messageBody.id=selectRow.id;
       }
      let param={};
@@ -36,7 +36,7 @@ saveOrUpdate(method,selectRow,messageBody){
 del(messageBody){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url: 'account?method=del',type:'POST',data:param })
+     $.ajax({ url: MainConstant.baseApp +'/account?method=del',type:'POST',data:param })
       .done(data => {
         this.actions.delSuccess(data);
       })
@@ -51,7 +51,7 @@ query(messageBody) {
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'account?method=query',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/account?method=query',type:'POST',data:param})
       .done(data => {
         this.actions.querySuccess(data.data);
       })
@@ -63,7 +63,7 @@ query(messageBody) {
 
 getDic() {
 
-    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'ACCOUNTTYPE\',\'ACTIVETYPE\',\'LOGINTYPE\',\'DEPARTMENTCODE\''}})
+    $.ajax({ url: MainConstant.baseApp +'/dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'ACCOUNTTYPE\',\'ACTIVETYPE\',\'LOGINTYPE\',\'DEPARTMENTCODE\''}})
       .done(data => {
         this.actions.getDicSuccess(data);
       })
@@ -83,7 +83,7 @@ getAccountRole(row) {
      messageBody.qtype="accountid";
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'account?method=getAccountRole',type:'POST',data:param })
+    $.ajax({ url: MainConstant.baseApp +'/account?method=getAccountRole',type:'POST',data:param })
       .done(data => {
         data.selectedRow=row;
         this.actions.getAccountRoleSuccess(data);
@@ -102,7 +102,7 @@ saveResource(row,roleids){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'account?method=saveRoleRes',type:'POST',data:param })
+    $.ajax({ url: MainConstant.baseApp +'/account?method=saveRoleRes',type:'POST',data:param })
       .done(data => {
         this.actions.saveResourceSuccess(data);
       })

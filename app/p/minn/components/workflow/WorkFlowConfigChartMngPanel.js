@@ -93,6 +93,7 @@ class WorkFlowConfigChartMngPanel extends TemplateComponent {
     
     if(state.actionType=='processSelectedNodeSuccess'){
       this.process_selectedNode=$('#ztree_process_definition_config_id').jstree(true).get_selected(true)[0];
+      console.log('click node:'+this.process_selectedNode.id);
       $('#process_del_id').val(this.process_selectedNode.id);
       $('#process_del_gid').val(this.process_selectedNode.original.gid);
       if(this.process_selectedNode.original.pnId==-2){
@@ -263,6 +264,7 @@ class WorkFlowConfigChartMngPanel extends TemplateComponent {
     messageBody.sorts=sortstr;
     messageBody.codes=codestr;
     messageBody.model=myDiagram.model.toJson();
+    console.log('processid:'+this.process_selectedNode.id);
     messageBody.processId=this.process_selectedNode.id;
     messageBody.modelExists=this.state.modelExists; 
               

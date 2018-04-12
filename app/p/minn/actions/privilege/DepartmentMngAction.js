@@ -16,7 +16,7 @@ class DepartmentMngAction extends TemplateAction{
 
   getDic() {
 
-    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\',\'RESOURCETYPE\',\'RESOURCEURLTYPE\',\'ACTIVETYPE\''}})
+    $.ajax({ url: MainConstant.baseApp +'/dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\',\'RESOURCETYPE\',\'RESOURCEURLTYPE\',\'ACTIVETYPE\''}})
       .done(data => {
         this.actions.getDicSuccess(data);
       })
@@ -31,7 +31,7 @@ class DepartmentMngAction extends TemplateAction{
      let param={};
 
      
-    $.ajax({ url: 'department?method=getResource&atype=swf',type:'GET',data:param })
+    $.ajax({ url: MainConstant.baseApp +'/department?method=getResource&atype=swf',type:'GET',data:param })
       .done(data => {
         this.actions.getResourceSuccess(data);
       })
@@ -47,7 +47,7 @@ class DepartmentMngAction extends TemplateAction{
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'department?method=query',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/department?method=query',type:'POST',data:param})
       .done(data => {
         data.data.selectedNode=selectedNode;
         this.actions.querySuccess(data.data);
@@ -66,9 +66,9 @@ class DepartmentMngAction extends TemplateAction{
   saveOrUpdate(method,selectRow,messageBody){
 
     
-     let url='department?method=save';
+     let url=MainConstant.baseApp +'/department?method=save';
       if(method=='modify'){
-        url='department?method=update';
+        url=MainConstant.baseApp +'/department?method=update';
         messageBody.id=selectRow.id;
         messageBody.gid=selectRow.gid;
         messageBody.pId=selectRow.pId;
@@ -89,7 +89,7 @@ class DepartmentMngAction extends TemplateAction{
    del(messageBody){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url: 'department?method=del',type:'POST',data:param })
+     $.ajax({ url: MainConstant.baseApp +'/department?method=del',type:'POST',data:param })
       .done(data => {
 
         this.actions.delSuccess(data);
@@ -106,7 +106,7 @@ class DepartmentMngAction extends TemplateAction{
       messageBody.did=row.id+'';
       messageBody.tablename='department';
       param.messageBody=  MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'dic?method=getDicLang',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/dic?method=getDicLang',type:'POST',data:param})
       .done(data => {
         data.tablename='resource';
         data.selectedRow=row;

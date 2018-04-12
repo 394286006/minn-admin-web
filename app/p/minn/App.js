@@ -12,6 +12,7 @@ import MinnUtil from './utils/MinnUtil';
 import {Tabs,Tab,DynamicTabBadge} from 'react-draggable-tab';
 import { Panel,ButtonToolbar,Button,Modal,Grid,Row,Col,Well } from 'react-bootstrap';
 import Home from './components/Home';
+import ah from 'ajax-hook';
 var history;
 const tabsClassNames = {
   tabWrapper: 'primary',
@@ -62,7 +63,6 @@ class App extends React.Component {
            go('/'+ps[ps.length-2],nodes[0].original.id,nodes[0].original.text);
           }
         }
-         
     });   
     $( ".rdTabAddButton" ).remove();
   }
@@ -70,8 +70,17 @@ class App extends React.Component {
   loginCompleteEventHandler(event,param){
     if(param!=null){
        $( '#context' ).show();
-
        $( '#userlogin' ).hide();
+      ah.hookAjax({
+        open:function(arg){
+          if(arg[1].indexOf('?')!=-1){
+            arg[1]+="&accessKey="+param.accessKey+'&secretKey='+param.secretKey+'&id='+param.id+'&userName='+param.username;
+          }else{
+            arg[1]+="?accessKey="+param.accessKey+'&secretKey='+param.secretKey+'&id='+param.id+'&userName='+param.username;
+          }
+        }
+       });
+
     }else{
        $( '#context' ).hide();
        $( '#userlogin' ).show();
@@ -162,7 +171,7 @@ export default App;
  function go(path,id,title){
   var data={type:'systemmng',id:id,title:title};
   var gpath = {
-      pathname:MainConstant.app+path,
+      pathname:path,
       state:data,
     }
   history.push(gpath);

@@ -21,7 +21,7 @@ class LuceneMngAction extends TemplateAction{
     messageBody.name=name;
     messageBody.age=age;
     param.messageBody=MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'lucene?method=add',type:'POST',data:param })
+    $.ajax({ url: MainConstant.baseApp +'/lucene?method=add',type:'POST',data:param })
       .done(data => {
        this.actions.addSuccess(data.data);
       })
@@ -36,7 +36,7 @@ query(name){
     let param={};
     messageBody.name=name;
     param.messageBody=MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'lucene?method=query',type:'POST',data:param })
+    $.ajax({ url: MainConstant.baseApp + '/lucene?method=query',type:'POST',data:param })
       .done(data => {
         this.actions.querySuccess(data.data);
       })

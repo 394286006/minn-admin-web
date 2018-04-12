@@ -44,14 +44,20 @@ class UserLogin extends React.Component {
 
        $(document).trigger( "loginCompleteEvent",state.userInfo);
      }
-     if(state.actionType=='checkLoginFail'){
+     if(state.actionType=='checkLoginFail' || state.actionType=='checkLoginFail'){
         this.minnUtil.setLogin(false);
        this.minnUtil.setUserInfo(null);
        $(document).trigger( "loginCompleteEvent",null);
      }
 
     if(state.actionType=='jsloginSuccess'){
-       UserAction.checkLogin();
+      this.minnUtil.setLogin(true);
+       this.minnUtil.setUserInfo(state.userInfo);
+        this.minnUtil.setCurrentLocale(state.userInfo.language);
+       state.userInfo.locale=this.minnUtil.getCurrentLocale();
+
+       $(document).trigger( "loginCompleteEvent",state.userInfo);
+       //UserAction.checkLogin();
      }
      if(state.actionType=='tabChangeSuccess'){
 

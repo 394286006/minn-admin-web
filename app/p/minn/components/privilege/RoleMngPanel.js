@@ -4,7 +4,7 @@
 */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import templateComponent from './templateComponent';
+import TemplateComponent from './TemplateComponent';
 import {Link} from 'react-router';
 import {first, without, findWhere} from 'underscore';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'; 
@@ -15,7 +15,7 @@ import RoleMngStore from '../../stores/privilege/RoleMngStore'
 import RoleMngAction from '../../actions/privilege/RoleMngAction';
 import GlobalizationPanel from './GlobalizationPanel';
 
-class RoleMngPanel extends templateComponent {
+class RoleMngPanel extends TemplateComponent {
   constructor(props) {
     super(props,RoleMngStore);
   }

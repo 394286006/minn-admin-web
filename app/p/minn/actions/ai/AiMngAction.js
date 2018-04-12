@@ -29,7 +29,7 @@ compareTensorflow(filename){
     let param={};
     messageBody.filename=filename;
     param.messageBody=MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'tensorflow?method=compare',type:'POST',data:param })
+    $.ajax({ url: MainConstant.baseApp +'/tensorflow?method=compare',type:'POST',data:param })
       .done(data => {
         this.actions.compareTensorflowSuccess(data);
       })

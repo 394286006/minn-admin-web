@@ -5,6 +5,7 @@
 import alt from '../../../alt';
 import MinnUtil from '../utils/MinnUtil';
 import {assign} from 'underscore';
+import MainConstant from '../utils/MainConstant';
 
 class MenubarAction {
   constructor() {
@@ -25,7 +26,7 @@ class MenubarAction {
 
   logout() {
     $.ajax({
-      url: 'logout',
+      url: MainConstant.baseApp + '/logout',
       data: { }
     })
       .done((data) => {
@@ -37,7 +38,7 @@ class MenubarAction {
   }
 
   getPrivateMenu(lang) {
-    $.ajax({ url: 'menu?method=getPrivateMenu',data:{lang:lang} })
+    $.ajax({ url: MainConstant.baseApp +'/menu?method=getPrivateMenu',data:{lang:lang} })
       .done((data) => {
         this.actions.getPrivateMenuSuccess(data)
       })
@@ -50,7 +51,7 @@ class MenubarAction {
     let data={};
       $.ajax({
         type: 'POST',
-        url: 'swfqrcodekey',
+        url: MainConstant.baseApp +'/swfqrcodekey',
         data: {lang:lang}
       })
         .done((d) => {
@@ -64,7 +65,7 @@ class MenubarAction {
     }
 
     getThirdParts(){
-      $.ajax({ url: 'acountTP?method=getThirdParts',type:'GET',data:{}})
+      $.ajax({ url: MainConstant.baseApp +'/acountTP?method=getThirdParts',type:'GET',data:{}})
         .done(data => {
           this.actions.getThirdPartsSuccess(data);
         })
@@ -76,7 +77,7 @@ class MenubarAction {
     unBindThirdPard(messageBody){
       let param={};
       param.messageBody=MinnUtil.convert2Json(messageBody);
-      $.ajax({ url: 'acountTP?method=unbind',type:'POST',data:param})
+      $.ajax({ url: MainConstant.baseApp +'/acountTP?method=unbind',type:'POST',data:param})
         .done(data => {
           this.actions.unBindThirdPardSuccess(data);
         })

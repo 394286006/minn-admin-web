@@ -18,7 +18,7 @@ class GlobalizationAction extends TemplateAction{
 
   getDic() {
 
-    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\''}})
+    $.ajax({ url: MainConstant.baseApp +'/dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\''}})
       .done(data => {
         this.actions.getDicSuccess(data);
       })
@@ -32,7 +32,7 @@ class GlobalizationAction extends TemplateAction{
 
       let param={};
       param.messageBody=  MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'dic?method=getDicLang',type:'GET',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/dic?method=getDicLang',type:'GET',data:param})
       .done(data => {
         this.actions.getDicLangSuccess(data);
       })
@@ -48,7 +48,7 @@ class GlobalizationAction extends TemplateAction{
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'dic?method=query',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/dic?method=query',type:'POST',data:param})
       .done(data => {
         this.actions.querySuccess(data.data);
       })
@@ -59,9 +59,9 @@ class GlobalizationAction extends TemplateAction{
 
 
   saveOrUpdate(method,selectRow,messageBody){
-     let url='gla?method=save';
+     let url=MainConstant.baseApp +'/gla?method=save';
       if(method=='modify'){
-        url='gla?method=update';
+        url=MainConstant.baseApp +'/gla?method=update';
         messageBody.id=selectRow.id;
         messageBody.gid=selectRow.gid
       }
@@ -80,7 +80,7 @@ class GlobalizationAction extends TemplateAction{
    del(messageBody){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url: 'gla?method=del',type:'POST',data:param })
+     $.ajax({ url: MainConstant.baseApp +'/gla?method=del',type:'POST',data:param })
       .done(data => {
 
         this.actions.delSuccess(data);

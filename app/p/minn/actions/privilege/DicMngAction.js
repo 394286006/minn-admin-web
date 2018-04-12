@@ -17,7 +17,7 @@ class DicMngAction extends TemplateAction{
 
   getDic() {
 
-    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\''}})
+    $.ajax({ url: MainConstant.baseApp +'/dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\''}})
       .done(data => {
         this.actions.getDicSuccess(data);
       })
@@ -27,7 +27,7 @@ class DicMngAction extends TemplateAction{
   }
    getDicType() {
 
-    $.ajax({ url: 'dic?method=getDicType',type:'GET',data:{}})
+    $.ajax({ url: MainConstant.baseApp +'/dic?method=getDicType',type:'GET',data:{}})
       .done(data => {
         this.actions.getDicTypeSuccess(data);
       })
@@ -43,7 +43,7 @@ class DicMngAction extends TemplateAction{
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'dic?method=query',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/dic?method=query',type:'POST',data:param})
       .done(data => {
         this.actions.querySuccess(data.data);
       })
@@ -54,9 +54,9 @@ class DicMngAction extends TemplateAction{
 
 
   saveOrUpdate(method,selectRow,messageBody){
-     let url='dic?method=save';
+     let url=MainConstant.baseApp +'/dic?method=save';
       if(method=='modify'){
-        url='dic?method=update';
+        url=MainConstant.baseApp +'/dic?method=update';
         messageBody.id=selectRow.id;
         messageBody.gid=selectRow.gid
       }
@@ -75,7 +75,7 @@ class DicMngAction extends TemplateAction{
    del(messageBody){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url: 'dic?method=del',type:'POST',data:param })
+     $.ajax({ url: MainConstant.baseApp +'/dic?method=del',type:'POST',data:param })
       .done(data => {
 
         this.actions.delSuccess(data);
@@ -92,7 +92,7 @@ class DicMngAction extends TemplateAction{
       messageBody.did=row.id+'';
       messageBody.tablename='dictionary';
       param.messageBody=  MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'dic?method=getDicLang',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/dic?method=getDicLang',type:'POST',data:param})
       .done(data => {
         data.tablename='dictionary';
         data.selectedRow=row;

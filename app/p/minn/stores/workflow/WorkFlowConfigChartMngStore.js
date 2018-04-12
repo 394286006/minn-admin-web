@@ -38,7 +38,7 @@ class WorkFlowConfigChartMngStore extends TemplateStore{
   "nodeDataArray": [
  ],
   "linkDataArray": [
- ]};;
+ ]};
     this.modelData;
    
   }
@@ -156,7 +156,6 @@ onNodeQueryTreeSuccess(data){
   }
 
   onGetModelSuccess(data){
-
    if(data=='getModel'){
      this.modelExists=false;
      this.modelData=this.originalModelData;

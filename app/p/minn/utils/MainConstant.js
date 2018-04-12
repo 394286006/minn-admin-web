@@ -19,7 +19,10 @@ module.exports = {
   		   {name:'한국의 (한국)', locale:'ko_KR',isLoad:false}],
     messageResource:null
           },
-   app:'/admin',
+   app:'/',
+   authApp:'/auth',
+   baseApp:'admin',
+   workflowApp:'/flowapp',
    requestUrl:'',
    UNKNOWN:'unknown',
    PREFIX_AUTO_COMPOMENT:'dynamy',

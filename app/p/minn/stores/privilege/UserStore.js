@@ -11,7 +11,7 @@ class UserStore {
     this.validationState={};
     this.validationState['alertVisible']='none';
     this.validationState['input']=false;
-    this.validationState['state']=this.validationNum;
+    this.validationState['state']='';
     this.helpBlock={};
     this.result=null;
     this.name = '';
@@ -40,6 +40,7 @@ class UserStore {
   }
 
   onLoginFail(errorMessage) {
+    this.actionType=errorMessage.actionType;
     this.validationState['input']=false;
     this.name='';
     this.pwd='';

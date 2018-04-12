@@ -18,9 +18,10 @@ class UserAction {
   }
 
   login(name, pwd,lang) {
+
     $.ajax({
       type: 'POST',
-      url: 'j_spring_security_check',
+      url: MainConstant.baseApp + '/j_spring_security_check',
       data: {username: name, password: pwd ,logintype:'3',key:'',lang:lang}
     })
       .done((data) => {
@@ -34,9 +35,10 @@ class UserAction {
   }
 
   checkLogin(lang) {
+
     $.ajax({
       type: 'POST',
-      url: 'login?lang='+MainConstant.currentLocale,
+      url: MainConstant.baseApp + '/login?lang='+MainConstant.currentLocale,
       data: {}
     })
       .done((data) => {
@@ -45,7 +47,10 @@ class UserAction {
 
       })
       .fail((jqXhr) => {
-        this.actions.fail(jqXhr.responseJSON.message);
+         let data ={};
+         data.actionType='checkLoginFail';
+         this.actions.loginFail(data);
+         //this.actions.fail(jqXhr.responseJSON.message);
       });
   }
   tabChange(index,last,lang){
@@ -71,7 +76,7 @@ class UserAction {
           this.actions.fail(jqXhr.responseJSON.message);
         });
     }else if(index==2){
-        $.ajax({ url: 'acountTP?method=getLoginThirdParts&lang='+lang.split('_')[0],type:'GET',data:{}})
+        $.ajax({ url: MainConstant.baseApp + '/acountTP?method=getLoginThirdParts&lang='+lang.split('_')[0],type:'GET',data:{}})
           .done(d => {
             data.loginKeys=d.data;
             this.actions.tabChangeSuccess(data);

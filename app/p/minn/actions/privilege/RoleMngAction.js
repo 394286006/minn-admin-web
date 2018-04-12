@@ -17,7 +17,7 @@ class RoleMngAction extends TemplateAction{
 
   getDic() {
 
-    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\',\'ACTIVETYPE\''}})
+    $.ajax({ url: MainConstant.baseApp +'/dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'LANGUAGE\',\'ACTIVETYPE\''}})
       .done(data => {
         this.actions.getDicSuccess(data);
       })
@@ -40,7 +40,7 @@ class RoleMngAction extends TemplateAction{
      param.messageBody=MinnUtil.convert2Json(messageBody);
   
 
-    $.ajax({ url: 'role?method=getRoleRes',type:'POST',data:param })
+    $.ajax({ url: MainConstant.baseApp +'/role?method=getRoleRes',type:'POST',data:param })
       .done(data => {
         data.selectedRow=row;
         this.actions.getTreeDataSuccess(data);
@@ -57,7 +57,7 @@ class RoleMngAction extends TemplateAction{
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'role?method=query',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/role?method=query',type:'POST',data:param})
       .done(data => {
         this.actions.querySuccess(data.data);
       })
@@ -74,7 +74,7 @@ class RoleMngAction extends TemplateAction{
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'role?method=saveRoleRes',type:'POST',data:param })
+    $.ajax({ url: MainConstant.baseApp +'/role?method=saveRoleRes',type:'POST',data:param })
       .done(data => {
         this.actions.saveResourceSuccess(data);
       })
@@ -86,9 +86,9 @@ class RoleMngAction extends TemplateAction{
   }
 
   saveOrUpdate(method,selectRow,messageBody){
-     let url='role?method=save';
+     let url=MainConstant.baseApp +'/role?method=save';
       if(method=='modify'){
-        url='role?method=update';
+        url=MainConstant.baseApp +'/role?method=update';
         messageBody.id=selectRow.id;
         messageBody.gid=selectRow.gid
       }
@@ -107,7 +107,7 @@ class RoleMngAction extends TemplateAction{
    del(messageBody){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url: 'role?method=del',type:'POST',data:param })
+     $.ajax({ url: MainConstant.baseApp +'/role?method=del',type:'POST',data:param })
       .done(data => {
 
         this.actions.delSuccess(data);
@@ -123,7 +123,7 @@ class RoleMngAction extends TemplateAction{
       messageBody.did=row.id+'';
       messageBody.tablename='role';
       param.messageBody=  MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'dic?method=getDicLang',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/dic?method=getDicLang',type:'POST',data:param})
       .done(data => {
         data.tablename='role';
         data.selectedRow=row;

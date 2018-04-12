@@ -18,7 +18,7 @@ class ThirdPartAction extends TemplateAction{
 
   getDic() {
 
-    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'ACCOUNTTHIRDPATH\',\'ACTIVETYPE\''}})
+    $.ajax({ url: MainConstant.baseApp +'/dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'ACCOUNTTHIRDPATH\',\'ACTIVETYPE\''}})
       .done(data => {
         this.actions.getDicSuccess(data);
       })
@@ -33,7 +33,7 @@ class ThirdPartAction extends TemplateAction{
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'acountTP?method=query',type:'POST',data:param})
+    $.ajax({ url: MainConstant.baseApp +'/acountTP?method=query',type:'POST',data:param})
       .done(data => {
         this.actions.querySuccess(data.data);
       })
@@ -43,9 +43,9 @@ class ThirdPartAction extends TemplateAction{
     }
 
   saveOrUpdate(method,selectRow,messageBody){
-     let url='acountTP?method=save';
+     let url=MainConstant.baseApp +'/acountTP?method=save';
       if(method=='modify'){
-        url='acountTP?method=update';
+        url=MainConstant.baseApp +'/acountTP?method=update';
         messageBody.id=selectRow.id;
       }
      let param={};
@@ -63,7 +63,7 @@ class ThirdPartAction extends TemplateAction{
    del(messageBody){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url: 'acountTP?method=del',type:'POST',data:param })
+     $.ajax({ url: MainConstant.baseApp +'/acountTP?method=del',type:'POST',data:param })
       .done(data => {
 
         this.actions.delSuccess(data);

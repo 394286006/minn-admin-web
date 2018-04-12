@@ -22,18 +22,18 @@ import WorkFlowConfigChartMngPanel from './p/minn/components/workflow/WorkFlowCo
 export default (
   <Route component={App} >
     <Route path={MainConstant.app} component={Home} />
-    <Route path={MainConstant.app+'/account'} component={AccountMngPanel} />
-    <Route path={MainConstant.app+'/menu'} component={MenuMngPanel} />
-    <Route path={MainConstant.app+'/department'} component={DepartmentMngPanel} />
-    <Route path={MainConstant.app+'/role'} component={RoleMngPanel} />
-    <Route path={MainConstant.app+'/dictionary'} component={DicMngPanel} />
-    <Route path={MainConstant.app+'/workflowconfig'} component={WorkFlowConfigMngPanel} />
-    <Route path={MainConstant.app+'/leaveprocess'} component={LeaveProcessMngPanel} />
-    <Route path={MainConstant.app+'/socket'} component={SocketMngPanel} />
-    <Route path={MainConstant.app+'/chart'} component={ChartMngPanel} />
-    <Route path={MainConstant.app+'/orgChart'} component={OrgChartMngPanel} />
-    <Route path={MainConstant.app+'/ai'} component={AiMngPanel} />
-    <Route path={MainConstant.app+'/lucene'} component={LuceneMngPanel} />
-    <Route path={MainConstant.app+'/flowchart'} component={WorkFlowConfigChartMngPanel} />
+    <Route path={MainConstant.app+'account'} component={AccountMngPanel} />
+    <Route path={MainConstant.app+'menu'} component={MenuMngPanel} />
+    <Route path={MainConstant.app+'department'} component={DepartmentMngPanel} />
+    <Route path={MainConstant.app+'role'} component={RoleMngPanel} />
+    <Route path={MainConstant.app+'dictionary'} component={DicMngPanel} />
+    <Route path={MainConstant.app+'workflowconfig'} component={WorkFlowConfigMngPanel} />
+    <Route path={MainConstant.app+'leaveprocess'} component={LeaveProcessMngPanel} />
+    <Route path={MainConstant.app+'socket'} component={SocketMngPanel} />
+    <Route path={MainConstant.app+'chart'} component={ChartMngPanel} />
+    <Route path={MainConstant.app+'orgChart'} component={OrgChartMngPanel} />
+    <Route path={MainConstant.app+'ai'} component={AiMngPanel} />
+    <Route path={MainConstant.app+'lucene'} component={LuceneMngPanel} />
+    <Route path={MainConstant.app+'flowchart'} component={WorkFlowConfigChartMngPanel} />
   </Route>
 );

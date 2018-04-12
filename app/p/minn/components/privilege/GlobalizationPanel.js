@@ -4,7 +4,7 @@
 */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import templateComponent from './templateComponent';
+import TemplateComponent from './TemplateComponent';
 import {Link} from 'react-router';
 import {first, without, findWhere} from 'underscore';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
@@ -14,7 +14,7 @@ import MainConstant from '../../utils/MainConstant';
 import GlobalizationStore from '../../stores/privilege/GlobalizationStore'
 import GlobalizationAction from '../../actions/privilege/GlobalizationAction';
 
-class GlobalizationPanel extends templateComponent {
+class GlobalizationPanel extends TemplateComponent {
   constructor(props) {
     super(props,GlobalizationStore);
     this.langdata=[];

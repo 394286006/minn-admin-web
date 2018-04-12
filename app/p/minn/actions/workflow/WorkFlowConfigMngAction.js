@@ -28,7 +28,7 @@ class WorkFlowConfigMngAction extends TemplateAction{
     );
   }
   getDic() {
-    $.ajax({ url: 'dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'ACCOUNTTYPE\',\'ACTIVETYPE\',\'LOGINTYPE\''}})
+    $.ajax({ url: MainConstant.baseApp +'/dic',type:'GET',data:{method:'getDic',aptype:'swf',type:'\'ACCOUNTTYPE\',\'ACTIVETYPE\',\'LOGINTYPE\''}})
       .done(data => {
         this.actions.getDicSuccess(data);
       })
@@ -50,7 +50,7 @@ class WorkFlowConfigMngAction extends TemplateAction{
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'processDefinition?method=queryTree',type:'POST',data:param})
+    $.ajax({ url: MainConstant.workflowApp +'/processDefinition?method=queryTree',type:'POST',data:param})
       .done(data => {
         this.actions.processQueryTreeSuccess(data.data);
       })
@@ -60,9 +60,9 @@ class WorkFlowConfigMngAction extends TemplateAction{
     }
 
   process_saveOrUpdate(method,selectRow,messageBody){
-     let url='processDefinition?method=save';
+     let url=MainConstant.workflowApp +'/processDefinition?method=save';
       if(method=='modify'){
-        url='processDefinition?method=update';
+        url=MainConstant.workflowApp +'/processDefinition?method=update';
         messageBody.id=selectRow.id;
         messageBody.gid=selectRow.gid;
         messageBody.pId=selectRow.pid;
@@ -80,9 +80,9 @@ class WorkFlowConfigMngAction extends TemplateAction{
   }
 
   process_saveAll(method,selectRow,messageBody){
-     let url='processDefinition?method=save';
+     let url=MainConstant.workflowApp +'/processDefinition?method=save';
       if(method=='modify'){
-        url='processDefinition?method=update';
+        url=MainConstant.workflowApp +'/processDefinition?method=update';
         messageBody.id=selectRow.id;
         messageBody.gid=selectRow.gid;
         messageBody.pId=selectRow.pid;
@@ -102,7 +102,7 @@ class WorkFlowConfigMngAction extends TemplateAction{
 process_del(messageBody){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url: 'processDefinition?method=del',type:'POST',data:param })
+     $.ajax({ url: MainConstant.workflowApp +'/processDefinition?method=del',type:'POST',data:param })
       .done(data => {
         this.actions.processDelSuccess(data);
       })
@@ -122,7 +122,7 @@ node_queryTree(messageBody) {
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'processNode?method=queryTree',type:'POST',data:param})
+    $.ajax({ url: MainConstant.workflowApp +'/processNode?method=queryTree',type:'POST',data:param})
       .done(data => {
         this.actions.nodeQueryTreeSuccess(data.data);
       })
@@ -132,9 +132,9 @@ node_queryTree(messageBody) {
     }
 
 node_saveOrUpdate(method,selectRow,messageBody){
-     let url='processNode?method=save';
+     let url=MainConstant.workflowApp +'/processNode?method=save';
       if(method=='modify'){
-        url='processNode?method=update';
+        url=MainConstant.workflowApp +'/processNode?method=update';
         messageBody.id=selectRow.id;
         messageBody.gid=selectRow.gid;
         messageBody.pId=selectRow.pid;
@@ -154,7 +154,7 @@ node_saveOrUpdate(method,selectRow,messageBody){
 node_del(messageBody){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-     $.ajax({ url: 'processNode?method=del',type:'POST',data:param })
+     $.ajax({ url: MainConstant.workflowApp +'/processNode?method=del',type:'POST',data:param })
       .done(data => {
         this.actions.nodeDelSuccess(data);
       })
@@ -173,7 +173,7 @@ resource_queryTree(messageBody) {
 
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'workFlow?method=queryTree',type:'POST',data:param})
+    $.ajax({ url: MainConstant.workflowApp +'/workFlow?method=queryTree',type:'POST',data:param})
       .done(data => {
         this.actions.resourceQueryTreeSuccess(data.data);
       })
@@ -187,7 +187,7 @@ resource_queryTree(messageBody) {
     let param={};
      param.messageBody=MinnUtil.convert2Json(selectedNode);
 
-    $.ajax({ url: 'processNM?method=queryTree',type:'POST',data:param})
+    $.ajax({ url: MainConstant.workflowApp +'/processNM?method=queryTree',type:'POST',data:param})
       .done(data => {
         this.actions.targetQueryTreeSuccess(data.data);
       })
@@ -197,7 +197,7 @@ resource_queryTree(messageBody) {
   }
 
   target_saveOrUpdate(method,selectRow,messageBody){
-     let url='processNM?method=save';
+     let url=MainConstant.workflowApp +'/processNM?method=save';
       
      let param={};
      param.messageType=0;
@@ -222,7 +222,7 @@ getAccountRole(row) {
      messageBody.qtype="accountid";
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
-    $.ajax({ url: 'account?method=getAccountRole',type:'POST',data:param })
+    $.ajax({ url: MainConstant.baseApp +'/account?method=getAccountRole',type:'POST',data:param })
       .done(data => {
         data.selectedRow=row;
         this.actions.getAccountRoleSuccess(data);
@@ -241,7 +241,7 @@ saveResource(row,roleids){
      let param={};
      param.messageBody=MinnUtil.convert2Json(messageBody);
 
-    $.ajax({ url: 'account?method=saveRoleRes',type:'POST',data:param })
+    $.ajax({ url: MainConstant.baseApp +'/account?method=saveRoleRes',type:'POST',data:param })
       .done(data => {
         this.actions.saveResourceSuccess(data);
       })

@@ -243,7 +243,7 @@ class Menubar extends React.Component {
           <Nav  pullRight>
             <NavItem  disabled={true}>{this.minnUtil.get('main_wellcome_msg')}:</NavItem>
             <NavItem  disabled={true}  id='loginName_id'></NavItem>
-            <li><Link to={MainConstant.app+'/'} onClick={this.handleMenubarExit.bind(this)}>{this.minnUtil.get('main_wellcome_exit')}</Link></li>
+            <li><Link to={MainConstant.app} onClick={this.handleMenubarExit.bind(this)}>{this.minnUtil.get('main_wellcome_exit')}</Link></li>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
