@@ -21,7 +21,7 @@ module.exports = {
           },
    app:'/',
    authApp:'/auth',
-   baseApp:'admin',
+   baseApp:'/admin',
    workflowApp:'/flowapp',
    requestUrl:'',
    UNKNOWN:'unknown',

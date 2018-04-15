@@ -71,16 +71,6 @@ class App extends React.Component {
     if(param!=null){
        $( '#context' ).show();
        $( '#userlogin' ).hide();
-      ah.hookAjax({
-        open:function(arg){
-          if(arg[1].indexOf('?')!=-1){
-            arg[1]+="&accessKey="+param.accessKey+'&secretKey='+param.secretKey+'&id='+param.id+'&userName='+param.username;
-          }else{
-            arg[1]+="?accessKey="+param.accessKey+'&secretKey='+param.secretKey+'&id='+param.id+'&userName='+param.username;
-          }
-        }
-       });
-
     }else{
        $( '#context' ).hide();
        $( '#userlogin' ).show();

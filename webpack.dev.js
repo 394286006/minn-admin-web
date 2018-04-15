@@ -2,12 +2,12 @@ const path = require('path')
 const root = __dirname
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
-console.log(process.cwd()+',__dirname:'+__dirname );
+console.log(process.cwd()+',__dirname:'+path.resolve(root, 'dist/js') );
 module.exports = {
   mode: 'development',
   // 入口文件
   entry: [
-          'webpack-dev-server/client',
+          'webpack-dev-server/client?http://127.0.0.1:8089',
           path.resolve(root, 'app/main.js')
           ],
   // 出口文件

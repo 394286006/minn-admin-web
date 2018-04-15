@@ -30,6 +30,7 @@ class MenubarAction {
       data: { }
     })
       .done((data) => {
+        console.log('logout:'+data);
         this.actions.logoutSuccess();
       })
       .fail(() => {
