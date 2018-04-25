@@ -3,6 +3,7 @@ const root = __dirname
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 console.log(process.cwd()+',__dirname:'+path.resolve(root, 'dist/js') );
+var EncodingPlugin = require('webpack-encoding-plugin');
 module.exports = {
   mode: 'development',
   // 入口文件
@@ -37,7 +38,8 @@ module.exports = {
       title: 'minn`s system',
       template: path.resolve(root, 'template.html')
     }),
-    new webpack.NamedModulesPlugin()
+    new webpack.NamedModulesPlugin(),
+    new EncodingPlugin('UTF8')
   ],
   devServer: {
     //open: true,
