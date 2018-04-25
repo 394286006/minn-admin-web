@@ -21,7 +21,7 @@ class UserAction {
 
     $.ajax({
       type: 'POST',
-      url: MainConstant.baseApp + '/j_spring_security_check',
+      url: MainConstant.authApp + '/j_spring_security_check',
       data: {username: name, password: pwd ,logintype:'3',key:'',lang:lang}
     })
       .done((data) => {
@@ -38,7 +38,7 @@ class UserAction {
 
     $.ajax({
       type: 'POST',
-      url: MainConstant.baseApp + '/login?lang='+MainConstant.currentLocale,
+      url: MainConstant.authApp + '/login?lang='+MainConstant.currentLocale,
       data: {}
     })
       .done((data) => {

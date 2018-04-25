@@ -26,7 +26,7 @@ class MenubarAction {
 
   logout() {
     $.ajax({
-      url: MainConstant.baseApp + '/logout',
+      url: MainConstant.authApp + '/logout',
       data: { }
     })
       .done((data) => {
