@@ -4,7 +4,7 @@
 */
 import TemplateGL from '../TemplateGL';
 import Shader from './Shader';
-import dataBuffer from './dataBuffer';
+import dataBuffer from './DataBuffer';
 import Texture from './Texture';
 class Cube extends TemplateGL{
   constructor(dom) {
