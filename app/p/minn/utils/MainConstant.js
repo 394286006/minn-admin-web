@@ -23,6 +23,7 @@ module.exports = {
    authApp:'/auth',
    baseApp:'/admin',
    workflowApp:'/flowapp',
+   dubboApp:'/dubboapp',
    requestUrl:'',
    UNKNOWN:'unknown',
    PREFIX_AUTO_COMPOMENT:'dynamy',

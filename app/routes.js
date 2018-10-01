@@ -17,6 +17,7 @@ import OrgChartMngPanel from './p/minn/components/chart/OrgChartMngPanel';
 import AiMngPanel from './p/minn/components/ai/AiMngPanel';
 import LuceneMngPanel from './p/minn/components/lucene/LuceneMngPanel';
 import WorkFlowConfigChartMngPanel from './p/minn/components/workflow/WorkFlowConfigChartMngPanel';
+import DubboMngPanel from './p/minn/components/dubbo/DubboMngPanel';
 
 
 export default (
@@ -35,5 +36,6 @@ export default (
     <Route path={MainConstant.app+'ai'} component={AiMngPanel} />
     <Route path={MainConstant.app+'lucene'} component={LuceneMngPanel} />
     <Route path={MainConstant.app+'flowchart'} component={WorkFlowConfigChartMngPanel} />
+    <Route path={MainConstant.app+'dubbo'} component={DubboMngPanel} />
   </Route>
 );
