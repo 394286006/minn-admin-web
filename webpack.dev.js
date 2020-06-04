@@ -2,20 +2,18 @@ const path = require('path')
 const root = __dirname
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
-console.log(process.cwd()+',__dirname:'+path.resolve(root, 'dist/js') );
+console.log(process.cwd()+',__dirname:'+path.resolve(root, 'dist') );
 var EncodingPlugin = require('webpack-encoding-plugin');
+
 module.exports = {
   mode: 'development',
   // 入口文件
-  entry: [
-          'webpack-dev-server/client?http://127.0.0.1:8089',
-          path.resolve(root, 'app/main.js')
-          ],
+  entry: path.resolve(root, 'app/main.js'),
   // 出口文件
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(root, 'dist'),
-    publicPath: '/'
+    path: path.join(root, 'dist'),
+    filename: '[name].[chunkhash].js',
+   // publicPath: 'js'
   },
   // loaders
   module: {
@@ -36,6 +34,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'minn`s system',
+       filename: 'index.html',
       template: path.resolve(root, 'template.html')
     }),
     new webpack.NamedModulesPlugin(),
