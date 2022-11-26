@@ -16,7 +16,7 @@ module.exports  = {
     optimization: {
         minimizer: [
             new HtmlWebpackPlugin({
-                cache: true, /
+                cache: true,
                 parallel: true, 
                 sourceMap: true,
             }),
